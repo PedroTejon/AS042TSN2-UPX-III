@@ -16,9 +16,12 @@
     "express": "~4.16.1",
     "express-async-handler": "^1.2.0",
     "http-errors": "~1.6.3",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.3",
     "node-schedule": "^2.1.1"
   },
   "devDependencies": {
+    "eslint-config-google": "^0.14.0",
     "nodemon": "^3.1.0"
   }
 }
