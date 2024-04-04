@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const db = require('../services/db');
+const utils = require('./utils');
 
 async function scrape() {
   const categorias = [
@@ -42,8 +43,10 @@ async function scrape() {
     while (true) {
       const site = await axios.get(`https://www.energiatotal.com.br/${categoria}?pg=${pagina}`, {
         headers: headers,
-      }).then((response) => {
-        return cheerio.load(response.data);
+        responseType: 'arraybuffer',
+        reponseEncoding: 'binary',
+      }).then((responseRaw) => responseRaw.data.toString('latin1')).then((response) => {
+        return cheerio.load(response);
       });
 
       for (const anuncio of [...site('li.item.flex')].map((anuncio) => site(anuncio))) {
@@ -62,23 +65,18 @@ async function scrape() {
           const descricao = await axios.get(url, {
             responseEncoding: 'binary',
             headers: headers,
-          }).then((response) => {
-            const pag = cheerio.load(response.data);
-            const descricaoElement = pag('.board_htm');
-            let descricao = '';
-            for (const element of [...descricaoElement.children()].map((element) => pag(element))) {
-              const tagName = element[0].tagName;
-              if (tagName == 'p') {
-                descricao += element.text().trim() + '\n';
-              } else if (tagName == 'br') {
-                descricao += '\n';
-              }
-            }
+          }).then((responseRaw) => responseRaw.data.toString('latin1')).then((response) => {
+            const pag = cheerio.load(response);
+            pag('*').removeAttr('style');
+            pag('script,style').remove();
+            const descricao = pag('.board_htm').html().trim();
             return descricao;
           });
 
           // eslint-disable-next-line max-len
           await db.query(`CALL insert_anun('${nome}', ${avaliacao}, ${precoFinal}, '${descricao}', '${url}', '${foto}', 1)`, [], dbConn);
+
+          await utils.sleep(1000);
         }
       }
 
@@ -90,3 +88,9 @@ async function scrape() {
     }
   }
 }
+
+scrape();
+
+module.exports = {
+  scrape,
+};
