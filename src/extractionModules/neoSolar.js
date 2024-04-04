@@ -4,15 +4,15 @@ const db = require('../services/db');
 
 async function scrape() {
   const categorias = [
-    // 'painel-solar',
-    // 'kit-energia-solar-off-grid',
-    // 'kit-energia-solar-on-grid',
-    // 'bomba-solar',
-    // 'controlador-de-carga-solar',
-    // 'inversor-solar',
+    'painel-solar',
+    'kit-energia-solar-off-grid',
+    'kit-energia-solar-on-grid',
+    'bomba-solar',
+    'controlador-de-carga-solar',
+    'inversor-solar',
     'bateria-solar',
-    // 'carro-eletrico',
-    // 'estrutura-cabo-outros',
+    'carro-eletrico',
+    'estrutura-cabo-outros',
   ];
 
   headers = {
@@ -87,8 +87,6 @@ async function scrape() {
     }
   }
 }
-
-scrape();
 
 module.exports = {
   scrape,

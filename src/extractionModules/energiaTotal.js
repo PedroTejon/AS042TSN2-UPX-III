@@ -89,8 +89,6 @@ async function scrape() {
   }
 }
 
-scrape();
-
 module.exports = {
   scrape,
 };
