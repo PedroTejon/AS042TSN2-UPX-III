@@ -45,7 +45,7 @@ async function scrape() {
         headers: headers,
         responseType: 'arraybuffer',
         reponseEncoding: 'binary',
-      }).then((responseRaw) => responseRaw.data.toString('latin1')).then((response) => {
+      }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
         return cheerio.load(response);
       });
 
@@ -58,14 +58,14 @@ async function scrape() {
           if (precoTexto != 'ESGOTADO!') {
             precoFinal = parseFloat(precoTexto.replace('R$ ', '').replace(',', '.'));
           } else {
-            precoFinal = undefined;
+            continue;
           }
           const avaliacao = anuncio.find('.icon.active').length;
           const foto = anuncio.find('img').attr('data-src');
           const descricao = await axios.get(url, {
             responseEncoding: 'binary',
             headers: headers,
-          }).then((responseRaw) => responseRaw.data.toString('latin1')).then((response) => {
+          }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
             const pag = cheerio.load(response);
             pag('*').removeAttr('style');
             pag('script,style').remove();

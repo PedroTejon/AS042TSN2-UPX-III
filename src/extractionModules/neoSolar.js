@@ -41,8 +41,8 @@ async function scrape() {
     while (true) {
       const site = await axios.get(`https://www.neosolar.com.br/loja/${categoria}.html?p=${pagina}`, {
         headers: headers,
-      }).then((responseRaw) => responseRaw.data.toString('latin1')).then((response) => {
-        return cheerio.load(response);
+      }).then((response) => {
+        return cheerio.load(response.data);
       });
 
       if (site('.message.info.empty').length != 0) {
@@ -56,8 +56,10 @@ async function scrape() {
           const nome = anuncio.find('.product.name.product-item-name').text().trim();
           const precoTexto = anuncio.find('span[data-price-type=finalPrice] .price');
           let precoFinal;
-          if (precoTexto != null) {
+          if (precoTexto.length != 0) {
             precoFinal = parseFloat(precoTexto.first().text().trim().replace(/[\D$\s]*/, '').replace(',', '.'));
+          } else {
+            continue;
           }
           const avaliacaoTexto = anuncio.find('.rating-result');
           let avaliacao = 0;
@@ -68,7 +70,7 @@ async function scrape() {
           const descricao = await axios.get(url, {
             responseEncoding: 'binary',
             headers: headers,
-          }).then((responseRaw) => responseRaw.data.toString('latin1')).then((response) => {
+          }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
             const pag = cheerio.load(response);
             pag('*').removeAttr('style');
             pag('script,style').remove();
