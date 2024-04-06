@@ -68,10 +68,10 @@ async function scrape() {
           }
           const foto = anuncio.find('img.product-image-photo').attr('src');
           const descricao = await axios.get(url, {
-            responseEncoding: 'binary',
+            responseEncoding: 'utf8',
             headers: headers,
-          }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
-            const pag = cheerio.load(response);
+          }).then((response) => {
+            const pag = cheerio.load(response.data);
             pag('*').removeAttr('style');
             pag('script,style').remove();
             const descricao = pag('.product.attribute.description').html().trim();
@@ -79,7 +79,7 @@ async function scrape() {
           });
 
           // eslint-disable-next-line max-len
-          await db.query(`CALL insert_anun('${nome}', ${avaliacao}, ${precoFinal}, '${descricao}', '${url}', '${foto}', 6)`, [], dbConn);
+          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 6)`, [nome, avaliacao, precoFinal, descricao, url, foto], dbConn);
 
           await utils.sleep(1000);
         }

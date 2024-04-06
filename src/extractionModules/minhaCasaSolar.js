@@ -43,12 +43,10 @@ async function scrape() {
     while (true) {
       const site = await axios.get(`https://www.minhacasasolar.com.br/${categoria}?pagina=${pagina}&tamanho=24`, {
         headers: headers,
-        responseType: 'arraybuffer',
-        reponseEncoding: 'binary',
-      }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
-        return cheerio.load(response);
+        responseEncoding: 'utf8',
+      }).then((response) => {
+        return cheerio.load(response.data);
       });
-
 
       const urlAvaliacoes = 'codes[]=' + [...site('div[data-trustvox-product-code]')].map((el) => {
         return site(el).attr('data-trustvox-product-code');
@@ -56,11 +54,10 @@ async function scrape() {
 
       // eslint-disable-next-line max-len
       const avaliacoes = await axios.get(`https://trustvox.com.br/widget/shelf/v2/products_rates?${urlAvaliacoes}&store_id=81798&callback=_tsRatesReady`, {
+        responseEncoding: 'utf8',
         headers: headers,
-        responseType: 'arraybuffer',
-        reponseEncoding: 'binary',
-      }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
-        let json = response.replace('/**/_tsRatesReady(', '');
+      }).then((response) => {
+        let json = response.data.replace('/**/_tsRatesReady(', '');
         json = JSON.parse(json.substring(0, json.length - 1))['products_rates'];
         const avaliacoes = {};
         for (const avaliacaoAtual of json) {
@@ -84,9 +81,10 @@ async function scrape() {
           const avaliacao = avaliacoes[anuncio.find('div[data-trustvox-product-code]').attr('data-trustvox-product-code')];
           const foto = anuncio.find('.spot-image').attr('data-src');
           const descricao = await axios.get(url, {
+            responseEncoding: 'utf8',
             headers: headers,
-          }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
-            const pag = cheerio.load(response);
+          }).then((response) => {
+            const pag = cheerio.load(response.data);
             pag('*').removeAttr('style');
             pag('script,style').remove();
             const descricao = pag('.description__item.menu_groups').html().trim();
@@ -94,7 +92,7 @@ async function scrape() {
           });
 
           // eslint-disable-next-line max-len
-          await db.query(`CALL insert_anun('${nome}', ${avaliacao}, ${precoFinal}, '${descricao}', '${url}', '${foto}', 5)`, [], dbConn);
+          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 5)`, [nome, avaliacao, precoFinal, descricao, url, foto], dbConn);
 
           await utils.sleep(1000);
         }

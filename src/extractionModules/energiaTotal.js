@@ -43,10 +43,9 @@ async function scrape() {
     while (true) {
       const site = await axios.get(`https://www.energiatotal.com.br/${categoria}?pg=${pagina}`, {
         headers: headers,
-        responseType: 'arraybuffer',
-        reponseEncoding: 'binary',
-      }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
-        return cheerio.load(response);
+        responseEncoding: 'utf8',
+      }).then((response) => {
+        return cheerio.load(response.data);
       });
 
       for (const anuncio of [...site('li.item.flex')].map((anuncio) => site(anuncio))) {
@@ -63,10 +62,10 @@ async function scrape() {
           const avaliacao = anuncio.find('.icon.active').length;
           const foto = anuncio.find('img').attr('data-src');
           const descricao = await axios.get(url, {
-            responseEncoding: 'binary',
+            responseEncoding: 'utf8',
             headers: headers,
-          }).then((responseRaw) => responseRaw.data.toString('utf8')).then((response) => {
-            const pag = cheerio.load(response);
+          }).then((response) => {
+            const pag = cheerio.load(response.data);
             pag('*').removeAttr('style');
             pag('script,style').remove();
             const descricao = pag('.board_htm').html().trim();
@@ -74,7 +73,7 @@ async function scrape() {
           });
 
           // eslint-disable-next-line max-len
-          await db.query(`CALL insert_anun('${nome}', ${avaliacao}, ${precoFinal}, '${descricao}', '${url}', '${foto}', 1)`, [], dbConn);
+          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 1)`, [nome, avaliacao, precoFinal, descricao, url, foto], dbConn);
 
           await utils.sleep(1000);
         }
