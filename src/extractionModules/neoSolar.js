@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const db = require('../services/db');
+const utils = require('./utils');
 
 async function scrape() {
   const categorias = [
