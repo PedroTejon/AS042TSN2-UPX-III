@@ -70,17 +70,19 @@ BEGIN
   INSERT INTO anuncios_escondidos VALUES (id_usuario, id_anuncio);
 END$$
 
+CREATE PROCEDURE unhide_anun(id_usuario INT, id_anuncio INT)
+BEGIN
+  DELETE FROM anuncios_escondidos WHERE anuncios_escondidos.id_anuncio = id_anuncio AND anuncios_escondidos.id_usuario = id_usuario;
+END$$
+
 CREATE PROCEDURE save_anun(id_usuario INT, id_anuncio INT)
 BEGIN
   INSERT INTO anuncios_salvos VALUES (id_usuario, id_anuncio);
 END$$
 
-CREATE PROCEDURE query_page(index_i INT) 
+CREATE PROCEDURE unsave_anun(id_usuario INT, id_anuncio INT)
 BEGIN
-  SELECT * FROM anuncios 
-  LEFT JOIN anuncios_escondidos ON anuncios.id_anuncio = anuncios_escondidos.id_anuncio
-  WHERE anuncios_escondidos.id_anuncio = NULL 
-  LIMIT index_i OFFSET 50;
-END $$
+  DELETE FROM anuncios_salvos WHERE anuncios_salvos.id_anuncio = id_anuncio AND anuncios_salvos.id_usuario = id_usuario;
+END$$
 
 DELIMITER ;
