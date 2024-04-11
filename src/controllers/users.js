@@ -17,11 +17,11 @@ exports.register = asyncHandler(async (req, res, next) => {
             req.body.genero
         ], dbConn);
 
-        res.send({message: 'Usuário criado com sucesso!'});
+        res.send({ message: 'Usuário criado com sucesso!' });
     } catch (err) {
         if (err.errno == 1062) {
             res.status(409).send({ message: 'Usuário já existe.' })
-            res.end();
+            return;
         } else {
             next(err);
         }
@@ -34,12 +34,12 @@ exports.login = asyncHandler(async (req, res, next) => {
 
         const user = await db.query('SELECT * FROM usuarios WHERE email = ?', [req.body.email], dbConn);
         if (!user.length) {
-            res.status(404).send({message: `Usuário com e-mail ${req.body.email} não encontrado.`});
+            res.status(404).send({ message: `Usuário com e-mail ${req.body.email} não encontrado.` });
             return;
         }
 
         if (!await bcrypt.compare(req.body.password, user[0].senha_hash)) {
-            res.status(403).send({message: `Dados de usuário incorretos.`});
+            res.status(403).send({ message: `Dados de usuário incorretos.` });
             return;
         }
 
@@ -61,7 +61,7 @@ exports.login = asyncHandler(async (req, res, next) => {
             maxAge: dataExpiracao.getTime()
         });
 
-        res.send({message: 'Usuário logado com sucesso!'});
+        res.send({ message: 'Usuário logado com sucesso!' });
     } catch (err) {
         next(err);
     }
@@ -89,4 +89,78 @@ exports.getDetails = asyncHandler(async (req, res, next) => {
     const dbConn = await db.getConnection();
 
     res.send(await db.query('SELECT email, nome, data_nasc, genero FROM usuarios WHERE id_usuario = ?', [req.cookies.userId], dbConn));
+});
+
+exports.saveProduct = asyncHandler(async (req, res, next) => {
+    const dbConn = await db.getConnection();
+
+    try {
+        const out = await db.query('CALL save_anun(?, ?)', [req.cookies.userId, req.params.anunId], dbConn);
+
+        if (out.affectedRows != 0) {
+            res.send({ message: "Anúncio salvo com sucesso." });
+        } else {
+            res.send({ message: "Falha ao salvar anúncio." });
+        }
+    } catch (err) {
+        if (err.errno == 1062) {
+            res.status(409).send({ message: 'Anúncio já foi salvo por usuário.' })
+            return;
+        } else {
+            next(err);
+        }
+    }
+});
+
+exports.unsaveProduct = asyncHandler(async (req, res, next) => {
+    const dbConn = await db.getConnection();
+
+    try {
+        const out = await db.query('CALL unsave_anun(?, ?)', [req.cookies.userId, req.params.anunId], dbConn);
+
+        if (out.affectedRows != 0) {
+            res.send({ message: "Anúncio retirado da lista de anúncios salvos com sucesso." });
+        } else {
+            res.status(404).send({ message: "Usuário não tem este anúncio salvo." });
+        }
+    } catch (err) {
+        next(err);
+    }
+});
+
+exports.hideProduct = asyncHandler(async (req, res, next) => {
+    const dbConn = await db.getConnection();
+
+    try {
+        const out = await db.query('CALL hide_anun(?, ?)', [req.cookies.userId, req.params.anunId], dbConn);
+
+        if (out.affectedRows != 0) {
+            res.send({ message: "Anúncio escondido com sucesso." });
+        } else {
+            res.send({ message: "Falha ao esconder anúncio." });
+        }
+    } catch (err) {
+        if (err.errno == 1062) {
+            res.status(409).send({ message: 'Anúncio já foi escondido por usuário.' })
+            return;
+        } else {
+            next(err);
+        }
+    }
+});
+
+exports.unhideProduct = asyncHandler(async (req, res, next) => {
+    const dbConn = await db.getConnection();
+
+    try {
+        const out = await db.query('CALL unhide_anun(?, ?)', [req.cookies.userId, req.params.anunId], dbConn);
+
+        if (out.affectedRows != 0) {
+            res.send({ message: "Anúncio retirado da lista de anúncios escondidos com sucesso." });
+        } else {
+            res.status(404).send({ message: "Usuário não tem este anúncio escondido." });
+        }
+    } catch (err) {
+        next(err);
+    }
 });

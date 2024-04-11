@@ -33,10 +33,10 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 CREATE TABLE IF NOT EXISTS anuncios_salvos (
   id_usuario INT NOT NULL,
-  id_anuncio_salvo INT NOT NULL,
-  PRIMARY KEY (id_usuario, id_anuncio_salvo),
+  id_anuncio INT NOT NULL,
+  PRIMARY KEY (id_usuario, id_anuncio),
   FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario),
-  FOREIGN KEY (id_anuncio_salvo) REFERENCES anuncios (id_anuncio)
+  FOREIGN KEY (id_anuncio) REFERENCES anuncios (id_anuncio)
 );
 
 CREATE TABLE IF NOT EXISTS anuncios_escondidos (
