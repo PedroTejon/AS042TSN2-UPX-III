@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var webRouter = require('./routes/web');
 var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
+const { error } = require('console');
 
 var app = express();
 
@@ -25,11 +26,8 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  res.message = err.message;
-  res.error = err;
-
   res.status(500);
-  res.send(err);
+  res.send({message: err.message, error: err});
 });
 
 module.exports = app;
