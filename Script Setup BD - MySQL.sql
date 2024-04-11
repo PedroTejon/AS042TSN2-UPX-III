@@ -17,6 +17,7 @@ CREATE TABLE  IF NOT EXISTS anuncios (
   URL VARCHAR(200) NOT NULL,
   foto VARCHAR(300) NOT NULL,
   id_plataforma INT NOT NULL,
+  oculto TINYINT NOT NULL,
   PRIMARY KEY (id_anuncio),
   FOREIGN KEY (id_plataforma) REFERENCES plataformas (id_plataforma)
 );
@@ -28,18 +29,11 @@ CREATE TABLE IF NOT EXISTS usuarios (
   nome VARCHAR(45) NOT NULL,
   data_nasc DATE NOT NULL,
   genero VARCHAR(45) NULL,
+  administrador TINYINT NULL,
   PRIMARY KEY (id_usuario)
 );
 
 CREATE TABLE IF NOT EXISTS anuncios_salvos (
-  id_usuario INT NOT NULL,
-  id_anuncio INT NOT NULL,
-  PRIMARY KEY (id_usuario, id_anuncio),
-  FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario),
-  FOREIGN KEY (id_anuncio) REFERENCES anuncios (id_anuncio)
-);
-
-CREATE TABLE IF NOT EXISTS anuncios_escondidos (
   id_usuario INT NOT NULL,
   id_anuncio INT NOT NULL,
   PRIMARY KEY (id_usuario, id_anuncio),
@@ -66,22 +60,38 @@ INSERT INTO plataformas VALUES (null, 'NeoSolar', 'https://www.neosolar.com.br/l
 DELIMITER $$
 CREATE PROCEDURE insert_anun(titulo VARCHAR(150), avaliacao DECIMAL(4,2), preco FLOAT, descricao TEXT, URL VARCHAR(200), foto VARCHAR(300), plat INT)
 BEGIN
-  INSERT INTO anuncios VALUES (default, titulo, avaliacao, preco, descricao, URL, foto, plat);
+  INSERT INTO anuncios VALUES (default, titulo, avaliacao, preco, descricao, URL, foto, plat, 0);
 END$$
 
 CREATE PROCEDURE insert_user(email VARCHAR(75), senha_hash VARCHAR(200), nome VARCHAR(45), data_nasc DATE, genero VARCHAR(45))
 BEGIN
-  INSERT INTO usuarios VALUES (default, email, senha_hash, nome, data_nasc, genero);
+  INSERT INTO usuarios VALUES (default, email, senha_hash, nome, data_nasc, genero, 0);
 END$$
 
 CREATE PROCEDURE hide_anun(id_usuario INT, id_anuncio INT)
 BEGIN
-  INSERT INTO anuncios_escondidos VALUES (id_usuario, id_anuncio);
+  SET @isAdm = 0;
+  SET @isHidden = 0;
+  SELECT administrador, oculto INTO @isAdm, @isHidden FROM usuarios JOIN anuncios on id_anuncio = anuncios.id_anuncio;
+  IF @isAdm = 1 AND @isHidden = 0 THEN
+    UPDATE anuncios SET oculto = 1 WHERE anuncios.id_anuncio = id_anuncio;
+    SELECT 1 AS code;
+  ELSE
+	  SELECT 0 AS code;
+  END IF;
 END$$
 
 CREATE PROCEDURE unhide_anun(id_usuario INT, id_anuncio INT)
 BEGIN
-  DELETE FROM anuncios_escondidos WHERE anuncios_escondidos.id_anuncio = id_anuncio AND anuncios_escondidos.id_usuario = id_usuario;
+  SET @isAdm = 0;
+  SET @isHidden = 0;
+  SELECT administrador, oculto INTO @isAdm, @isHidden FROM usuarios JOIN anuncios on id_anuncio = anuncios.id_anuncio;
+  IF @isAdm = 1 AND @isHidden = 1 THEN
+    UPDATE anuncios SET oculto = 0 WHERE anuncios.id_anuncio = id_anuncio;
+    SELECT 1 AS code;
+  ELSE
+	  SELECT 0 AS code;
+  END IF;
 END$$
 
 CREATE PROCEDURE save_anun(id_usuario INT, id_anuncio INT)
