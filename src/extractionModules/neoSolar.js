@@ -50,7 +50,6 @@ async function scrape() {
         break;
       }
 
-      // eslint-disable-next-line max-len
       for (const anuncio of [...site('.item.product.product-item')].map((anuncio) => site(anuncio))) {
         const url = anuncio.find('a.product.photo.product-item-photo').attr('href').trim();
         if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [], dbConn)).length == 0) {

@@ -42,7 +42,7 @@ async function scrape() {
         break;
       }
 
-      const anuncios = JSON.parse(site('div[data-testid=product-list] > script[data-testid=jsonld-script]').text())
+      const anuncios = JSON.parse(site('div[data-testid=product-list] > script[data-testid=jsonld-script]').text());
       for (const anuncio of anuncios['@graph']) {
         const url = anuncio['offers']['url'];
         if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [], dbConn)).length == 0) {

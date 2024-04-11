@@ -1,5 +1,5 @@
 const db = require('../services/db');
-const asyncHandler = require("express-async-handler");
+const asyncHandler = require('express-async-handler');
 
 exports.getDetails = asyncHandler(async (req, res, next) => {
   const dbConn = await db.getConnection();
@@ -13,11 +13,9 @@ exports.getPage = asyncHandler(async (req, res, next) => {
   const page = parseInt(req.params['page']) * 50;
   let orderBy = 'ORDER BY id_anuncio DESC';
   if ('sortedBy' in req.query) {
-    orderBy = `ORDER BY ${req.query['sortedBy']} ${'sortOrder' in req.query ? req.query['sortOrder'] : 'DESC'}`
+    orderBy = `ORDER BY ${req.query['sortedBy']} ${'sortOrder' in req.query ? req.query['sortOrder'] : 'DESC'}`;
   }
-  
-  // userHidden = `id_anuncio NOT IN (SELECT id_anuncio FROM anuncios_escondidos WHERE id_usuario = ${req.query['user']}) AND`
-  
+
   const query = `SELECT * FROM anuncios
     WHERE 
     titulo LIKE ?

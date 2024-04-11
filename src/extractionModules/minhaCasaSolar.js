@@ -22,7 +22,6 @@ async function scrape() {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
     'accept-language': 'en,pt-BR;q=0.9,pt;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'cache-control': 'no-cache',
-    // eslint-disable-next-line max-len
     'cookie': 'MCPopupClosed=yes; SmartHint-Overlay-LeavingPage=1',
     'pragma': 'no-cache',
     'sec-ch-ua': '\'Microsoft Edge\';v=\'123\', \'Not:A-Brand\';v=\'8\', \'Chromium\';v=\'123\'',
