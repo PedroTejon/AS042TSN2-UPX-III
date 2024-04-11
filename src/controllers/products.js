@@ -22,5 +22,5 @@ exports.getPage = asyncHandler(async (req, res, next) => {
     WHERE 
     titulo LIKE ?
     ${orderBy} LIMIT ${page}, 50`;
-  res.send(await db.query(query, ['%' + req.query['searchQuery'] + '%'], dbConn));
+  res.send(await db.query(query, [req.query['searchQuery'] ? '%' + req.query['searchQuery'] + '%' : '%%'], dbConn));
 });

@@ -47,6 +47,15 @@ CREATE TABLE IF NOT EXISTS anuncios_escondidos (
   FOREIGN KEY (id_anuncio) REFERENCES anuncios (id_anuncio)
 );
 
+CREATE TABLE IF NOT EXISTS sessoes_usuario (
+  sess_hash VARCHAR(32) NOT NULL,
+  id_usuario INT NOT NULL,
+  login_date DATETIME NOT NULL,
+  expires DATETIME NOT NULL,
+  PRIMARY KEY (sess_hash),
+  FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario)
+);
+
 INSERT INTO plataformas VALUES (null, 'EnergiaTotal', 'https://www.energiatotal.com.br');
 INSERT INTO plataformas VALUES (null, 'Leroy Merlin', 'https://www.leroymerlin.com.br/');
 INSERT INTO plataformas VALUES (null, 'Magazine Luiza', 'https://www.magazineluiza.com.br/');
