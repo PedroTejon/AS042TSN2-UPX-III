@@ -8,18 +8,27 @@ CREATE TABLE IF NOT EXISTS plataformas (
   PRIMARY KEY (id_plataforma)
 );
 
-CREATE TABLE  IF NOT EXISTS anuncios (
+CREATE TABLE IF NOT EXISTS categorias (
+  id_categoria INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id_categoria)
+);
+
+CREATE TABLE IF NOT EXISTS anuncios (
   id_anuncio INT NOT NULL AUTO_INCREMENT,
   titulo VARCHAR(150) NOT NULL,
   avaliacao DECIMAL(4,2) NULL,
+  qntd_avaliacoes INT NULL,
   preco FLOAT NOT NULL,
   descricao MEDIUMTEXT NULL,
   URL VARCHAR(200) NOT NULL,
   foto VARCHAR(300) NOT NULL,
   id_plataforma INT NOT NULL,
   oculto TINYINT NOT NULL,
+  id_categoria INT NOT NULL,
   PRIMARY KEY (id_anuncio),
-  FOREIGN KEY (id_plataforma) REFERENCES plataformas (id_plataforma)
+  FOREIGN KEY (id_plataforma) REFERENCES plataformas (id_plataforma),
+  FOREIGN KEY (id_categoria) REFERENCES categorias (id_categoria)
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -50,17 +59,35 @@ CREATE TABLE IF NOT EXISTS sessoes_usuario (
   FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario)
 );
 
-INSERT INTO plataformas VALUES (null, 'EnergiaTotal', 'https://www.energiatotal.com.br');
-INSERT INTO plataformas VALUES (null, 'Leroy Merlin', 'https://www.leroymerlin.com.br/');
-INSERT INTO plataformas VALUES (null, 'Magazine Luiza', 'https://www.magazineluiza.com.br/');
-INSERT INTO plataformas VALUES (null, 'Mercado Livre', 'https://www.mercadolivre.com.br/');
-INSERT INTO plataformas VALUES (null, 'Minha Casa Solar', 'https://www.minhacasasolar.com.br/');
-INSERT INTO plataformas VALUES (null, 'NeoSolar', 'https://www.neosolar.com.br/loja');
+INSERT INTO plataformas VALUES 
+(default, 'EnergiaTotal', 'https://www.energiatotal.com.br'),
+(default, 'Leroy Merlin', 'https://www.leroymerlin.com.br/'),
+(default, 'Magazine Luiza', 'https://www.magazineluiza.com.br/'),
+(default, 'Mercado Livre', 'https://www.mercadolivre.com.br/'),
+(default, 'Minha Casa Solar', 'https://www.minhacasasolar.com.br/'),
+(default, 'NeoSolar', 'https://www.neosolar.com.br/loja');
+
+INSERT INTO categorias VALUES 
+(default, 'Painéis Solares'),
+(default, 'Estruturação'),
+(default, 'Controladores de Carga'),
+(default, 'Inversores Solares'),
+(default, 'Ferramentas'),
+(default, 'Baterias'),
+(default, 'Kits Solares'),
+(default, 'Cabos'),
+(default, 'Disjuntores'),
+(default, 'Proteções de Rede'),
+(default, 'Iluminação'),
+(default, 'Aquecimento'),
+(default, 'Carro Elétrico'),
+(default, 'Outros'),
+(default, 'Bombeamento Solar');
 
 DELIMITER $$
-CREATE PROCEDURE insert_anun(titulo VARCHAR(150), avaliacao DECIMAL(4,2), preco FLOAT, descricao TEXT, URL VARCHAR(200), foto VARCHAR(300), plat INT)
+CREATE PROCEDURE insert_anun(titulo VARCHAR(150), avaliacao DECIMAL(4,2), preco FLOAT, descricao TEXT, URL VARCHAR(200), foto VARCHAR(300), plat INT, categoria_id INT, qntd_avaliacoes INT)
 BEGIN
-  INSERT INTO anuncios VALUES (default, titulo, avaliacao, preco, descricao, URL, foto, plat, 0);
+  INSERT INTO anuncios VALUES (default, titulo, avaliacao, qntd_avaliacoes, preco, descricao, URL, foto, plat, 0, categoria_id);
 END$$
 
 CREATE PROCEDURE insert_user(email VARCHAR(75), senha_hash VARCHAR(200), nome VARCHAR(45), data_nasc DATE, genero VARCHAR(45))
