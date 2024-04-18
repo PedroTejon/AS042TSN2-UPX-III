@@ -4,6 +4,7 @@ var router = express.Router();
 
 /* GET */
 router.get('/', controller.authorize, controller.getDetails);
+router.post('/', controller.authorize, controller.updateDetails);
 router.post('/register', controller.register);
 router.post('/login', controller.login);
 router.post('/saveProduct/:anunId', controller.saveProduct);

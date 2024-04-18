@@ -13,7 +13,7 @@ async function getConnection() {
 }
 
 async function query(sql, params, connection) {
-  const [results] = await connection.execute(sql, params);
+  const [results] = await connection.query(sql, params);
 
   return results;
 }

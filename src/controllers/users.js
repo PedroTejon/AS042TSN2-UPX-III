@@ -28,6 +28,34 @@ exports.register = asyncHandler(async (req, res, next) => {
   }
 });
 
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+  try {
+    const dbConn = await db.getConnection();
+
+    const user = (await db.query(`SELECT * FROM usuarios WHERE id_usuario = ${req.cookies.userId}`, [], dbConn))[0];
+
+    if (user) {
+      let changes = []
+      for (let prop of Object.keys(user)) {
+        if (req.body[prop] != undefined && user[prop] != req.body[prop]) {
+          changes.push(`${prop} = '${req.body[prop]}'`)
+        }
+      }
+
+      if (changes.length != 0) {
+        await db.query(`UPDATE usuarios SET ${changes.join(', ')} WHERE id_usuario = ${req.cookies.userId}`, [], dbConn);
+        res.send({ message: 'Usuário alterado com sucesso!' });
+      } else {
+        res.status(409).send({ message: 'Nenhuma alteração aplicada pois Usuário já possui tais características e/ou nenhuma propriedade foi válida.' })
+      }
+    } else {
+      res.status(404).send({ message: 'Usuário não encontrado.' })
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 exports.login = asyncHandler(async (req, res, next) => {
   try {
     const dbConn = await db.getConnection();
