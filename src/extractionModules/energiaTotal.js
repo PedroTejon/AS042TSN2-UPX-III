@@ -3,6 +3,30 @@ const cheerio = require('cheerio');
 const db = require('../services/db');
 const utils = require('./utils');
 
+const mapCategorias = {
+  'Painel Solar': 1,
+  'Estrutura Solar': 2,
+  'Controlador de Carga': 3,
+  'Inversor': 4,
+  'Inversor Off-Grid': 4,
+  'Inversor Solar On-Grid': 4,
+  'Inversor Drive Bomba Solar': 4,
+  'Ferramentas': 5,
+  'Fontes Carregadoras': 6,
+  'Baterias': 6,
+  'Kit Energia Solar': 7,
+  'Kit Energia Solar On-grid': 7,
+  'Kit Energia Solar Off-grid': 7,
+  'Cabos e Conectores': 8,
+  'Disjuntor': 9,
+  'Stringbox e Proteções': 10,
+  'Eletrificador Solar': 14,
+  'Variedades': 14,
+  'Bombeamento Solar Profissional': 15,
+  'Bomba Solar': 15,
+  'Kit Bomba Solar': 15,
+}
+
 async function scrape() {
   const categorias = [
     'painel-solar',
@@ -52,28 +76,35 @@ async function scrape() {
         const url = anuncio.find('.info-product').attr('href').trim();
         if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [], dbConn)).length == 0) {
           const nome = anuncio.find('.product-name').text().trim();
-          const precoTexto = anuncio.find('.price-off').text().trim();
+          const precoTexto = anuncio.find('.precoAvista').text()
+            .replace(' ', '')
+            .replace('R$', '')
+            .replace('.', '')
+            .replace(',', '.')
+            .trim();
           let precoFinal;
           if (precoTexto != 'ESGOTADO!') {
-            precoFinal = parseFloat(precoTexto.replace('R$ ', '').replace(',', '.'));
+            precoFinal = parseFloat(precoTexto);
           } else {
             continue;
           }
           const avaliacao = anuncio.find('.icon.active').length;
           const foto = anuncio.find('img').attr('data-src');
-          const descricao = await axios.get(url, {
+          const [descricao, categoria, qntdAvaliacoes] = await axios.get(url, {
             responseEncoding: 'latin1',
             headers: headers,
           }).then((response) => {
             const pag = cheerio.load(response.data);
             pag('*').removeAttr('style');
             pag('script,style').remove();
+            const categoria = mapCategorias[pag('.breadcrumb-item').slice(-2, -1).find('a').attr('title')];
             const descricao = pag('.board_htm').html().trim();
-            return descricao;
+            const qntdAvaliacoes = parseInt(pag('.fixed-info .list-star .total').text().split(' ')[0]);
+            return [descricao, categoria, qntdAvaliacoes];
           });
 
           // eslint-disable-next-line max-len
-          await db.query('CALL insert_anun(?, ?, ?, ?, ?, ?, 1)', [nome, avaliacao, precoFinal, descricao, url, foto], dbConn);
+          await db.query('CALL insert_anun(?, ?, ?, ?, ?, ?, 1, ?, ?)', [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
 
           await utils.sleep(1000);
         }
@@ -87,6 +118,8 @@ async function scrape() {
     }
   }
 }
+
+scrape()
 
 module.exports = {
   scrape,
