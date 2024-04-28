@@ -103,21 +103,19 @@ async function scrape() {
           const [avaliacao, qntdAvaliacoes] = avaliacoes[anuncio.find('div[data-trustvox-product-code]')
             .attr('data-trustvox-product-code')];
           const foto = anuncio.find('.spot-image').attr('data-src');
-          const [categoriasOriginais, descricao] = await axios.get(url, {
+          const [categorias, descricao] = await axios.get(url, {
             responseEncoding: 'utf8',
             headers: headers,
           }).then((response) => {
             const page = utils.cleanPage(cheerio.load(response.data));
-            let categorias = [];
-            for (const el of page('.breadcrumbs a'))
-              categorias.push(page(el).text());
+            const categorias = [...page('.breadcrumbs a')].map((el) => page(el).text());
             const descricaoElement = page('.description__item.menu_groups')
             const descricao = descricaoElement.length > 0 ? descricaoElement.first().html().trim() : null;
             return [categorias, descricao];
           });
 
           const categoria = mapCategorias[
-            categoriasOriginais.filter((cat) => Object.keys(mapCategorias).includes(cat)).slice(-1)];
+            categorias.filter((cat) => Object.keys(mapCategorias).includes(cat)).slice(-1)];
 
           await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 5, ?, ?)`,
             [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
