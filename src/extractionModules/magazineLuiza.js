@@ -3,12 +3,28 @@ const cheerio = require('cheerio');
 const db = require('../services/db');
 const utils = require('./utils');
 
-async function scrape() {
-  const queryUrls = [
-    // eslint-disable-next-line max-len
-    'https://www.magazineluiza.com.br/busca/fotovoltaico/?sfilters=0&filters=entity---refletor--cabo-eletrico--placa-solar--inversor-solar--conector--gerador--luminaria-industrial-e-publica--controlador-de-carga--estrutura-para-painel-solar--kit-ferramentas--medidor-de-energia--dispositivo-de-protecao--chave-eletrica--alicate--conector-eletrico--luminaria--contator-eletrico--cabo-extensor--fusivel--disjuntor-nema--disjuntor-dr--disjuntor-din',
-  ];
+const mapCategorias = {
+  'Placa Solar': 1,
+  'Painel Solar': 1,
+  'Gerador de Energia': 1,
+  'Contator': 2,
+  'Chave Elétrica': 2,
+  'Material Hidráulico': 2,
+  'Movimentação de Carga': 3,
+  'Inversor Solar': 4,
+  'Ferramentas': 5,
+  'Medidor de Energia': 5,
+  'Cabos e Adaptadores': 8,
+  'Fio e Cabo': 8,
+  'Conector': 8,
+  'Disjuntor e Fusível': 9,
+  'Iluminação': 11,
+  'Aquecedor de Água': 12,
+  'Peças para Celular': 14,
+  'Peças e Acessórios': 14
+}
 
+async function scrape() {
   headers = {
     // eslint-disable-next-line max-len
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -30,48 +46,51 @@ async function scrape() {
   };
 
   const dbConn = await db.getConnection();
-  for (const queryUrl of queryUrls) {
-    let pagina = 1;
-    while (true) {
-      const site = await axios.get(`${queryUrl}&page=${pagina}`, {
-        headers: headers,
-      }).then((response) => {
-        return cheerio.load(response.data);
-      });
+  let pagina = 1;
+  while (true) {
+    // eslint-disable-next-line max-len
+    const site = await axios.get(`https://www.magazineluiza.com.br/busca/fotovoltaico/?sfilters=0&filters=entity---refletor--cabo-eletrico--placa-solar--inversor-solar--conector--gerador--luminaria-industrial-e-publica--controlador-de-carga--estrutura-para-painel-solar--kit-ferramentas--medidor-de-energia--dispositivo-de-protecao--chave-eletrica--alicate--conector-eletrico--luminaria--contator-eletrico--cabo-extensor--fusivel--disjuntor-nema--disjuntor-dr--disjuntor-din&page=${pagina}`, {
+      headers: headers,
+    }).then((response) => {
+      return cheerio.load(response.data);
+    });
 
-      if (site('div[data-testid=product-list]').length == 0) {
-        break;
-      }
-
-      const anuncios = JSON.parse(site('div[data-testid=product-list] > script[data-testid=jsonld-script]').text());
-      for (const anuncio of anuncios['@graph']) {
-        const url = anuncio['offers']['url'];
-        if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [], dbConn)).length == 0) {
-          const nome = anuncio['name'];
-          const preco = parseFloat(anuncio['offers']['price']);
-          let avaliacao = 0;
-          if (anuncio['aggregateRating']) {
-            avaliacao = parseFloat(anuncio['aggregateRating']['ratingValue']);
-          }
-          const foto = anuncio['image'];
-          const descricao = await axios.get(url, {
-            responseEncoding: 'utf8',
-            headers: headers,
-          }).then((response) => {
-            const page = utils.cleanPage(cheerio.load(response.data));
-            const descricao = page('[data-testid=rich-content-container]').html().trim();
-            return descricao;
-          });
-
-          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 3)`,
-            [nome, avaliacao, preco, descricao, url, foto], dbConn);
-
-          await utils.sleep(1000);
-        }
-      }
-
-      pagina++;
+    if (site('div[data-testid=product-list]').length == 0) {
+      break;
     }
+
+    const anuncios = JSON.parse(site('div[data-testid=product-list] > script[data-testid=jsonld-script]').text());
+    for (const anuncio of anuncios['@graph']) {
+      const url = anuncio['offers']['url'];
+      if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [], dbConn)).length == 0) {
+        const nome = anuncio['name'];
+        const preco = parseFloat(anuncio['offers']['price']);
+        const avaliacao = anuncio['aggregateRating']
+          ? parseFloat(anuncio['aggregateRating']['ratingValue']) : null;
+        const qntdAvaliacoes = anuncio['aggregateRating']
+          ? parseFloat(anuncio['aggregateRating']['reviewCount']) : null;
+        const foto = anuncio['image'];
+        const [categorias, descricao] = await axios.get(url, {
+          responseEncoding: 'utf8',
+          headers: headers,
+        }).then((response) => {
+          const page = utils.cleanPage(cheerio.load(response.data));
+          const categorias = [...page('a[data-testid=breadcrumb-item] span')].map((el) => page(el).text());
+          const descricao = page('[data-testid=rich-content-container]').html().trim();
+          return [categorias, descricao];
+        });
+
+        let categoria = mapCategorias[
+          categorias.filter((cat) => Object.keys(mapCategorias).includes(cat)).slice(-1)];
+
+        await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 3, ?, ?)`,
+          [nome, avaliacao, preco, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
+
+        await utils.sleep(1000);
+      }
+    }
+
+    pagina++;
   }
 }
 
