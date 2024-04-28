@@ -71,15 +71,13 @@ async function scrape() {
             responseEncoding: 'utf8',
             headers: headers,
           }).then((response) => {
-            const pag = cheerio.load(response.data);
-            pag('*').removeAttr('style');
-            pag('script,style').remove();
-            const descricao = pag('.product.attribute.description').html().trim();
+            const page = utils.cleanPage(cheerio.load(response.data));
+            const descricao = page('.product.attribute.description').html().trim();
             return descricao;
           });
 
-          // eslint-disable-next-line max-len
-          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 6)`, [nome, avaliacao, precoFinal, descricao, url, foto], dbConn);
+          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 6)`,
+            [nome, avaliacao, precoFinal, descricao, url, foto], dbConn);
 
           await utils.sleep(1000);
         }

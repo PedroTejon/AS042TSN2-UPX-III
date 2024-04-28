@@ -94,17 +94,15 @@ async function scrape() {
             responseEncoding: 'latin1',
             headers: headers,
           }).then((response) => {
-            const pag = cheerio.load(response.data);
-            pag('*').removeAttr('style');
-            pag('script,style').remove();
-            const categoria = mapCategorias[pag('.breadcrumb-item').slice(-2, -1).find('a').attr('title')];
-            const descricao = pag('.board_htm').html().trim();
-            const qntdAvaliacoes = parseInt(pag('.fixed-info .list-star .total').text().split(' ')[0]);
+            const page = utils.cleanPage(cheerio.load(response.data));
+            const categoria = mapCategorias[page('.breadcrumb-item').slice(-2, -1).find('a').attr('title')];
+            const descricao = page('.board_htm').html().trim();
+            const qntdAvaliacoes = parseInt(page('.fixed-info .list-star .total').text().split(' ')[0]);
             return [descricao, categoria, qntdAvaliacoes];
           });
 
-          // eslint-disable-next-line max-len
-          await db.query('CALL insert_anun(?, ?, ?, ?, ?, ?, 1, ?, ?)', [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
+          await db.query('CALL insert_anun(?, ?, ?, ?, ?, ?, 1, ?, ?)',
+            [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
 
           await utils.sleep(1000);
         }

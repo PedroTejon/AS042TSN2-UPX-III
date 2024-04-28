@@ -5,6 +5,7 @@ const utils = require('./utils');
 
 async function scrape() {
   const queryUrls = [
+    // eslint-disable-next-line max-len
     'https://www.magazineluiza.com.br/busca/fotovoltaico/?sfilters=0&filters=entity---refletor--cabo-eletrico--placa-solar--inversor-solar--conector--gerador--luminaria-industrial-e-publica--controlador-de-carga--estrutura-para-painel-solar--kit-ferramentas--medidor-de-energia--dispositivo-de-protecao--chave-eletrica--alicate--conector-eletrico--luminaria--contator-eletrico--cabo-extensor--fusivel--disjuntor-nema--disjuntor-dr--disjuntor-din',
   ];
 
@@ -57,15 +58,13 @@ async function scrape() {
             responseEncoding: 'utf8',
             headers: headers,
           }).then((response) => {
-            const pag = cheerio.load(response.data);
-            pag('*').removeAttr('style');
-            pag('script,style').remove();
-            const descricao = pag('[data-testid=rich-content-container]').html().trim();
+            const page = utils.cleanPage(cheerio.load(response.data));
+            const descricao = page('[data-testid=rich-content-container]').html().trim();
             return descricao;
           });
 
-          // eslint-disable-next-line max-len
-          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 3)`, [nome, avaliacao, preco, descricao, url, foto], dbConn);
+          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 3)`,
+            [nome, avaliacao, preco, descricao, url, foto], dbConn);
 
           await utils.sleep(1000);
         }
