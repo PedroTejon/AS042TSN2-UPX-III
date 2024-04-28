@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS anuncios (
   qntd_avaliacoes INT NULL,
   preco FLOAT NOT NULL,
   descricao LONGTEXT NULL,
-  URL VARCHAR(200) NOT NULL,
+  URL VARCHAR(500) NOT NULL,
   foto VARCHAR(300) NOT NULL,
   id_plataforma INT NOT NULL,
   oculto TINYINT NOT NULL,
@@ -85,7 +85,7 @@ INSERT INTO categorias VALUES
 (default, 'Bombeamento Solar');
 
 DELIMITER $$
-CREATE PROCEDURE insert_anun(titulo VARCHAR(150), avaliacao DECIMAL(4,2), preco FLOAT, descricao TEXT, URL VARCHAR(200), foto VARCHAR(300), plat INT, categoria_id INT, qntd_avaliacoes INT)
+CREATE PROCEDURE insert_anun(titulo VARCHAR(150), avaliacao DECIMAL(4,2), preco FLOAT, descricao LONGTEXT, URL VARCHAR(500), foto VARCHAR(300), plat INT, categoria_id INT, qntd_avaliacoes INT)
 BEGIN
   INSERT INTO anuncios VALUES (default, titulo, avaliacao, qntd_avaliacoes, preco, descricao, URL, foto, plat, 0, categoria_id);
 END$$
