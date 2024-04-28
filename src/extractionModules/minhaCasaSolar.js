@@ -3,8 +3,31 @@ const cheerio = require('cheerio');
 const db = require('../services/db');
 const utils = require('./utils');
 
+const mapCategorias = {
+  'Painel solar': 1,
+  'De 150w até 330w': 1,
+  'Painel acima de 330w': 1,
+  'Até 150w': 1,
+  'Acessórios para painel': 2,
+  'Estruturas de fixação': 2,
+  'Tomadas e interruptores': 2,
+  'Controladores de carga': 3,
+  'Inversor': 4,
+  'Baterias': 6,
+  'Kits solares': 7,
+  'Cabos': 8,
+  'Conectores e terminais': 8,
+  'Fusíveis e Porta-fusíveis': 10,
+  'Stringbox': 10,
+  'Iluminação': 11,
+  'Carro elétrico': 13,
+  'Queima de estoque': 14,
+  'Kits para bombeamento': 15,
+  'Bombas solares': 15
+}
+
 async function scrape() {
-  const categorias = [
+  const urlCategorias = [
     'painel-solar',
     'kits-solares',
     'baterias',
@@ -37,10 +60,10 @@ async function scrape() {
   };
 
   const dbConn = await db.getConnection();
-  for (const categoria of categorias) {
+  for (const urlCategoria of urlCategorias) {
     let pagina = 1;
     while (true) {
-      const site = await axios.get(`https://www.minhacasasolar.com.br/${categoria}?pagina=${pagina}&tamanho=24`, {
+      const site = await axios.get(`https://www.minhacasasolar.com.br/${urlCategoria}?pagina=${pagina}&tamanho=24`, {
         headers: headers,
         responseEncoding: 'utf8',
       }).then((response) => {
@@ -51,19 +74,20 @@ async function scrape() {
         return site(el).attr('data-trustvox-product-code');
       }).join('&codes[]=');
 
-      // eslint-disable-next-line max-len
-      const avaliacoes = await axios.get(`https://trustvox.com.br/widget/shelf/v2/products_rates?${urlAvaliacoes}&store_id=81798&callback=_tsRatesReady`, {
-        responseEncoding: 'utf8',
-        headers: headers,
-      }).then((response) => {
-        let json = response.data.replace('/**/_tsRatesReady(', '');
-        json = JSON.parse(json.substring(0, json.length - 1))['products_rates'];
-        const avaliacoes = {};
-        for (const avaliacaoAtual of json) {
-          avaliacoes[avaliacaoAtual['product_code']] = avaliacaoAtual['average'];
-        }
-        return avaliacoes;
-      });
+      const avaliacoes = await axios.get(
+        `https://trustvox.com.br/widget/shelf/v2/products_rates?${urlAvaliacoes}&store_id=81798&callback=_tsRatesReady`,
+        {
+          responseEncoding: 'utf8',
+          headers: headers,
+        }).then((response) => {
+          let json = response.data.replace('/**/_tsRatesReady(', '');
+          json = JSON.parse(json.substring(0, json.length - 1))['products_rates'];
+          const avaliacoes = {};
+          for (const avaliacaoAtual of json) {
+            avaliacoes[avaliacaoAtual['product_code']] = [avaliacaoAtual['average'], avaliacaoAtual['count']];
+          }
+          return avaliacoes;
+        });
 
       for (const anuncio of [...site('.spot')].map((anuncio) => site(anuncio))) {
         const url = anuncio.find('a.spot__content').attr('href').trim();
@@ -76,22 +100,27 @@ async function scrape() {
           } else {
             continue;
           }
-          // eslint-disable-next-line max-len
-          const avaliacao = avaliacoes[anuncio.find('div[data-trustvox-product-code]').attr('data-trustvox-product-code')];
+          const [avaliacao, qntdAvaliacoes] = avaliacoes[anuncio.find('div[data-trustvox-product-code]')
+            .attr('data-trustvox-product-code')];
           const foto = anuncio.find('.spot-image').attr('data-src');
-          const descricao = await axios.get(url, {
+          const [categoriasOriginais, descricao] = await axios.get(url, {
             responseEncoding: 'utf8',
             headers: headers,
           }).then((response) => {
-            const pag = cheerio.load(response.data);
-            pag('*').removeAttr('style');
-            pag('script,style').remove();
-            const descricao = pag('.description__item.menu_groups').html().trim();
-            return descricao;
+            const page = utils.cleanPage(cheerio.load(response.data));
+            let categorias = [];
+            for (const el of page('.breadcrumbs a'))
+              categorias.push(page(el).text());
+            const descricaoElement = page('.description__item.menu_groups')
+            const descricao = descricaoElement.length > 0 ? descricaoElement.first().html().trim() : null;
+            return [categorias, descricao];
           });
 
-          // eslint-disable-next-line max-len
-          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 5)`, [nome, avaliacao, precoFinal, descricao, url, foto], dbConn);
+          const categoria = mapCategorias[
+            categoriasOriginais.filter((cat) => Object.keys(mapCategorias).includes(cat)).slice(-1)];
+
+          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 5, ?, ?)`,
+            [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
 
           await utils.sleep(1000);
         }
