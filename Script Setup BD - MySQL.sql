@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS anuncios (
   avaliacao DECIMAL(4,2) NULL,
   qntd_avaliacoes INT NULL,
   preco FLOAT NOT NULL,
-  descricao MEDIUMTEXT NULL,
+  descricao LONGTEXT NULL,
   URL VARCHAR(200) NOT NULL,
   foto VARCHAR(300) NOT NULL,
   id_plataforma INT NOT NULL,
