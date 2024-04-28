@@ -13,7 +13,9 @@ async function getConnection() {
 }
 
 async function query(sql, params, connection) {
-  const [results] = await connection.query(sql, params);
+  const [results] = await connection.query(sql, params).catch((e) => {
+    throw e;
+  });
 
   return results;
 }
