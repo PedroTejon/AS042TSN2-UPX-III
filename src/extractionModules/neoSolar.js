@@ -3,8 +3,22 @@ const cheerio = require('cheerio');
 const db = require('../services/db');
 const utils = require('./utils');
 
+const mapCategorias = {
+  'painel-solar': 1,
+  'estrutura-cabo-outros/estrutura-montagem-solar': 2,
+  'controlador-de-carga-solar': 3,
+  'inversor-solar': 4,
+  'bateria-solar': 6,
+  'kit-energia-solar-off-grid': 7,
+  'kit-energia-solar-on-grid': 7,
+  'estrutura-cabo-outros/cabo-solar-conector-mc4': 8,
+  'estrutura-cabo-outros/stringbox-protecoes-solar': 10,
+  'carro-eletrico': 13,
+  'bomba-solar': 15
+}
+
 async function scrape() {
-  const categorias = [
+  const urlCategorias = [
     'painel-solar',
     'kit-energia-solar-off-grid',
     'kit-energia-solar-on-grid',
@@ -13,7 +27,9 @@ async function scrape() {
     'inversor-solar',
     'bateria-solar',
     'carro-eletrico',
-    'estrutura-cabo-outros',
+    'estrutura-cabo-outros/cabo-solar-conector-mc4',
+    'estrutura-cabo-outros/estrutura-montagem-solar',
+    'estrutura-cabo-outros/stringbox-protecoes-solar'
   ];
 
   headers = {
@@ -37,10 +53,10 @@ async function scrape() {
   };
 
   const dbConn = await db.getConnection();
-  for (const categoria of categorias) {
+  for (const urlCategoria of urlCategorias) {
     let pagina = 1;
     while (true) {
-      const site = await axios.get(`https://www.neosolar.com.br/loja/${categoria}.html?p=${pagina}`, {
+      const site = await axios.get(`https://www.neosolar.com.br/loja/${urlCategoria}.html?p=${pagina}`, {
         headers: headers,
       }).then((response) => {
         return cheerio.load(response.data);
@@ -54,30 +70,34 @@ async function scrape() {
         const url = anuncio.find('a.product.photo.product-item-photo').attr('href').trim();
         if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [], dbConn)).length == 0) {
           const nome = anuncio.find('.product.name.product-item-name').text().trim();
+          
           const precoTexto = anuncio.find('span[data-price-type=finalPrice] .price');
-          let precoFinal;
-          if (precoTexto.length != 0) {
-            precoFinal = parseFloat(precoTexto.first().text().trim().replace(/[\D$\s]*/, '').replace(',', '.'));
-          } else {
+          if (precoTexto.length == 0) {
             continue;
           }
-          const avaliacaoTexto = anuncio.find('.rating-result');
-          let avaliacao = 0;
-          if (avaliacaoTexto.length != 0) {
-            avaliacao = 5 * (parseInt(avaliacaoTexto.attr('title').replace('%', '')) / 100);
-          }
+          const precoFinal = parseFloat(precoTexto.first().text().trim().replace(/[\D$\s]*/, '').replace(',', '.'));
+
+          const avaliacaoElement = anuncio.find('.rating-result');
+          const avaliacao = avaliacaoElement.length != 0
+            ? 5 * parseInt(avaliacaoElement.attr('title').replace('%', '')) / 100
+            : 0;
+          const qntdAvaliacoes = avaliacaoElement.length != 0
+            ? parseInt(site('span[itemprop=reviewCount]').text())
+            : 0;
+
           const foto = anuncio.find('img.product-image-photo').attr('src');
-          const descricao = await axios.get(url, {
+          const [categoria, descricao] = await axios.get(url, {
             responseEncoding: 'utf8',
             headers: headers,
           }).then((response) => {
             const page = utils.cleanPage(cheerio.load(response.data));
             const descricao = page('.product.attribute.description').html().trim();
-            return descricao;
+            const categoria = mapCategorias[urlCategoria];
+            return [categoria, descricao];
           });
 
-          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 6)`,
-            [nome, avaliacao, precoFinal, descricao, url, foto], dbConn);
+          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 6, ?, ?)`,
+            [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
 
           await utils.sleep(1000);
         }
