@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/fb813e9d63.js" crossorigin="anonymous"></script>
+    <title>Sobre - Renovável Efetiva</title>
+    <link rel="stylesheet" href="../stylesheets/style.css">
+    <link rel="stylesheet" href="../stylesheets/about.css">
+    <script src="../DOM/script.js"></script>
+</head>
+<body>
+    <header class="header-default">
+        <div class="logo-div">
+            <img src="../assets/common/logo.png" class="unselectable" draggable="false"  alt="Logotipo do Renovável Efetiva">
+        </div>
+        <nav class="nav-default">
+            <ul>
+                <li ><a class="notactive" id="mainpage" href="../templates/index.html">Inicial</a></li>
+                <li><a class="notactive" id="catalogue" href="../templates/catalogue.html">Catálogo</a></li>
+                <li><a class="notactive" id="faq" href="../templates/FAQ.html">FAQ</a></li>
+                <li><a class="active" id="about" href="../templates/about.html">Sobre</a></li>
+            </ul>
+        </nav>
+        <section id="conteudo"></section>
+        <div class="profile-info">
+            <div class="pfp-div">
+                <img src="../assets/common/pfp-icon.png" alt="Foto de perfil padrão" class="unselectable" draggable="false" >
+            </div>
+            <div class="userinfo-div">
+                <p id="username">Primeiro e ultimo</p>
+                <a id="see-profile" href="../templates/profile.html">Ver meu perfil</a>
+
+            </div>
+        </div>
+    </header>
+
+    <article>
+        <section id="about-sec">
+            <h2>Sobre o Renovável Efetiva</h2>
+            <p>O Renovável Efetiva se trata de um site sem fins lucrativos que serve como centralizador de informações e anúncios sobre fontes de energia renovável presentes na matriz energética brasileira, o projeto surgiu para entrega final na disciplina de Usina de Projetos Experimentais III na FACENS. 
+                Os anúncios exibidos apresentam os melhores preços possíveis e apresentam variedade de fontes renováveis, com isso, é possível estimular a compra e aumento da participação de energia renovável na matriz energética.
+                Os anúncios apresentados são retirados de outras plataformas através de webscraping, todas as plataformas de origem podem ser encontradas creditadas dentro de detalhes de um produto e nessa mesma página na seção <a href="#data-sec">Fontes de dados.</a>
+            </p>
+            <div id="img-about">
+                <img src="../assets/about-page/mainimage.png" alt="Pessoas reunidas acenando em um cenário contendo várias fontes de energia renovável em uso" class="unselectable" draggable="false"/>
+            </div>
+        </section>
+        <section id="data-sec">
+            <h2>Fontes de dados</h2>
+            <p>
+                Todos os anúncios apresentados no catálogo foram retirados das seguintes plataformas especializadas em vendas, é importante lembrar que o Renovável Efetiva não visa qualquer lucro ao apresentar tais anúncios, apenas servindo como um centralizador de informações. Além dessa página, é possível ver as plataformas sendo creditadas dentro de detalhes de anúncios em catálogo.
+            </p>
+            <aside id="slider-container">
+                <div class="slider">
+                    <img src="../assets/about-page/neosolar.png" alt="logo da plataforma NeoSolar" class="slider-item unselectable" draggable="false" />
+                    <img src="../assets/about-page/energiatotal.png" alt="logo da plataforma EnergiaTotal" class="slider-item unselectable" draggable="false" />
+                    <img src="../assets/about-page/magalu.png" alt="logo da plataforma Magazine Luiza" class="slider-item unselectable" draggable="false" />
+                    <img src="../assets/about-page/leroy-merlin.png" alt="logo da Leroy Merlin" class="slider-item unselectable" draggable="false" />
+                    <img src="../assets/about-page/mercadolivre.png" alt="logo da plataforma Mercado Livre" class="slider-item unselectable" draggable="false" />
+                </div>
+                <div class="slider">
+                    <img src="../assets/about-page/neosolar.png" alt="logo da plataforma NeoSolar" class="slider-item unselectable" draggable="false" />
+                    <img src="../assets/about-page/energiatotal.png" alt="logo da plataforma EnergiaTotal" class="slider-item unselectable" draggable="false" />
+                    <img src="../assets/about-page/magalu.png" alt="logo da plataforma Magazine Luiza" class="slider-item unselectable" draggable="false" />
+                    <img src="../assets/about-page/leroy-merlin.png" alt="logo da Leroy Merlin" class="slider-item unselectable" draggable="false" />
+                    <img src="../assets/about-page/mercadolivre.png" alt="logo da plataforma Mercado Livre" class="slider-item unselectable" draggable="false" />
+                </div>
+            </aside>
+        </section>
+        <section id="kaggle-sec">
+            <h2>Conjunto de dados utilizado para geração de gráficos</h2>
+            <p>Todas as visualizações de gráfico apresentadas na página inicial do site são provenientes da análise de dados aplicada a um conjunto de dados sobre energia renovável em nível global no período de 1965 até 2022, o conjunto compreende dados sobre energia hidrelétrica, biomassa, eólica, geotérmica e solar. Acesse a página abaixo para visualizar o conjunto de dados na íntegra.
+            </p>
+            <div id="kaggle">
+                 <a href="https://www.kaggle.com/datasets/belayethossainds/renewable-energy-world-wide-19652022">Kaggle - Renewable Energy World Wide : 1965~2022</a>
+            </div>
+        </section>
+        <section id="ref-sec">
+            <h2>Referências bibliográficas</h2>
+            <p>RANGEL, Mariana Salles; BORGES, Pedro Baptista; SANTOS, Ivan Felipe  Silva dos. 
+                Análise comparativa de custos e tarifas de energias  renováveis no Brasil. Revista Brasileira de Energias Renováveis, 
+                v. 5,  n. 3, p. 267-277, 2016. Disponível em: 
+                <a href="https://www.researchgate.net/profile/Ivan-Santos-2/publication/306335420_Analise_comparativa_de_custos_e_tarifas_de_energias_renovaveis_no_Brasil/links/57b8874d08ae14f440bb4aca/Analise-comparativa-de-custos-e-tarifas-de-energias-renovaveis-no-Brasil.pdf">https://www.researchgate.net/profile/Ivan-Santos-2/publication/306335420_Analise_comparativa_de_custos_e_tarifas_de_energias_renovaveis_no_Brasil/links/57b8874d08ae14f440bb4aca/Analise-comparativa-de-custos-e-tarifas-de-energias-renovaveis-no-Brasil.pdf</a>. Acesso em: 28 fev. 2024.</p>
+            <p>Energia hidrelétrica, a chave para um futuro mais verde. Iberdrola. Disponível em: <a href="https://www.iberdrola.com/quem-somos/nossa-atividade/energia-hidreletrica">https://www.iberdrola.com/quem-somos/nossa-atividade/energia-hidreletrica.</a> Acesso em: 13 abr. 2024.</p>
+            <p>Parque eólico. Enel Green Power. Disponível em: <a href="https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis/energia-eolica/parque-eolico">https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis/energia-eolica/parque-eolico.</a> Acesso em: 13 abr. 2024.</p>
+            <p>Todas as vantagens da energia hidroelétrica. Enel Green Power. Disponível em: <a href="https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis/energia-hidraulica/vantagens">https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis/energia-hidraulica/vantagens.</a> Acesso em: 13 abr. 2024.</p>
+            <p>Energia eólica. Enel Green Power. Disponível em: <a href="https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis/energia-eolica">https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis/energia-eolica</a>. Acesso em: 13 abr. 2024.</p>
+            <p>Energia eólica: o que é, para que serve e como é gerada!. CPFL Soluções. Disponível em: <a href="https://cpflsolucoes.com.br/veja-como-e-gerada-a-energia-eolica/">https://cpflsolucoes.com.br/veja-como-e-gerada-a-energia-eolica/</a>. Acesso em: 13 abr. 2024</p>
+            <p>Energias renováveis. Enel Green Power. Disponível em: <a href="https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis">https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis</a>. Acesso em 13 abr. 2024.</p>
+            <p>Conceituando biomassa. Instituto de Energia e Ambiente - Universidade de São Paulo. Disponível em: <a href="https://gbio.webhostusp.sti.usp.br/?q=pt-br/livro/conceituando-biomassa">https://gbio.webhostusp.sti.usp.br/?q=pt-br/livro/conceituando-biomassa</a>. Acesso em: 13 abr. 2024.</p>
+            <p>Fonte de energia solar universalmente acessível. Solar System Energia Solar. Disponível em: <a href="https://solarsystembh.com.br/fonte-de-energia-solar-universalmente-acessivel/#:~:text=A%20acessibilidade%20da%20energia%20fotovoltaica,acessar%20eletricidade%20em%20%C3%A1reas%20rurais">https://solarsystembh.com.br/fonte-de-energia-solar-universalmente-acessivel/#:~:text=A%20acessibilidade%20da%20energia%20fotovoltaica,acessar%20eletricidade%20em%20%C3%A1reas%20rurais</a>. Acesso em: 26 fev. 2024.</p>
+            <p>O que é biomassa. Portal da Indústria. Disponível em: <a href="https://www.portaldaindustria.com.br/industria-de-a-z/biomassa/">https://www.portaldaindustria.com.br/industria-de-a-z/biomassa/</a>. Acesso em: 13 abr. 2024.</p>
+            <p>Energia solar. Enel Green Power. Disponível em: <a href="https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis/energia-solar">https://www.enelgreenpower.com/pt/learning-hub/energias-renoveveis/energia-solar</a>. Acesso em: 13 abr. 2024.</p>
+            <p>Compensação de Energia Elétrica. Enel. Disponível em: <a href="https://www.enel.com.br/pt-saopaulo/Corporativo_e_Governo/geracao-distribuida/compensacao-de-energia-eletrica.html.html">https://www.enel.com.br/pt-saopaulo/Corporativo_e_Governo/geracao-distribuida/compensacao-de-energia-eletrica.html.html</a>. Acesso em: 13 abr. 2024.</p>
+        </section>
+    </article>
+    
+
+    <footer class="footer-default">
+        <div class="footerlogo-div">
+            <img src="../assets/common/logo-bitbyte.png" class="unselectable" draggable="false" alt="Logotipo Bit&Byte">
+        </div>
+        <div class="link-footer">
+            <p>Links do site</p>
+            <ul>
+                <li><a id="footer-main" href="../templates/index.html">Inicial</a></li>
+                <li><a id="footer-catalogue" href="../templates/catalogue.html">Catálogo</a></li>
+                <li><a id="footer-faq" href="../templates/FAQ.html">FAQ</a></li>
+                <li><a id="footer-about" href="../templates/about.html">Sobre</a></li>
+            </ul>
+        </div>
+        <div class="contact-footer">
+            <p>Entre em contato</p>
+            <ul>
+                <li><a id="contact-mail">renovavelefetiva@gmail.com</a></li>
+            </ul>
+        </div>
+        <div class="data-footer">
+            <p>Fonte de dados</p>
+            <ul>
+                <li><a id="footer-energia" href="https://www.energiatotal.com.br/">EnergiaTotal</a></li>
+                <li><a id="footer-leroy" href="https://www.leroymerlin.com.br/">Leroy Merlin</a></li>
+                <li><a id="footer-magalu" href="https://www.magazineluiza.com.br/">Magazine Luiza</a></li>
+                <li><a id="footer-mercadolivre" href="https://www.mercadolivre.com.br/">Mercado Livre</a></li>
+                <li><a id="footer-minhacasa" href="https://www.minhacasasolar.com.br/">Minha Casa Solar</a></li>
+                <li><a id="footer-neosolar" href="https://www.neosolar.com.br/">Neosolar</a></li>
+            </ul>
+        </div>
+        <div class="dataset-footer">
+            <p>Dataset</p>
+            <ul>
+                <li><a id="footer-kaggle" href="https://www.kaggle.com/datasets/belayethossainds/renewable-energy-world-wide-19652022">Kaggle</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>
