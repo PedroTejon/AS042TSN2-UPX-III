@@ -1,16 +1,130 @@
 details{
     background-color: #B5D8EB;
     cursor: default;
+    border-radius: 8px;
+    padding: 1.25%;
+    margin-bottom: 1.85%;
 }
 
+details p, details ul, details ol, details h4{
+    color: #0C3356;
+    text-align: justify;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 1%;
+}
 
+.ref-align{
+    color: #0C3356;
+    text-align: justify;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2%;
+}
+
+.ref-align cite{
+    font-weight: bold;
+}
+
+.ref-align cite a{
+    font-weight: 500;
+}
+
+details ul{
+    list-style: none;
+}
+
+details a{
+    color: #0c4a80;
+    
+}
+
+details a:hover{
+    transition: all ease 0.5s;
+    color:#6161fd;
+}
 
 summary{
     color: #0C3356;
     cursor: pointer;
+    font-weight: bold;
 }
 
-details:hover{
+summary:hover{
     transition: all ease 0.5s;
-    background-color: #8fb7cc;
+    color: #075aa3;
+}
+
+#faq-answer p{
+    margin-bottom: 2%;
+}
+
+#faq-answer {
+    margin-bottom: 3%;
+}
+
+label{
+    color: var(--alltitle);
+    margin-bottom: 0.5%;
+    margin-top: 1.25%;
+}
+
+form{
+    
+    display: flex;
+    flex-direction: column;
+}
+
+input, textarea{
+    color: var(--inputtextcolor);
+    background-color: var(--inputfield);
+    border-radius: 8px;
+    caret-color: #075aa3;
+    margin-bottom: 1%;
+}
+
+
+#name, #email, #_subject{
+    padding: 1%;
+}
+
+input::placeholder{
+    color: var(--placeholders);
+    font-size: 111%;
+}
+
+#message{
+    padding: 1%;
+    padding-bottom: 8%;
+    word-break: break-all;
+}
+
+button{
+    background-color: var(--buttons);
+    border-radius: 64px;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding: 1%;
+    font-size: 95%;
+    cursor: pointer;
+}
+
+
+button{
+    background-color: var(--buttons);
+    border-radius: 64px;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding: 1%;
+    font-size: 95%;
+    cursor: pointer;
+    margin-top: 2%;
+}
+
+button:hover{
+    transition: all ease 0.5s;
+    background-color: #1271ca;
 }
