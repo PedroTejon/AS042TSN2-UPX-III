@@ -5,8 +5,6 @@ const asyncHandler = require('express-async-handler');
 
 exports.register = asyncHandler(async (req, res, next) => {
   try {
-    const dbConn = await db.getConnection();
-
     const passHash = await bcrypt.hash(req.body.password, 10);
     await db.query('INSERT INTO usuarios VALUES (?, ?, ?, ?, ?, ?, 0)', [
       null,
@@ -15,7 +13,7 @@ exports.register = asyncHandler(async (req, res, next) => {
       req.body.nome,
       req.body.dataNasc,
       req.body.genero,
-    ], dbConn);
+    ]);
 
     res.send({ message: 'Usuário criado com sucesso!' });
   } catch (err) {
@@ -30,9 +28,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 exports.updateDetails = asyncHandler(async (req, res, next) => {
   try {
-    const dbConn = await db.getConnection();
-
-    const user = (await db.query(`SELECT * FROM usuarios WHERE id_usuario = ${req.cookies.userId}`, [], dbConn))[0];
+    const user = (await db.query(`SELECT * FROM usuarios WHERE id_usuario = ${req.cookies.userId}`, []))[0];
 
     if (user) {
       let changes = []
@@ -43,7 +39,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
       }
 
       if (changes.length != 0) {
-        await db.query(`UPDATE usuarios SET ${changes.join(', ')} WHERE id_usuario = ${req.cookies.userId}`, [], dbConn);
+        await db.query(`UPDATE usuarios SET ${changes.join(', ')} WHERE id_usuario = ${req.cookies.userId}`, []);
         res.send({ message: 'Usuário alterado com sucesso!' });
       } else {
         res.status(409).send({ message: 'Nenhuma alteração aplicada pois Usuário já possui tais características e/ou nenhuma propriedade foi válida.' })
@@ -58,9 +54,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 
 exports.login = asyncHandler(async (req, res, next) => {
   try {
-    const dbConn = await db.getConnection();
-
-    const user = await db.query('SELECT * FROM usuarios WHERE email = ?', [req.body.email], dbConn);
+    const user = await db.query('SELECT * FROM usuarios WHERE email = ?', [req.body.email]);
     if (!user.length) {
       res.status(404).send({ message: `Usuário com e-mail ${req.body.email} não encontrado.` });
       return;
@@ -80,7 +74,7 @@ exports.login = asyncHandler(async (req, res, next) => {
       idUsuario,
       dataAtual.toISOString().replace(/T/, ' ').replace(/\..+/, ''),
       dataExpiracao.toISOString().replace(/T/, ' ').replace(/\..+/, ''),
-    ], dbConn);
+    ]);
 
     res.cookie('sessHash', sessHash, {
       maxAge: dataExpiracao.getTime(),
@@ -96,7 +90,6 @@ exports.login = asyncHandler(async (req, res, next) => {
 });
 
 exports.authorize = asyncHandler(async (req, res, next) => {
-  const dbConn = await db.getConnection();
   const sessHash = req.cookies.sessHash;
 
   if (sessHash === undefined) {
@@ -104,7 +97,7 @@ exports.authorize = asyncHandler(async (req, res, next) => {
     return;
   }
 
-  const session = (await db.query('SELECT sess_hash, id_usuario, expires FROM sessoes_usuario WHERE sess_hash = ?', [sessHash], dbConn))[0];
+  const session = (await db.query('SELECT sess_hash, id_usuario, expires FROM sessoes_usuario WHERE sess_hash = ?', [sessHash]))[0];
   if (!sessHash.length || sessHash != session.sess_hash || req.cookies.userId != session.id_usuario) {
     res.status(403).send({ message: 'Autenticação inválida.' });
     return;
@@ -114,16 +107,12 @@ exports.authorize = asyncHandler(async (req, res, next) => {
 });
 
 exports.getDetails = asyncHandler(async (req, res, next) => {
-  const dbConn = await db.getConnection();
-
-  res.send(await db.query('SELECT email, nome, data_nasc, genero FROM usuarios WHERE id_usuario = ?', [req.cookies.userId], dbConn));
+  res.send(await db.query('SELECT email, nome, data_nasc, genero FROM usuarios WHERE id_usuario = ?', [req.cookies.userId]));
 });
 
 exports.saveProduct = asyncHandler(async (req, res, next) => {
-  const dbConn = await db.getConnection();
-
   try {
-    const out = await db.query('CALL save_anun(?, ?)', [req.cookies.userId, req.params.anunId], dbConn);
+    const out = await db.query('CALL save_anun(?, ?)', [req.cookies.userId, req.params.anunId]);
 
     if (out.affectedRows != 0) {
       res.send({ message: 'Anúncio salvo com sucesso.' });
@@ -141,10 +130,8 @@ exports.saveProduct = asyncHandler(async (req, res, next) => {
 });
 
 exports.unsaveProduct = asyncHandler(async (req, res, next) => {
-  const dbConn = await db.getConnection();
-
   try {
-    const out = await db.query('CALL unsave_anun(?, ?)', [req.cookies.userId, req.params.anunId], dbConn);
+    const out = await db.query('CALL unsave_anun(?, ?)', [req.cookies.userId, req.params.anunId]);
 
     if (out.affectedRows != 0) {
       res.send({ message: 'Anúncio retirado da lista de anúncios salvos com sucesso.' });
@@ -157,10 +144,8 @@ exports.unsaveProduct = asyncHandler(async (req, res, next) => {
 });
 
 exports.hideProduct = asyncHandler(async (req, res, next) => {
-  const dbConn = await db.getConnection();
-
   try {
-    const out = await db.query('CALL hide_anun(?, ?)', [req.cookies.userId, req.params.anunId], dbConn);
+    const out = await db.query('CALL hide_anun(?, ?)', [req.cookies.userId, req.params.anunId]);
 
     if (out[0][0]['code']) {
       res.send({ message: 'Anúncio oculto com sucesso.' });
@@ -178,10 +163,8 @@ exports.hideProduct = asyncHandler(async (req, res, next) => {
 });
 
 exports.unhideProduct = asyncHandler(async (req, res, next) => {
-  const dbConn = await db.getConnection();
-
   try {
-    const out = await db.query('CALL unhide_anun(?, ?)', [req.cookies.userId, req.params.anunId], dbConn);
+    const out = await db.query('CALL unhide_anun(?, ?)', [req.cookies.userId, req.params.anunId]);
 
     if (out[0][0]['code']) {
       res.send({ message: 'Anúncio retirado da lista de anúncios ocultos com sucesso.' });

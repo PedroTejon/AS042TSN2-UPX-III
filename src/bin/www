@@ -1,4 +1,5 @@
-var nodeSchedule = require('node-schedule')
+var nodeCron = require('node-cron')
+var db = require('../services/db')
 var app = require('../app');
 var debug = require('debug')('src:server');
 var http = require('http');
@@ -8,22 +9,22 @@ app.set('port', port);
 var server = http.createServer(app);
 
 var energiaTotalScraper = require('../extractionModules/energiaTotal')
-nodeSchedule.scheduleJob('* * * */1 * *', () => { energiaTotalScraper.scrape() })
+nodeCron.schedule('00 00 00 * * 0-6', () => { energiaTotalScraper.scrape() })
 
 var leroyMerlinScraper = require('../extractionModules/leroyMerlin')
-nodeSchedule.scheduleJob('* * * */1 * *', () => { leroyMerlinScraper.scrape() })
+nodeCron.schedule('00 00 00 * * 0-6', () => { leroyMerlinScraper.scrape() })
 
 var magazineLuizaScraper = require('../extractionModules/magazineLuiza')
-nodeSchedule.scheduleJob('* * * */1 * *', () => { magazineLuizaScraper.scrape() })
+nodeCron.schedule('00 00 00 * * 0-6', () => { magazineLuizaScraper.scrape() })
 
 // var mercadoLivreScraper = require('../extractionModules/mercadoLivre')
 // nodeSchedule.scheduleJob('* * * */1 * *', () => { mercadoLivreScraper.scrape() })
 
 var minhaCasaScraper = require('../extractionModules/minhaCasaSolar')
-nodeSchedule.scheduleJob('* * * */1 * *', () => { minhaCasaScraper.scrape() })
+nodeCron.schedule('00 00 00 * * 0-6', () => { minhaCasaScraper.scrape() })
 
 var neoSolarScraper = require('../extractionModules/neoSolar')
-nodeSchedule.scheduleJob('* * * */1 * *', () => { neoSolarScraper.scrape() })
+nodeCron.schedule('00 00 00 * * 0-6', () => { neoSolarScraper.scrape() })
 
 server.listen(port);
 server.on('error', onError);

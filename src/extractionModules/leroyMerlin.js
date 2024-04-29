@@ -39,7 +39,6 @@ async function scrape() {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0',
   };
 
-  const dbConn = await db.getConnection();
   let page = 0;
   let anuncios;
   do {
@@ -68,7 +67,7 @@ async function scrape() {
 
     for (const anuncio of anuncios) {
       const url = anuncio['url'];
-      if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [], dbConn)).length == 0) {
+      if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [])).length == 0) {
         await utils.sleep(1000);
 
         const nome = anuncio['name'];
@@ -101,7 +100,7 @@ async function scrape() {
         });
 
         await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 2, ?, ?)`,
-          [nome, avaliacao, preco, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
+          [nome, avaliacao, preco, descricao, url, foto, categoria, qntdAvaliacoes]);
       }
     }
 

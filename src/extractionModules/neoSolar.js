@@ -52,7 +52,6 @@ async function scrape() {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0',
   };
 
-  const dbConn = await db.getConnection();
   for (const urlCategoria of urlCategorias) {
     let pagina = 1;
     while (true) {
@@ -68,9 +67,9 @@ async function scrape() {
 
       for (const anuncio of [...site('.item.product.product-item')].map((anuncio) => site(anuncio))) {
         const url = anuncio.find('a.product.photo.product-item-photo').attr('href').trim();
-        if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [], dbConn)).length == 0) {
+        if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [])).length == 0) {
           const nome = anuncio.find('.product.name.product-item-name').text().trim();
-          
+
           const precoTexto = anuncio.find('span[data-price-type=finalPrice] .price');
           if (precoTexto.length == 0) {
             continue;
@@ -97,7 +96,7 @@ async function scrape() {
           });
 
           await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 6, ?, ?)`,
-            [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes], dbConn);
+            [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes]);
 
           await utils.sleep(1000);
         }

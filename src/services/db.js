@@ -1,19 +1,15 @@
 const mysql = require('mysql2/promise');
+const pool = mysql.createPool({
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'upxiii',
+  connectTimeout: 60000,
+  connectionLimit: 3000
+});
 
-async function getConnection() {
-  const connection = await mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'upxiii',
-    connectTimeout: 60000,
-  });
-
-  return connection;
-}
-
-async function query(sql, params, connection) {
-  const [results] = await connection.query(sql, params).catch((e) => {
+async function query(sql, params) {
+  const [results] = await pool.query(sql, params).catch((e) => {
     throw e;
   });
 
@@ -22,5 +18,4 @@ async function query(sql, params, connection) {
 
 module.exports = {
   query,
-  getConnection,
 };
