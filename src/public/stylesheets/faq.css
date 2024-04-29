@@ -1,0 +1,16 @@
+details{
+    background-color: #B5D8EB;
+    cursor: default;
+}
+
+
+
+summary{
+    color: #0C3356;
+    cursor: pointer;
+}
+
+details:hover{
+    transition: all ease 0.5s;
+    background-color: #8fb7cc;
+}

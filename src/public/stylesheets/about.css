@@ -42,6 +42,7 @@
     color: var(--alltitle);
 }
 
+
 #ref-sec a:hover, #kaggle a:hover, #about-sec a:hover{
     transition: all ease 0.5s;
     color:#6161fd;
