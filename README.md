@@ -44,6 +44,8 @@ Além de utilizar Cheerio e Axios.
 Ana Giulia Moreira de Lima (234984) - 234984@facens.br
 <br>
 Pedro Henrique da Silva Tejon (235001) - 235001@facens.br
+<br>
+E-mail de projeto: renovavelefetiva@gmail.com
 
 #### Versionamento 0.1
 
