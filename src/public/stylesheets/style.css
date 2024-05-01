@@ -88,6 +88,8 @@ body{
     width: 100%;
     justify-content: space-between;
     margin-top: 0.8%;
+    box-shadow: 0 15px 20px 0 #8d949910;
+    padding-bottom: 1%;
 }
 
 .nav-default ul{

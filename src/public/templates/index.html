@@ -7,6 +7,8 @@
     <title>Inicial - Renovável Efetiva</title>
     <link rel="stylesheet" href="../stylesheets/style.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
+    <link rel="stylesheet" href="../stylesheets/main.css">
+    <script src="https://kit.fontawesome.com/fb813e9d63.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header class="header-default">
@@ -33,7 +35,82 @@
         </div>
     </header>
 
+    <section id="main-article">
+        <article>
+            <section id="welcome">
+                <h2>Boas vindas!</h2>
+                <p>
+                    A matriz energética brasileira conta com uma boa parcela de fontes renováveis como a biomassa, hidrelétrica, eólica e solar, navegue por essa página e conheça mais sobre cada uma dessas fontes, além de também visualizar o uso de energia renovável em escala global.
+                </p>
+            </section>
+        </article>
+        <section id="renewable-info">
+            <div class="slideshow-container">
+                
+                <div class="slides fade">
+                    <img id="img-solar" src="../assets/index-page/PCH.jpg" alt="Pequena Central Hidrelétrica em funcionamento" class="unselectable" draggable="false">
+                </div>
 
+                <div class="slides fade">
+                    <img id="img-biomassa" src="../assets/index-page/biomassa.png" alt="Grande quantidade de bagaço de cana próximo a indústria" class="unselectable" draggable="false">
+                </div>
+
+                <div class="slides fade">
+                    <img id="img-solar" src="../assets/index-page/solar.jpg" alt="Painéis solares reunidos em um campo" class="unselectable" draggable="false">
+                </div>
+
+                <div class="slides fade">
+                    <img id="img-eolica" src="../assets/index-page/eolica.jpg" alt="Geradores de energia eólica em um cmapo no final de tarde" class="unselectable" draggable="false">
+                </div>
+                
+                <a class="prev" onclick="allSlides(-1)" onchange="curInfo(-1)">❮</a>
+                <a class="next" onclick="allSlides(1)"  onchange="curInfo(1)">❯</a>
+            </div>
+
+            <div class="dot-container unselectable" >
+                <span class="dot" onclick="curSlide(1), curInfo(1)"></span> 
+                <span class="dot" onclick="curSlide(2)"></span> 
+                <span class="dot" onclick="curSlide(3)"></span> 
+                <span class="dot" onclick="curSlide(4)"></span> 
+            </div>
+        </section>
+
+        <section id="showingInfo">
+            <article>
+                <aside class="side-to-side">
+                    <div id="text-info">
+                        <h2><i class="fa-solid fa-droplet"></i>PCH (Pequenas Centrais Hidrelétricas)</h2>
+                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tincidunt sagittis ante, quis sodales nisi condimentum eget. Etiam ut tincidunt dui. Vivamus tempor, nisl eu fermentum blandit, magna velit vulputate purus, et sagittis sapien ligula at libero. Quisque iaculis ac felis non ullamcorper. Integer sed ullamcorper ex. Integer tincidunt est metus, a volutpat est imperdiet at. Nunc porta hendrerit orci, eget commodo elit pretium sit amet. Curabitur commodo, erat eget pellentesque fringilla, lacus purus feugiat nunc, a rhoncus orci sem ac tellus. Proin mi risus, tempus et leo et, interdum semper massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            
+                            Phasellus ornare sed risus eu varius. Nullam porttitor laoreet odio, vulputate eleifend nisi luctus sed. Duis nec purus ante. Morbi a tellus quis nisi ultrices feugiat a id tellus. Donec et faucibus nisl, eu molestie nisi. Phasellus ut est consequat, placerat est at, lobortis tortor. Vestibulum nec consectetur leo. Nam arcu nibh, consequat ut mauris eu, scelerisque porta ex. Aenean eleifend molestie sapien, vel ultrices nisl. 
+                            
+                        </p>
+            
+                        <h2><i class="fa-solid fa-circle-check" id="benefits"></i>Vantagens</h2>
+                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tincidunt sagittis ante, quis sodales nisi condimentum eget. Etiam ut tincidunt dui. Vivamus tempor, nisl eu fermentum blandit, magna velit vulputate purus, et sagittis sapien ligula at libero. Quisque iaculis ac felis non ullamcorper. Integer sed ullamcorper ex. Integer tincidunt est metus, a volutpat est imperdiet at. Nunc porta hendrerit orci, eget commodo elit pretium sit amet. Curabitur commodo, erat eget pellentesque fringilla, lacus purus feugiat nunc, a rhoncus orci sem ac tellus. Proin mi risus, tempus et leo et, interdum semper massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            
+                            Phasellus ornare sed risus eu varius. Nullam porttitor laoreet odio, vulputate eleifend nisi luctus sed. Duis nec purus ante. Morbi a tellus quis nisi ultrices feugiat a id tellus. Donec et faucibus nisl, eu molestie nisi. Phasellus ut est consequat, placerat est at, lobortis tortor. Vestibulum nec consectetur leo. Nam arcu nibh, consequat ut mauris eu, scelerisque porta ex. Aenean eleifend molestie sapien, vel ultrices nisl. 
+                            
+                        </p>
+                    </div>
+                    <div id="icon-info">
+                        <div>
+                            <img class="unselectable" draggable="false" src="../assets/index-page/icons-svg/hidreletrica-icon.svg" alt="Ilustração de uma usina hidrelétrica">
+                        </div>
+                    </div>
+                </aside>
+            
+            
+            </article>
+            <article>
+                <div id="video-info">
+                    <h2>Veja esse vídeo informativo sobre PCH's</h2>
+                    <iframe src="https://www.youtube.com/embed/u2oBNLHxSqA?si=gpmQYqw2sUkBs68s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </article>
+        </section>
+
+    </section>
 
 
     <footer class="footer-default">
@@ -72,6 +149,9 @@
                 <li><a id="footer-kaggle" draggable="false" href="https://www.kaggle.com/datasets/belayethossainds/renewable-energy-world-wide-19652022">Kaggle</a></li>
             </ul>
         </div>
+        <script src="../DOM/index.js">
+            
+        </script>
     </footer>
 </body>
 </html>
