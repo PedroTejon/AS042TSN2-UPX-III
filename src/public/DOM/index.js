@@ -34,30 +34,16 @@ function showSlide(n){
 
 function curSlide(n){
     showSlide(slideI = n);
-
-    switch(slideI){
-        case 1:
-            sectionAdd.innerHTML= pch;
-            break;
-        case 2:
-            sectionAdd.innerHTML = bio;
-            break;
-        case 3:
-            sectionAdd.innerHTML = solar;
-            break;
-        case 4:
-            sectionAdd.innerHTML = eolica;
-            break;
-        default:
-            sectionAdd.innerHTML = pch;
-            break;
-    }
+    curInfo()
 
 }
 
 function allSlides(n){
     showSlide(slideI += n);
+    curInfo()
+}
 
+function curInfo(){
     switch(slideI){
         case 1:
             sectionAdd.innerHTML= pch;
@@ -76,7 +62,6 @@ function allSlides(n){
             break;
     }
 }
-
 
 
     
