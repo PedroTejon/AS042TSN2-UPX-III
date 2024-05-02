@@ -17,7 +17,8 @@
     "express-async-handler": "^1.2.0",
     "http-errors": "~1.6.3",
     "mysql2": "^3.9.3",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.13"
   },
   "devDependencies": {
     "eslint": "^9.0.0",

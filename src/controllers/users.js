@@ -2,6 +2,7 @@ const db = require('../services/db');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
+const { sendMail } = require('../services/email');
 
 exports.register = asyncHandler(async (req, res, next) => {
   try {
@@ -42,7 +43,10 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
         await db.query(`UPDATE usuarios SET ${changes.join(', ')} WHERE id_usuario = ${req.cookies.userId}`, []);
         res.send({ message: 'Usuário alterado com sucesso!' });
       } else {
-        res.status(409).send({ message: 'Nenhuma alteração aplicada pois Usuário já possui tais características e/ou nenhuma propriedade foi válida.' })
+        res.status(409).send({
+          // eslint-disable-next-line max-len
+          message: 'Nenhuma alteração aplicada pois Usuário já possui tais características e/ou nenhuma propriedade foi válida.'
+        })
       }
     } else {
       res.status(404).send({ message: 'Usuário não encontrado.' })
@@ -97,7 +101,9 @@ exports.authorize = asyncHandler(async (req, res, next) => {
     return;
   }
 
-  const session = (await db.query('SELECT sess_hash, id_usuario, expires FROM sessoes_usuario WHERE sess_hash = ?', [sessHash]))[0];
+  const session = (await db.query('SELECT sess_hash, id_usuario, expires FROM sessoes_usuario WHERE sess_hash = ?', [
+    sessHash
+  ]))[0];
   if (!sessHash.length || sessHash != session.sess_hash || req.cookies.userId != session.id_usuario) {
     res.status(403).send({ message: 'Autenticação inválida.' });
     return;
@@ -107,7 +113,9 @@ exports.authorize = asyncHandler(async (req, res, next) => {
 });
 
 exports.getDetails = asyncHandler(async (req, res, next) => {
-  res.send(await db.query('SELECT email, nome, data_nasc, genero FROM usuarios WHERE id_usuario = ?', [req.cookies.userId]));
+  res.send(await db.query('SELECT email, nome, data_nasc, genero FROM usuarios WHERE id_usuario = ?', [
+    req.cookies.userId
+  ]));
 });
 
 exports.saveProduct = asyncHandler(async (req, res, next) => {
@@ -171,6 +179,86 @@ exports.unhideProduct = asyncHandler(async (req, res, next) => {
     } else {
       res.status(404).send({ message: 'Este anúncio não está oculto.' });
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+exports.requestPassChange = asyncHandler(async (req, res, next) => {
+  try {
+    const code = Math.floor(Math.random() * (999999 - 111111 + 1)) + 111111;
+    const userId = (await db.query('SELECT * FROM usuarios WHERE email = ?', [req.body.email]))[0].id_usuario;
+
+    await db.query('INSERT INTO solicitacoes_mudanca_senha VALUES (default, ?, ?, ?, ?) ', [
+      code,
+      new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+      userId,
+      false]);
+
+    sendMail(req.body.email,
+      'Redefinição de Senha - Renovável Efetiva',
+      `Aqui está seu código para redefinição de senha:\n${code}`);
+
+    res.status(201).send({ message: 'Solicitação de troca de senha feita com sucesso.' });
+  } catch (err) {
+    next(err);
+  }
+});
+
+exports.confirmCode = asyncHandler(async (req, res, next) => {
+  try {
+    let request = await db.query(`SELECT request_code, request_date, usuarios.id_usuario, usuarios.email, used
+    FROM solicitacoes_mudanca_senha INNER JOIN usuarios ON solicitacoes_mudanca_senha.id_usuario = usuarios.id_usuario 
+    WHERE usuarios.email = ? 
+    ORDER BY request_date DESC LIMIT 1`,
+      [req.body.email]);
+    if (request.length == 0) {
+      res.status(400).send({ message: 'Código incorreto' });
+      return;
+    }
+
+    request = request[0];
+    if (request.request_code == req.body.code && request.email == req.body.email) {
+      res.status(200).send({ message: 'Código correto' })
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+exports.confirmPassChange = asyncHandler(async (req, res, next) => {
+  try {
+    let request = await db.query(`SELECT id_request, request_code, request_date, usuarios.id_usuario, email, used
+    FROM solicitacoes_mudanca_senha INNER JOIN usuarios ON solicitacoes_mudanca_senha.id_usuario = usuarios.id_usuario 
+    WHERE usuarios.email = ? 
+    ORDER BY request_date DESC LIMIT 1`,
+      [req.body.email]);
+
+    request = request[0];
+    if (request.request_code != req.body.code || request.email != req.body.email) {
+      res.status(400).send({ message: 'Dados inválidos' });
+      return;
+    }
+
+    let dataRequisicao = new Date(request.request_date);
+    let dataExpiracao = new Date(dataRequisicao.setDate(dataRequisicao.getDate() + 1));
+    if (request.used == 1 || dataExpiracao < Date.now()) {
+      res.status(409).send({ message: 'Solicitação já expirada' });
+      return;
+    }
+
+    await db.query('UPDATE usuarios SET senha_hash = ? WHERE email = ?', [
+      await bcrypt.hash(req.body.password, 10),
+      req.body.email
+    ])
+    await db.query('UPDATE solicitacoes_mudanca_senha SET used = ? WHERE id_request = ?', [
+      true,
+      request.id_request
+    ])
+    res.status(200).send({ message: 'Senha alterada com sucesso' })
+    sendMail(req.body.email,
+      'Senha Redefinida - Renovável Efetiva',
+      'Sua senha foi redefinida com sucesso.');
   } catch (err) {
     next(err);
   }

@@ -59,6 +59,16 @@ CREATE TABLE IF NOT EXISTS sessoes_usuario (
   FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario)
 );
 
+CREATE TABLE IF NOT EXISTS solicitacoes_mudanca_senha (
+  id_request INT NOT NULL AUTO_INCREMENT,
+  request_code INT NOT NULL, 
+  request_date DATETIME NOT NULL,
+  id_usuario INT NOT NULL,
+  used TINYINT NOT NULL,
+  PRIMARY KEY (id_request),
+  FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario)
+);
+
 INSERT INTO plataformas VALUES 
 (default, 'EnergiaTotal', 'https://www.energiatotal.com.br'),
 (default, 'Leroy Merlin', 'https://www.leroymerlin.com.br/'),
