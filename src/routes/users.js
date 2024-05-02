@@ -1,18 +1,18 @@
-var controller = require('../controllers/users');
-var express = require('express');
-var router = express.Router();
+const controller = require('../controllers/users');
+const express = require('express');
+const router = express.Router();
+const { UserValidator } = require('../services/validator')
 
-/* GET */
 router.get('/', controller.authorize, controller.getDetails);
-router.post('/', controller.authorize, controller.updateDetails);
-router.post('/register', controller.register);
-router.post('/login', controller.login);
-router.post('/requestPassChange', controller.requestPassChange);
-router.post('/confirmPassChange', controller.confirmPassChange);
-router.post('/confirmCode', controller.confirmCode);
-router.post('/saveProduct/:anunId', controller.saveProduct);
-router.post('/unsaveProduct/:anunId', controller.unsaveProduct);
-router.post('/hideProduct/:anunId', controller.hideProduct);
-router.post('/unhideProduct/:anunId', controller.unhideProduct);
+router.post('/', controller.authorize, UserValidator.updateDetailsValidator, controller.updateDetails);
+router.post('/register', UserValidator.registerValidator, controller.register);
+router.post('/login', UserValidator.loginValidator, controller.login);
+router.post('/requestPassChange', UserValidator.requestPassChangeValidator, controller.requestPassChange);
+router.post('/confirmPassChange', UserValidator.confirmPassChangeValidator, controller.confirmPassChange);
+router.post('/confirmCode', UserValidator.confirmCodeValidator, controller.confirmCode);
+router.post('/saveProduct/:id', UserValidator.saveProductValidator, controller.saveProduct);
+router.post('/unsaveProduct/:id', UserValidator.unsaveProductValidator, controller.unsaveProduct);
+router.post('/hideProduct/:id', UserValidator.hideProductValidator, controller.hideProduct);
+router.post('/unhideProduct/:id', UserValidator.unhideProductValidator, controller.unhideProduct);
 
 module.exports = router;

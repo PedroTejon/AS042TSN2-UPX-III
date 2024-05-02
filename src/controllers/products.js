@@ -1,11 +1,20 @@
 const db = require('../services/db');
 const asyncHandler = require('express-async-handler');
+const { validationResult } = require('express-validator');
 
 exports.getDetails = asyncHandler(async (req, res, next) => {
-  res.send(await db.query('SELECT * FROM ANUNCIOS WHERE id_anuncio = ?', [req.params['id']]));
+  const validation = validationResult(req);
+  if (!validation.isEmpty())
+    return res.status(400).send({ error: validation.array() })
+
+  return res.send(await db.query('SELECT * FROM ANUNCIOS WHERE id_anuncio = ?', [req.params['id']]));
 });
 
 exports.getPage = asyncHandler(async (req, res, next) => {
+  const validation = validationResult(req);
+  if (!validation.isEmpty())
+    return res.status(400).send({ error: validation.array() })
+
   const page = parseInt(req.params['page']) * 50;
   let orderBy = 'ORDER BY id_anuncio DESC';
   if ('sortedBy' in req.query) {
@@ -52,5 +61,5 @@ exports.getPage = asyncHandler(async (req, res, next) => {
     ${showHidden}
     ${filter}
     ${orderBy} LIMIT ${page}, 50`;
-  res.send(await db.query(query, [req.query['searchQuery'] ? '%' + req.query['searchQuery'] + '%' : '%%']));
+  return res.send(await db.query(query, [req.query['searchQuery'] ? '%' + req.query['searchQuery'] + '%' : '%%']));
 });

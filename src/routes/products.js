@@ -1,11 +1,10 @@
-var controller = require('../controllers/products');
-var express = require('express');
-var router = express.Router();
+const controller = require('../controllers/products');
+const express = require('express');
+const router = express.Router();
+const { ProductValidator } = require('../services/validator')
 
-/* GET Detalhes produto */
-router.get('/details/:id', controller.getDetails);
 
-/* GET Paginação */
-router.get('/page/:page', controller.getPage);
+router.get('/details/:id', ProductValidator.getDetailsValidator, controller.getDetails);
+router.get('/page/:page', ProductValidator.getPageValidator, controller.getPage);
 
 module.exports = router;

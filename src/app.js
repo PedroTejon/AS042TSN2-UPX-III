@@ -1,33 +1,30 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 
-var webRouter = require('./routes/web');
-var usersRouter = require('./routes/users');
-var productsRouter = require('./routes/products');
-const { error } = require('console');
+const webRouter = require('./routes/web');
+const usersRouter = require('./routes/users');
+const productsRouter = require('./routes/products');
 
-var app = express();
+const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cookieParser());
 
 app.all('/*', webRouter);
 app.use('/api/users/', usersRouter);
 app.use('/api/products/', productsRouter);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  res.status(500);
-  res.send({message: err.message, error: err});
+app.use(function (err, req, res, next) {
+  res.status(500).send({ message: err.message, error: err });
 });
 
 module.exports = app;
