@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,700;0,800;1,100;1,200;1,300;1,700;1,800&display=swap');
 
-html{
+html {
     scroll-behavior: smooth;
 }
 
-:root{
+:root {
     --navblue: #0E6BBE;
     --navnotactive: #929495;
     --alltitle: #043057;
@@ -16,7 +16,7 @@ html{
 }
 
 /*Default*/
-*{
+* {
     margin: 0;
     border: 0;
     padding: 0;
@@ -24,12 +24,12 @@ html{
     font-family: "Poppins", sans-serif;
 }
 
-body{
+body {
     background-color: #F6F6F6;
 }
 
 .unselectable {
-    user-drag: none; 
+    user-drag: none;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-drag: none;
@@ -38,7 +38,7 @@ body{
 }
 
 /*footer-desktop*/
-.footer-default{
+.footer-default {
     background-color: #11426E;
     display: flex;
     position: relative;
@@ -48,42 +48,42 @@ body{
     width: 100%;
 }
 
-.footer-default img{
+.footer-default img {
     pointer-events: none;
 }
 
-.footer-default p{
+.footer-default p {
     font-weight: bold;
     cursor: default;
 }
 
-.footer-default ul{
+.footer-default ul {
     list-style: none;
     margin-top: 4%;
 }
 
-.footer-default li{
+.footer-default li {
     margin-bottom: 5%;
 }
 
-.footer-default a{
+.footer-default a {
     cursor: pointer;
     text-decoration: none;
     color: #FFFFFF;
 }
 
-.footer-default a:hover{
+.footer-default a:hover {
     transition: all ease 0.5s;
-    color:#6161fd;
+    color: #6161fd;
 }
 
-.footer-default div{
+.footer-default div {
     margin-top: 2%;
     margin-left: 5%;
 }
 
 /*header default*/
-.header-default{
+.header-default {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -92,39 +92,39 @@ body{
     padding-bottom: 1%;
 }
 
-.nav-default ul{
+.nav-default ul {
     display: flex;
     flex-direction: row;
     list-style: none;
 
 }
 
-.nav-default a{
+.nav-default a {
     text-decoration: none;
     font-size: 120%;
     cursor: pointer;
 }
 
-.nav-default li{
+.nav-default li {
     margin: 15%;
 }
 
-.notactive:hover{
+.notactive:hover {
     transition: all ease 0.5s;
 
     color: #2b8de2;
 }
 
-.notactive{
+.notactive {
     color: var(--navnotactive);
 }
 
-.active{
+.active {
     font-weight: bold;
     color: var(--navblue);
 }
 
-.profile-info{
+.profile-info {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -133,44 +133,44 @@ body{
     width: 20%;
 }
 
-.profile-info a{
+.profile-info a {
     text-decoration: underline;
     cursor: pointer;
-    color:#434A62;
+    color: #434A62;
 }
 
-.profile-info a:hover{
+.profile-info a:hover {
     transition: all ease 0.5s;
-    color:#1371c4;
+    color: #1371c4;
 }
 
-#username{
+#username {
     font-weight: bold;
 }
 
-.pfp-div{
+.pfp-div {
     margin-right: 5%;
 }
 
-.logo-div{
-  
+.logo-div {
+
     margin-left: 5%;
 }
 
 /*all articles css*/
 
-article{
+article {
     margin: 5%;
 
 }
 
-article p{
+article p {
     color: var(--paragraph);
     text-align: justify;
     line-height: 160%;
 }
 
-h2{
+h2 {
     color: var(--alltitle);
     margin-bottom: 1%;
     cursor: default;
@@ -179,44 +179,45 @@ h2{
 
 
 /*Media query para smartphone*/
-@media(max-width: 320px){
+@media(max-width: 320px) {
 
-    body{
+    body {
         overflow-x: hidden;
     }
-    .footer-default{
+
+    .footer-default {
         width: 100%;
         flex-direction: column;
         height: 100%;
         text-align: center;
     }
 
-    .footerlogo-div{
+    .footerlogo-div {
         width: 100%;
         height: 25%;
         display: flex;
         justify-content: center;
     }
 
-    .footerlogo-div img{
+    .footerlogo-div img {
         width: 55%;
         height: 100%;
         margin-top: 5%;
         margin-bottom: 5%;
     }
 
-    .footer-default p{
+    .footer-default p {
         font-size: 95%;
         cursor: default;
         margin-top: 3%;
     }
-    
-    .footer-default ul{
+
+    .footer-default ul {
         list-style: none;
         margin-top: 1%;
     }
 
-    .footer-default li{
+    .footer-default li {
         margin-bottom: 2%;
     }
 }

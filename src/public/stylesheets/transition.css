@@ -1,14 +1,15 @@
 @keyframes onLoadIn {
-    from{
+    from {
         opacity: 0;
         transform: rotateX(-10deg);
     }
-    to{
+
+    to {
         opacity: 1;
         transform: rotateX(0);
     }
 }
 
-body{
+body {
     animation: onLoadIn 1s;
 }

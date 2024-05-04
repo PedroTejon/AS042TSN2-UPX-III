@@ -1,26 +1,31 @@
-#about-sec img{
+#about-sec img {
     margin-top: 1.5%;
     margin-bottom: 5%;
 }
 
-#about-sec p, #data-sec p, #kaggle-sec p, #ref-sec p{
+#about-sec p,
+#data-sec p,
+#kaggle-sec p,
+#ref-sec p {
     cursor: default;
 }
 
-#about-sec a{
+#about-sec a {
     color: var(--alltitle);
 }
 
-#img-about{
+#img-about {
     display: flex;
     justify-content: center;
 }
 
-#data-sec, #kaggle-sec, #ref-sec{
+#data-sec,
+#kaggle-sec,
+#ref-sec {
     margin-bottom: 6%;
 }
 
-#kaggle{
+#kaggle {
     margin-top: 1%;
     text-align: center;
     color: var(--alltitle);
@@ -29,36 +34,42 @@
     cursor: pointer;
 }
 
-#kaggle a, #kaggle a:visited, #kaggle a:active, #kaggle a:link{
+#kaggle a,
+#kaggle a:visited,
+#kaggle a:active,
+#kaggle a:link {
     color: var(--alltitle);
 }
 
 
-#ref-sec p{
+#ref-sec p {
     margin-bottom: 1.5%;
 }
 
-#ref-sec a{
+#ref-sec a {
     color: var(--alltitle);
 }
 
 
-#ref-sec a:hover, #kaggle a:hover, #about-sec a:hover{
+#ref-sec a:hover,
+#kaggle a:hover,
+#about-sec a:hover {
     transition: all ease 0.5s;
-    color:#6161fd;
+    color: #6161fd;
 }
 
-@keyframes slide{
-    from{
-        transform:translateX(0);
+@keyframes slide {
+    from {
+        transform: translateX(0);
     }
-    to{
-        transform:translateX(-100%);
+
+    to {
+        transform: translateX(-100%);
 
     }
 }
 
-#slider-container img{
+#slider-container img {
     cursor: pointer;
 }
 
@@ -68,23 +79,25 @@
     padding: 1%;
     white-space: nowrap;
     position: relative;
-    
-    
+
+
 
 }
-.slider{
+
+.slider {
     display: inline-block;
     animation: 10s slide infinite linear;
 
 }
 
-#slider-container img{
+#slider-container img {
     height: 70%;
     margin: 0 40px;
-   
+
 }
 
-#slider-container:before, #slider-container:after {
+#slider-container:before,
+#slider-container:after {
     position: absolute;
     top: 0;
     width: 250px;
@@ -94,17 +107,15 @@
 }
 
 #slider-container:before {
-  left: 0;
-  background: linear-gradient(to left, rgba(255, 255, 255, 0), #F6F6F6);
+    left: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), #F6F6F6);
 }
 
 #slider-container:after {
-  right: 0;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), #F6F6F6);
+    right: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), #F6F6F6);
 }
 
 #slider-container:hover .slider {
-  animation-play-state: paused;
+    animation-play-state: paused;
 }
-
-
