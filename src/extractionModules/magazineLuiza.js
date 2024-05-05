@@ -1,9 +1,9 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const db = require('../services/db');
 const utils = require('./utils');
+const Product = require('../models/product');
 
-const mapCategorias = {
+const mapCategories = {
   'Placa Solar': 1,
   'Painel Solar': 1,
   'Gerador de Energia': 1,
@@ -22,7 +22,7 @@ const mapCategorias = {
   'Aquecedor de Água': 12,
   'Peças para Celular': 14,
   'Peças e Acessórios': 14
-}
+};
 
 async function scrape() {
   headers = {
@@ -45,51 +45,54 @@ async function scrape() {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0',
   };
 
-  let pagina = 1;
+  let currentPage = 1;
   while (true) {
     // eslint-disable-next-line max-len
-    const site = await axios.get(`https://www.magazineluiza.com.br/busca/fotovoltaico/?sfilters=0&filters=entity---refletor--cabo-eletrico--placa-solar--inversor-solar--conector--gerador--luminaria-industrial-e-publica--controlador-de-carga--estrutura-para-painel-solar--kit-ferramentas--medidor-de-energia--dispositivo-de-protecao--chave-eletrica--alicate--conector-eletrico--luminaria--contator-eletrico--cabo-extensor--fusivel--disjuntor-nema--disjuntor-dr--disjuntor-din&page=${pagina}`, {
+    const currentSite = await axios.get(`https://www.magazineluiza.com.br/busca/fotovoltaico/?sfilters=0&filters=entity---refletor--cabo-eletrico--placa-solar--inversor-solar--conector--gerador--luminaria-industrial-e-publica--controlador-de-carga--estrutura-para-painel-solar--kit-ferramentas--medidor-de-energia--dispositivo-de-protecao--chave-eletrica--alicate--conector-eletrico--luminaria--contator-eletrico--cabo-extensor--fusivel--disjuntor-nema--disjuntor-dr--disjuntor-din&page=${currentPage}`, {
       headers: headers,
     }).then((response) => {
       return cheerio.load(response.data);
     });
 
-    if (site('div[data-testid=product-list]').length == 0) {
+    if (currentSite('div[data-testid=product-list]').length == 0) {
       break;
     }
 
-    const anuncios = JSON.parse(site('div[data-testid=product-list] > script[data-testid=jsonld-script]').text());
-    for (const anuncio of anuncios['@graph']) {
-      const url = anuncio['offers']['url'];
-      if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [])).length == 0) {
-        const nome = anuncio['name'];
-        const preco = parseFloat(anuncio['offers']['price']);
-        const avaliacao = anuncio['aggregateRating']
-          ? parseFloat(anuncio['aggregateRating']['ratingValue']) : null;
-        const qntdAvaliacoes = anuncio['aggregateRating']
-          ? parseFloat(anuncio['aggregateRating']['reviewCount']) : null;
-        const foto = anuncio['image'];
-        const [categorias, descricao] = await axios.get(url, {
+    const products = JSON.parse(
+      currentSite('div[data-testid=product-list] > script[data-testid=jsonld-script]').text());
+    for (const productData of products['@graph']) {
+      const url = productData['offers']['url'];
+
+      const product = new Product();
+      await product.load('url', url);
+      if (product.productId === undefined) {
+        await utils.sleep(1000);
+        product.url = url;
+        product.platformId = 3;
+        product.title = productData['name'];
+        product.price = parseFloat(productData['offers']['price']);
+        product.rating = productData['aggregateRating']
+          ? parseFloat(productData['aggregateRating']['ratingValue']) : 0;
+        product.ratingAmount = productData['aggregateRating']
+          ? parseFloat(productData['aggregateRating']['reviewCount']) : 0;
+        product.image = productData['image'];
+        await axios.get(url, {
           responseEncoding: 'utf8',
           headers: headers,
         }).then((response) => {
-          const page = utils.cleanPage(cheerio.load(response.data));
-          const categorias = [...page('a[data-testid=breadcrumb-item] span')].map((el) => page(el).text());
-          const descricao = page('[data-testid=rich-content-container]').html().trim();
-          return [categorias, descricao];
+          const productPage = utils.cleanPage(cheerio.load(response.data));
+          const categories = [...productPage('a[data-testid=breadcrumb-item] span')]
+            .map((el) => productPage(el).text());
+          product.categoryId = mapCategories[
+            categories.filter((cat) => Object.keys(mapCategories).includes(cat)).slice(-1)];
+          product.description = productPage('[data-testid=rich-content-container]').html().trim();
         });
 
-        let categoria = mapCategorias[
-          categorias.filter((cat) => Object.keys(mapCategorias).includes(cat)).slice(-1)];
-
-        await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 3, ?, ?)`,
-          [nome, avaliacao, preco, descricao, url, foto, categoria, qntdAvaliacoes]);
-
-        await utils.sleep(1000);
+        await product.save();
       }
     }
 
-    pagina++;
+    currentPage++;
   }
 }
 

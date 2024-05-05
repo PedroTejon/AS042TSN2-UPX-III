@@ -1,9 +1,9 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const db = require('../services/db');
 const utils = require('./utils');
+const Product = require('../models/product');
 
-const mapCategorias = {
+const mapCategories = {
   'Painel Solar': 1,
   'Estrutura Solar': 2,
   'Controlador de Carga': 3,
@@ -25,10 +25,10 @@ const mapCategorias = {
   'Bombeamento Solar Profissional': 15,
   'Bomba Solar': 15,
   'Kit Bomba Solar': 15,
-}
+};
 
 async function scrape() {
-  const categorias = [
+  const categories = [
     'painel-solar',
     'controlador-de-carga',
     'inversores',
@@ -61,62 +61,61 @@ async function scrape() {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0',
   };
 
-  for (const categoria of categorias) {
-    let pagina = 1;
+  for (const category of categories) {
+    let currentPage = 1;
     while (true) {
-      const site = await axios.get(`https://www.energiatotal.com.br/${categoria}?pg=${pagina}`, {
+      const currentSite = await axios.get(`https://www.energiatotal.com.br/${category}?pg=${currentPage}`, {
         headers: headers,
         responseEncoding: 'latin1'
       }).then((response) => {
         return cheerio.load(response.data);
       });
 
-      for (const anuncio of [...site('li.item.flex')].map((anuncio) => site(anuncio))) {
-        const url = anuncio.find('.info-product').attr('href').trim();
-        if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [])).length == 0) {
-          const nome = anuncio.find('.product-name').text().trim();
-          const precoTexto = anuncio.find('.precoAvista').text()
+      for (const productContainer of [...currentSite('li.item.flex')].map((product) => currentSite(product))) {
+        const url = productContainer.find('.info-product').attr('href').trim();
+
+        const product = new Product();
+        await product.load('url', url)
+        if (product.productId === undefined) {
+          await utils.sleep(1000);
+          product.url = url;
+          product.platformId = 1;
+          product.title = productContainer.find('.product-name').text().trim();
+          product.rating = productContainer.find('.icon.active').length;
+          product.image = productContainer.find('img').attr('data-src');
+
+          const priceText = productContainer.find('.precoAvista').text()
             .replace(' ', '')
             .replace('R$', '')
             .replace('.', '')
             .replace(',', '.')
             .trim();
-          let precoFinal;
-          if (precoTexto != 'ESGOTADO!') {
-            precoFinal = parseFloat(precoTexto);
-          } else {
+          if (priceText == 'ESGOTADO!') {
             continue;
           }
-          const avaliacao = anuncio.find('.icon.active').length;
-          const foto = anuncio.find('img').attr('data-src');
-          const [descricao, categoria, qntdAvaliacoes] = await axios.get(url, {
+          product.price = parseFloat(priceText);
+          await axios.get(url, {
             responseEncoding: 'latin1',
             headers: headers,
           }).then((response) => {
             const page = utils.cleanPage(cheerio.load(response.data));
-            const categoria = mapCategorias[page('.breadcrumb-item').slice(-2, -1).find('a').attr('title')];
-            const descricao = page('.board_htm').html().trim();
-            const qntdAvaliacoes = parseInt(page('.fixed-info .list-star .total').text().split(' ')[0]);
-            return [descricao, categoria, qntdAvaliacoes];
-          });
+            product.categoryId = mapCategories[page('.breadcrumb-item').slice(-2, -1).find('a').attr('title')];
+            product.description = page('.board_htm').html().trim();
+            product.ratingAmount = parseInt(page('.fixed-info .list-star .total').text().split(' ')[0]);
+          })
 
-          await db.query('CALL insert_anun(?, ?, ?, ?, ?, ?, 1, ?, ?)',
-            [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes]);
-
-          await utils.sleep(1000);
+          await product.save()
         }
       }
 
-      pagina++;
+      currentPage++;
 
-      if (site('.page-next.page-link').length == 0) {
+      if (currentSite('.page-next.page-link').length == 0) {
         break;
       }
     }
   }
 }
-
-scrape()
 
 module.exports = {
   scrape,
