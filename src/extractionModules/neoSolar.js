@@ -2,8 +2,9 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const db = require('../services/db');
 const utils = require('./utils');
+const Product = require('../models/product');
 
-const mapCategorias = {
+const mapCategories = {
   'painel-solar': 1,
   'estrutura-cabo-outros/estrutura-montagem-solar': 2,
   'controlador-de-carga-solar': 3,
@@ -15,10 +16,10 @@ const mapCategorias = {
   'estrutura-cabo-outros/stringbox-protecoes-solar': 10,
   'carro-eletrico': 13,
   'bomba-solar': 15
-}
+};
 
 async function scrape() {
-  const urlCategorias = [
+  const categories = [
     'painel-solar',
     'kit-energia-solar-off-grid',
     'kit-energia-solar-on-grid',
@@ -52,57 +53,59 @@ async function scrape() {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0',
   };
 
-  for (const urlCategoria of urlCategorias) {
-    let pagina = 1;
+  for (const category of categories) {
+    let currentPage = 1;
     while (true) {
-      const site = await axios.get(`https://www.neosolar.com.br/loja/${urlCategoria}.html?p=${pagina}`, {
+      const currentSite = await axios.get(`https://www.neosolar.com.br/loja/${category}.html?p=${currentPage}`, {
         headers: headers,
       }).then((response) => {
         return cheerio.load(response.data);
       });
 
-      if (site('.message.info.empty').length != 0) {
+      if (currentSite('.message.info.empty').length != 0) {
         break;
       }
 
-      for (const anuncio of [...site('.item.product.product-item')].map((anuncio) => site(anuncio))) {
-        const url = anuncio.find('a.product.photo.product-item-photo').attr('href').trim();
-        if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [])).length == 0) {
-          const nome = anuncio.find('.product.name.product-item-name').text().trim();
 
-          const precoTexto = anuncio.find('span[data-price-type=finalPrice] .price');
-          if (precoTexto.length == 0) {
+      for (const productContainer of [...currentSite('.item.product.product-item')]
+        .map((product) => currentSite(product))) {
+        const url = productContainer.find('a.product.photo.product-item-photo').attr('href').trim();
+
+        const product = new Product();
+        await product.load('url', url);
+        if (product.productId === undefined) {
+          await utils.sleep(1000);
+          product.url = url;
+          product.platformId = 6;
+          product.title = productContainer.find('.product.name.product-item-name').text().trim();
+          const ratingElement = productContainer.find('.rating-result');
+          product.rating = ratingElement.length != 0
+            ? 5 * parseInt(ratingElement.attr('title').replace('%', '')) / 100
+            : 0;
+          product.ratingAmount = ratingElement.length != 0
+            ? parseInt(currentSite('span[itemprop=reviewCount]').text())
+            : 0;
+          product.image = productContainer.find('img.product-image-photo').attr('src');
+
+          const priceTexto = productContainer.find('span[data-price-type=finalPrice] .price');
+          if (priceTexto.length == 0) {
             continue;
           }
-          const precoFinal = parseFloat(precoTexto.first().text().trim().replace(/[\D$\s]*/, '').replace(',', '.'));
-
-          const avaliacaoElement = anuncio.find('.rating-result');
-          const avaliacao = avaliacaoElement.length != 0
-            ? 5 * parseInt(avaliacaoElement.attr('title').replace('%', '')) / 100
-            : 0;
-          const qntdAvaliacoes = avaliacaoElement.length != 0
-            ? parseInt(site('span[itemprop=reviewCount]').text())
-            : 0;
-
-          const foto = anuncio.find('img.product-image-photo').attr('src');
-          const [categoria, descricao] = await axios.get(url, {
+          product.price = parseFloat(priceTexto.first().text().trim().replace(/[\D$\s]*/, '').replace(',', '.'));
+          await axios.get(url, {
             responseEncoding: 'utf8',
             headers: headers,
           }).then((response) => {
             const page = utils.cleanPage(cheerio.load(response.data));
-            const descricao = page('.product.attribute.description').html().trim();
-            const categoria = mapCategorias[urlCategoria];
-            return [categoria, descricao];
+            product.description = page('.product.attribute.description').html().trim();
+            product.categoryId = mapCategories[category];
           });
 
-          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 6, ?, ?)`,
-            [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes]);
-
-          await utils.sleep(1000);
+          await product.save();
         }
       }
 
-      pagina++;
+      currentPage++;
     }
   }
 }

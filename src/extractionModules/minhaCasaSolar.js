@@ -1,9 +1,9 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const db = require('../services/db');
 const utils = require('./utils');
+const Product = require('../models/product');
 
-const mapCategorias = {
+const mapCategories = {
   'Painel solar': 1,
   'De 150w até 330w': 1,
   'Painel acima de 330w': 1,
@@ -24,10 +24,10 @@ const mapCategorias = {
   'Queima de estoque': 14,
   'Kits para bombeamento': 15,
   'Bombas solares': 15
-}
+};
 
 async function scrape() {
-  const urlCategorias = [
+  const categories = [
     'painel-solar',
     'kits-solares',
     'baterias',
@@ -59,73 +59,74 @@ async function scrape() {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0',
   };
 
-  for (const urlCategoria of urlCategorias) {
-    let pagina = 1;
+  for (const category of categories) {
+    let currentPage = 1;
     while (true) {
-      const site = await axios.get(`https://www.minhacasasolar.com.br/${urlCategoria}?pagina=${pagina}&tamanho=24`, {
+      // eslint-disable-next-line max-len
+      const currentSite = await axios.get(`https://www.minhacasasolar.com.br/${category}?pagina=${currentPage}&tamanho=24`, {
         headers: headers,
         responseEncoding: 'utf8',
       }).then((response) => {
         return cheerio.load(response.data);
       });
 
-      const urlAvaliacoes = 'codes[]=' + [...site('div[data-trustvox-product-code]')].map((el) => {
-        return site(el).attr('data-trustvox-product-code');
+      const ratingsURL = 'codes[]=' + [...currentSite('div[data-trustvox-product-code]')].map((el) => {
+        return currentSite(el).attr('data-trustvox-product-code');
       }).join('&codes[]=');
-
-      const avaliacoes = await axios.get(
-        `https://trustvox.com.br/widget/shelf/v2/products_rates?${urlAvaliacoes}&store_id=81798&callback=_tsRatesReady`,
+      const ratings = await axios.get(
+        `https://trustvox.com.br/widget/shelf/v2/products_rates?${ratingsURL}&store_id=81798&callback=_tsRatesReady`,
         {
           responseEncoding: 'utf8',
           headers: headers,
         }).then((response) => {
           let json = response.data.replace('/**/_tsRatesReady(', '');
           json = JSON.parse(json.substring(0, json.length - 1))['products_rates'];
-          const avaliacoes = {};
-          for (const avaliacaoAtual of json) {
-            avaliacoes[avaliacaoAtual['product_code']] = [avaliacaoAtual['average'], avaliacaoAtual['count']];
+          const ratings = {};
+          for (const currentRating of json) {
+            ratings[currentRating['product_code']] = [currentRating['average'], currentRating['count']];
           }
-          return avaliacoes;
+          return ratings;
         });
 
-      for (const anuncio of [...site('.spot')].map((anuncio) => site(anuncio))) {
-        const url = anuncio.find('a.spot__content').attr('href').trim();
-        if ((await db.query(`SELECT * FROM anuncios WHERE url = '${url}'`, [])).length == 0) {
-          const nome = anuncio.find('.spot__name').text().trim();
-          const precoTexto = anuncio.find('.pix-discount');
-          let precoFinal;
-          if (precoTexto.length != 0) {
-            precoFinal = parseFloat(precoTexto.text().trim().replace(/[\D$\s]*/, '').replace(',', '.'));
-          } else {
+      for (const productContainer of [...currentSite('.spot')]
+        .map((productContainer) => currentSite(productContainer))) {
+        const url = productContainer.find('a.spot__content').attr('href').trim();
+
+        const product = new Product();
+        await product.load('url', url);
+        if (product.productId === undefined) {
+          await utils.sleep(1000);
+          product.url = url;
+          product.platformId = 5;
+          product.title = productContainer.find('.spot__name').text().trim();
+          [product.rating, product.ratingAmount] = ratings[productContainer.find('div[data-trustvox-product-code]')
+            .attr('data-trustvox-product-code')];
+          product.image = productContainer.find('.spot-image').attr('data-src');
+
+          const precoTexto = productContainer.find('.pix-discount');
+          if (precoTexto.length == 0) {
             continue;
           }
-          const [avaliacao, qntdAvaliacoes] = avaliacoes[anuncio.find('div[data-trustvox-product-code]')
-            .attr('data-trustvox-product-code')];
-          const foto = anuncio.find('.spot-image').attr('data-src');
-          const [categorias, descricao] = await axios.get(url, {
+          product.price = parseFloat(precoTexto.text().trim().replace(/[\D$\s]*/, '').replace(',', '.'));
+          await axios.get(url, {
             responseEncoding: 'utf8',
             headers: headers,
           }).then((response) => {
-            const page = utils.cleanPage(cheerio.load(response.data));
-            const categorias = [...page('.breadcrumbs a')].map((el) => page(el).text());
-            const descricaoElement = page('.description__item.menu_groups')
-            const descricao = descricaoElement.length > 0 ? descricaoElement.first().html().trim() : null;
-            return [categorias, descricao];
+            const currentPage = utils.cleanPage(cheerio.load(response.data));
+            const categorias = [...currentPage('.breadcrumbs a')].map((el) => currentPage(el).text());
+            product.categoryId = mapCategories[
+              categorias.filter((cat) => Object.keys(mapCategories).includes(cat)).slice(-1)];
+            const descricaoElement = currentPage('.description__item.menu_groups')
+            product.description = descricaoElement.length > 0 ? descricaoElement.first().html().trim() : null;
           });
 
-          const categoria = mapCategorias[
-            categorias.filter((cat) => Object.keys(mapCategorias).includes(cat)).slice(-1)];
-
-          await db.query(`CALL insert_anun(?, ?, ?, ?, ?, ?, 5, ?, ?)`,
-            [nome, avaliacao, precoFinal, descricao, url, foto, categoria, qntdAvaliacoes]);
-
-          await utils.sleep(1000);
+          await product.save();
         }
       }
 
-      pagina++;
+      currentPage++;
 
-      if (site('#pagination_next').length == 0) {
+      if (currentSite('#pagination_next').length == 0) {
         break;
       }
 

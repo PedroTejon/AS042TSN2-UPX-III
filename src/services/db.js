@@ -16,6 +16,13 @@ async function query(sql, params) {
   return results;
 }
 
+async function format(sql, params) {
+  const results = await pool.format(sql, params);
+
+  return results;
+}
+
 module.exports = {
   query,
+  format
 };

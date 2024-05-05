@@ -1,9 +1,11 @@
 const db = require('../services/db');
-const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
 const { sendMail } = require('../services/email');
 const { validationResult } = require('express-validator');
+const User = require('../models/user');
+const UserSession = require('../models/userSession');
+const PasswordChangeRequest = require('../models/passwordChangeRequest');
 
 exports.register = asyncHandler(async (req, res, next) => {
   try {
@@ -11,15 +13,15 @@ exports.register = asyncHandler(async (req, res, next) => {
     if (!validation.isEmpty())
       return res.status(400).send({ error: validation.array() })
 
-    const passHash = await bcrypt.hash(req.body.password, 10);
-    await db.query('INSERT INTO usuarios VALUES (?, ?, ?, ?, ?, ?, 0)', [
-      null,
-      req.body.email,
-      passHash,
-      req.body.nome,
-      req.body.dataNasc,
-      req.body.genero,
-    ]);
+    const passwordHash = await bcrypt.hash(req.body.password, 10);
+    const user = new User({
+      email: req.body.email,
+      passwordHash: passwordHash,
+      name: req.body.name,
+      birthDate: req.body.birthDate,
+      gender: req.body.gender,
+    })
+    await user.save();
 
     return res.send({ message: 'Usuário criado com sucesso!' });
   } catch (err) {
@@ -37,27 +39,19 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     if (!validation.isEmpty())
       return res.status(400).send({ error: validation.array() })
 
-    const user = (await db.query(`SELECT * FROM usuarios WHERE id_usuario = ${req.cookies.userId}`, []))[0];
+    const user = new User();
+    await user.load('userId', req.cookies.userId)
 
-    if (user) {
-      let changes = []
-      for (let prop of Object.keys(user)) {
-        if (req.body[prop] != undefined && user[prop] != req.body[prop]) {
-          changes.push(`${prop} = '${req.body[prop]}'`)
-        }
-      }
-
-      if (changes.length != 0) {
-        await db.query(`UPDATE usuarios SET ${changes.join(', ')} WHERE id_usuario = ${req.cookies.userId}`, []);
+    if (user.userId !== undefined) {
+      Object.assign(user, req.body);
+      if (user.changedFields.size != 0) {
+        await user.save();
         return res.send({ message: 'Usuário alterado com sucesso!' });
       } else {
-        res.status(409).send({
-          // eslint-disable-next-line max-len
-          message: 'Nenhuma alteração aplicada pois Usuário já possui tais características e/ou nenhuma propriedade foi válida.'
-        })
+        return res.status(409).send({ message: 'Nenhuma alteração aplicada.' })
       }
     } else {
-      res.status(404).send({ message: 'Usuário não encontrado.' })
+      return res.status(404).send({ message: 'Usuário não encontrado.' })
     }
   } catch (err) {
     next(err);
@@ -70,33 +64,24 @@ exports.login = asyncHandler(async (req, res, next) => {
     if (!validation.isEmpty())
       return res.status(400).send({ error: validation.array() })
 
-    const user = await db.query('SELECT * FROM usuarios WHERE email = ?', [req.body.email]);
-    if (!user.length) {
-      res.status(404).send({ message: `Usuário com e-mail ${req.body.email} não encontrado.` });
-      return;
+    const user = new User();
+    await user.load('email', req.body.email)
+    if (user.userId === undefined) {
+      return res.status(404).send({ message: `Usuário com e-mail ${req.body.email} não encontrado.` });
     }
 
-    if (!await bcrypt.compare(req.body.password, user[0].senha_hash)) {
-      res.status(403).send({ message: `Dados de usuário incorretos.` });
-      return;
+    if (!await bcrypt.compare(req.body.password, user.passwordHash)) {
+      return res.status(403).send({ message: `Dados de usuário incorretos.` });
     }
 
-    const dataAtual = new Date();
-    const dataExpiracao = new Date(dataAtual.setMonth(dataAtual.getMonth() + 1));
-    const idUsuario = user[0].id_usuario;
-    const sessHash = crypto.createHash('md5').update(`${idUsuario}-${dataAtual.toISOString()}`).digest('hex');
-    await db.query('INSERT INTO sessoes_usuario VALUES (?, ?, ?, ?)', [
-      sessHash,
-      idUsuario,
-      dataAtual.toISOString().replace(/T/, ' ').replace(/\..+/, ''),
-      dataExpiracao.toISOString().replace(/T/, ' ').replace(/\..+/, ''),
-    ]);
+    const userSession = new UserSession({ userId: user.userId });
+    await userSession.save();
 
-    res.cookie('sessHash', sessHash, {
-      maxAge: dataExpiracao.getTime(),
+    res.cookie('sessionHash', userSession.sessionHash, {
+      maxAge: userSession.expires.getTime(),
     });
-    res.cookie('userId', idUsuario, {
-      maxAge: dataExpiracao.getTime(),
+    res.cookie('userId', user.userId, {
+      maxAge: userSession.expires.getTime(),
     });
 
     return res.send({ message: 'Usuário logado com sucesso!' });
@@ -106,28 +91,26 @@ exports.login = asyncHandler(async (req, res, next) => {
 });
 
 exports.authorize = asyncHandler(async (req, res, next) => {
-  const sessHash = req.cookies.sessHash;
+  const sessionHash = req.cookies.sessionHash;
 
-  if (sessHash === undefined) {
-    res.status(403).send({ message: 'Autenticação necessária.' });
-    return;
+  if (sessionHash === undefined) {
+    return res.status(403).send({ message: 'Autenticação necessária.' });
   }
 
-  const session = (await db.query('SELECT sess_hash, id_usuario, expires FROM sessoes_usuario WHERE sess_hash = ?', [
-    sessHash
-  ]))[0];
-  if (!sessHash.length || sessHash != session.sess_hash || req.cookies.userId != session.id_usuario) {
-    res.status(403).send({ message: 'Autenticação inválida.' });
-    return;
+  const userSession = new UserSession();
+  await userSession.load('sessionHash', sessionHash);
+  if (userSession.sessionHash === undefined || sessionHash != userSession.sessionHash ||
+    req.cookies.userId != userSession.userId) {
+    return res.status(403).send({ message: 'Autenticação inválida.' });
   }
 
   next();
 });
 
 exports.getDetails = asyncHandler(async (req, res, next) => {
-  return res.send(await db.query('SELECT email, nome, data_nasc, genero FROM usuarios WHERE id_usuario = ?', [
-    req.cookies.userId
-  ]));
+  const user = new User();
+  await user.load('userId', req.cookies.userId);
+  return res.send({ email: user.email, name: user.name, birthDate: user.birthDate, gender: user.gender });
 });
 
 exports.saveProduct = asyncHandler(async (req, res, next) => {
@@ -136,17 +119,16 @@ exports.saveProduct = asyncHandler(async (req, res, next) => {
     if (!validation.isEmpty())
       return res.status(400).send({ error: validation.array() })
 
-    const out = await db.query('CALL save_anun(?, ?)', [req.cookies.userId, req.params.id]);
-
-    if (out.affectedRows != 0) {
+    const user = new User();
+    await user.load('userId', req.cookies.userId);
+    if (await user.saveProduct(req.params.id)) {
       return res.send({ message: 'Anúncio salvo com sucesso.' });
     } else {
       return res.status(500).send({ message: 'Falha ao salvar anúncio.' });
     }
   } catch (err) {
     if (err.errno == 1062) {
-      res.status(409).send({ message: 'Anúncio já foi salvo por usuário.' });
-      return;
+      return res.status(409).send({ message: 'Anúncio já foi salvo por usuário.' });
     } else {
       next(err);
     }
@@ -159,12 +141,12 @@ exports.unsaveProduct = asyncHandler(async (req, res, next) => {
     if (!validation.isEmpty())
       return res.status(400).send({ error: validation.array() })
 
-    const out = await db.query('CALL unsave_anun(?, ?)', [req.cookies.userId, req.params.id]);
-
-    if (out.affectedRows != 0) {
+    const user = new User();
+    await user.load('userId', req.cookies.userId);
+    if (await user.unsaveProduct(req.params.id)) {
       return res.send({ message: 'Anúncio retirado da lista de anúncios salvos com sucesso.' });
     } else {
-      res.status(404).send({ message: 'Usuário não tem este anúncio salvo.' });
+      return res.status(404).send({ message: 'Usuário não tem este anúncio salvo.' });
     }
   } catch (err) {
     next(err);
@@ -177,17 +159,16 @@ exports.hideProduct = asyncHandler(async (req, res, next) => {
     return res.send({ error: validation.array() })
 
   try {
-    const out = await db.query('CALL hide_anun(?, ?)', [req.cookies.userId, req.params.id]);
-
-    if (out[0][0]['code']) {
+    const user = new User();
+    await user.load('userId', req.cookies.userId);
+    if (await user.hideProduct(req.params.id)) {
       return res.send({ message: 'Anúncio oculto com sucesso.' });
     } else {
-      res.status(500).send({ message: 'Falha ao ocultar anúncio.' });
+      return res.status(500).send({ message: 'Falha ao ocultar anúncio.' });
     }
   } catch (err) {
     if (err.errno == 1062) {
-      res.status(409).send({ message: 'Este anúncio já está oculto.' });
-      return;
+      return res.status(409).send({ message: 'Este anúncio já está oculto.' });
     } else {
       next(err);
     }
@@ -200,12 +181,12 @@ exports.unhideProduct = asyncHandler(async (req, res, next) => {
     if (!validation.isEmpty())
       return res.status(400).send({ error: validation.array() })
 
-    const out = await db.query('CALL unhide_anun(?, ?)', [req.cookies.userId, req.params.id]);
-
-    if (out[0][0]['code']) {
+    const user = new User();
+    await user.load('userId', req.cookies.userId);
+    if (await user.unhideProduct(req.params.id)) {
       return res.send({ message: 'Anúncio retirado da lista de anúncios ocultos com sucesso.' });
     } else {
-      res.status(404).send({ message: 'Este anúncio não está oculto.' });
+      return res.status(404).send({ message: 'Este anúncio não está oculto.' });
     }
   } catch (err) {
     next(err);
@@ -219,13 +200,18 @@ exports.requestPassChange = asyncHandler(async (req, res, next) => {
 
   try {
     const code = Math.floor(Math.random() * (999999 - 111111 + 1)) + 111111;
-    const userId = (await db.query('SELECT * FROM usuarios WHERE email = ?', [req.body.email]))[0].id_usuario;
+    const user = new User()
+    await user.load('email', req.body.email);
+    if (user.userId === undefined) {
+      return res.status(404).send({ message: 'Usuário com este e-mail não encontrado.' });
+    }
 
-    await db.query('INSERT INTO solicitacoes_mudanca_senha VALUES (default, ?, ?, ?, ?) ', [
-      code,
-      new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
-      userId,
-      false]);
+    const passwordChangeRequest = new PasswordChangeRequest({
+      requestCode: code,
+      requestDate: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+      userId: user.userId,
+    });
+    await passwordChangeRequest.save()
 
     sendMail(req.body.email,
       'Redefinição de Senha - Renovável Efetiva',
@@ -243,19 +229,21 @@ exports.confirmCode = asyncHandler(async (req, res, next) => {
     return res.send({ error: validation.array() })
 
   try {
-    let request = await db.query(`SELECT request_code, request_date, usuarios.id_usuario, usuarios.email, used
-    FROM solicitacoes_mudanca_senha INNER JOIN usuarios ON solicitacoes_mudanca_senha.id_usuario = usuarios.id_usuario 
-    WHERE usuarios.email = ? 
-    ORDER BY request_date DESC LIMIT 1`,
+    let request = await db.query(`SELECT requestCode, requestDate, Users.userId, Users.email, used
+    FROM PasswordChangeRequests INNER JOIN Users ON PasswordChangeRequests.userId = Users.userId 
+    WHERE Users.email = ? 
+    ORDER BY requestDate DESC LIMIT 1`,
       [req.body.email]);
     if (request.length == 0) {
-      res.status(400).send({ message: 'Código incorreto' });
-      return;
+      return res.status(400).send({ message: 'Código incorreto' });
     }
 
     request = request[0];
     if (request.request_code == req.body.code && request.email == req.body.email) {
       res.status(200).send({ message: 'Código correto' })
+    }
+    else {
+      res.status(400).send({ message: 'Código incorreto' })
     }
   } catch (err) {
     next(err);
@@ -268,32 +256,29 @@ exports.confirmPassChange = asyncHandler(async (req, res, next) => {
     if (!validation.isEmpty())
       return res.status(400).send({ error: validation.array() })
 
-    let request = await db.query(`SELECT id_request, request_code, request_date, usuarios.id_usuario, email, used
-    FROM solicitacoes_mudanca_senha INNER JOIN usuarios ON solicitacoes_mudanca_senha.id_usuario = usuarios.id_usuario 
-    WHERE usuarios.email = ? 
-    ORDER BY request_date DESC LIMIT 1`,
+    let request = await db.query(`SELECT requestId, requestCode, requestDate, Users.userId, email, used
+    FROM PasswordChangeRequests INNER JOIN Users ON PasswordChangeRequests.userId = Users.userId 
+    WHERE Users.email = ? 
+    ORDER BY requestDate DESC LIMIT 1`,
       [req.body.email]);
 
     request = request[0];
     if (request.request_code != req.body.code || request.email != req.body.email) {
-      res.status(400).send({ message: 'Dados inválidos' });
-      return;
+      return res.status(400).send({ message: 'Dados inválidos' });;
     }
 
-    let dataRequisicao = new Date(request.request_date);
+    let dataRequisicao = new Date(request.requestDate);
     let dataExpiracao = new Date(dataRequisicao.setDate(dataRequisicao.getDate() + 1));
-    if (request.used == 1 || dataExpiracao < Date.now()) {
-      res.status(409).send({ message: 'Solicitação já expirada' });
-      return;
+    if (request.used == 1 || dataExpiracao < Date.now() || isNaN(dataRequisicao)) {
+      return res.status(409).send({ message: 'Solicitação já expirada' });
     }
 
-    await db.query('UPDATE usuarios SET senha_hash = ? WHERE email = ?', [
+    await db.query('UPDATE Users SET passwordHash = ? WHERE email = ?', [
       await bcrypt.hash(req.body.password, 10),
       req.body.email
     ])
-    await db.query('UPDATE solicitacoes_mudanca_senha SET used = ? WHERE id_request = ?', [
-      true,
-      request.id_request
+    await db.query('CALL finishPasswordChangeRequest(?)', [
+      request.requestId
     ])
     res.status(200).send({ message: 'Senha alterada com sucesso' })
     sendMail(req.body.email,
