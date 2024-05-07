@@ -74,7 +74,7 @@ exports.login = asyncHandler(async (req, res, next) => {
       return res.status(403).send({ message: `Dados de usuário incorretos.` });
     }
 
-    const userSession = new UserSession({ userId: user.userId });
+    const userSession = new UserSession({ user: user });
     await userSession.save();
 
     res.cookie('sessionHash', userSession.sessionHash, {
@@ -100,7 +100,7 @@ exports.authorize = asyncHandler(async (req, res, next) => {
   const userSession = new UserSession();
   await userSession.load('sessionHash', sessionHash);
   if (userSession.sessionHash === undefined || sessionHash != userSession.sessionHash ||
-    req.cookies.userId != userSession.userId) {
+    req.cookies.userId != userSession.user.userId) {
     return res.status(403).send({ message: 'Autenticação inválida.' });
   }
 

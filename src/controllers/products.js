@@ -19,8 +19,15 @@ exports.getDetails = asyncHandler(async (req, res, next) => {
     rating: product.rating,
     ratingAmount: product.ratingAmount,
     image: product.image,
-    categoryId: product.categoryId,
-    platformId: product.platformId,
+    category: {
+      categoryId: product.category.categoryId,
+      name: product.category.name
+    },
+    platform: {
+      platformId: product.platform.platformId,
+      name: product.platform.name,
+      url: product.platform.url
+    }
   });
 });
 

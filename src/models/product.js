@@ -1,5 +1,6 @@
 const BaseModel = require('./model');
 const db = require('../services/db');
+const Platform = require('./platform');
 
 module.exports = class Product extends BaseModel {
   #productId;
@@ -11,8 +12,8 @@ module.exports = class Product extends BaseModel {
   #url;
   #image;
   #hidden;
-  #platformId;
-  #categoryId;
+  #platform;
+  #category;
   tableName = 'Products';
 
   constructor(properties = {}) {
@@ -30,8 +31,8 @@ module.exports = class Product extends BaseModel {
   get url() { return this.#url; }
   get image() { return this.#image; }
   get hidden() { return this.#hidden; }
-  get platformId() { return this.#platformId; }
-  get categoryId() { return this.#categoryId; }
+  get platform() { return this.#platform; }
+  get category() { return this.#category; }
 
   set productId(value) {
     this.#productId = value;
@@ -92,18 +93,18 @@ module.exports = class Product extends BaseModel {
       this.#hidden = value;
     }
   }
-  set platformId(value) {
-    if (this.#platformId !== value) {
+  set platform(value) {
+    if (this.#platform === undefined || this.#platform.platformId !== value) {
       if (this.initialized)
-        this.changedFields.add('platformId');
-      this.#platformId = value;
+        this.changedFields.add('platform');
+      this.#platform = value;
     }
   }
-  set categoryId(value) {
-    if (this.#categoryId !== value) {
+  set category(value) {
+    if (this.#category === undefined || this.#platform.categoryId !== value) {
       if (this.initialized)
-        this.changedFields.add('categoryId');
-      this.#categoryId = value;
+        this.changedFields.add('category');
+      this.#category = value;
     }
   }
 
@@ -124,8 +125,8 @@ module.exports = class Product extends BaseModel {
         this.#description,
         this.#url,
         this.#image,
-        this.#platformId,
-        this.#categoryId,
+        this.#platform.platformId,
+        this.#category.categoryId,
         this.#ratingAmount
       ]);
       this.#productId = result;
