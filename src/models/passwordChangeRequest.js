@@ -6,7 +6,7 @@ module.exports = class PasswordChangeRequest extends BaseModel {
   #requestId;
   #requestCode;
   #requestDate;
-  #userId;
+  #user;
   #used = false;
   tableName = 'PasswordChangeRequests';
 
@@ -19,13 +19,13 @@ module.exports = class PasswordChangeRequest extends BaseModel {
   get requestId() { return this.#requestId; }
   get requestCode() { return this.#requestCode; }
   get requestDate() { return this.#requestDate; }
-  get userId() { return this.#userId; }
+  get user() { return this.#user; }
   get used() { return this.#used; }
 
   set requestId(value) { this.#requestId = value; }
   set requestCode(value) { this.#requestCode = value; }
   set requestDate(value) { this.#requestDate = value; }
-  set userId(value) { this.#userId = value; }
+  set user(value) { this.#user = value; }
   set used(value) {
     if (this.#used !== value) {
       if (this.initialized)
@@ -41,15 +41,22 @@ module.exports = class PasswordChangeRequest extends BaseModel {
       this.#requestId = await db.query('CALL createPasswordChangeRequest(?, ?, ?)', [
         this.#requestCode,
         this.#requestDate,
-        this.#userId
+        this.#user.userId
       ]);
     }
   }
 
-  async confirmCode(code, email) {
-    await db.query(`SELECT request_code, request_date, usuarios.id_usuario, usuarios.email, used
-    FROM solicitacoes_mudanca_senha INNER JOIN usuarios ON solicitacoes_mudanca_senha.id_usuario = usuarios.id_usuario 
-    WHERE usuarios.email = ? 
-    ORDER BY request_date DESC LIMIT 1`, [email])
+  async loadByUserEmail(email) {
+    const request = await db.query(`SELECT requestId
+    FROM PasswordChangeRequests INNER JOIN Users ON PasswordChangeRequests.userId = Users.userId 
+    WHERE Users.email = ? 
+    ORDER BY requestDate DESC LIMIT 1`,
+      [email]);
+    if (request.length == 0) {
+      return false;
+    }
+
+    this.load('requestId', request[0].requestId);
+    return true;
   }
 }

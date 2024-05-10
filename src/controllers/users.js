@@ -229,22 +229,17 @@ exports.confirmCode = asyncHandler(async (req, res, next) => {
     return res.send({ error: validation.array() })
 
   try {
-    let request = await db.query(`SELECT requestCode, requestDate, Users.userId, Users.email, used
-    FROM PasswordChangeRequests INNER JOIN Users ON PasswordChangeRequests.userId = Users.userId 
-    WHERE Users.email = ? 
-    ORDER BY requestDate DESC LIMIT 1`,
-      [req.body.email]);
-    if (request.length == 0) {
+    const passwordChangeRequest = new PasswordChangeRequest();
+    if (!(await passwordChangeRequest.loadByUserEmail(req.body.email))) {
       return res.status(400).send({ message: 'Código incorreto' });
     }
 
-    request = request[0];
-    if (request.request_code == req.body.code && request.email == req.body.email) {
-      res.status(200).send({ message: 'Código correto' })
-    }
-    else {
+    if (passwordChangeRequest.requestCode != req.body.code) {
       res.status(400).send({ message: 'Código incorreto' })
     }
+
+    res.status(200).send({ message: 'Código correto' })
+
   } catch (err) {
     next(err);
   }
@@ -256,20 +251,15 @@ exports.confirmPassChange = asyncHandler(async (req, res, next) => {
     if (!validation.isEmpty())
       return res.status(400).send({ error: validation.array() })
 
-    let request = await db.query(`SELECT requestId, requestCode, requestDate, Users.userId, email, used
-    FROM PasswordChangeRequests INNER JOIN Users ON PasswordChangeRequests.userId = Users.userId 
-    WHERE Users.email = ? 
-    ORDER BY requestDate DESC LIMIT 1`,
-      [req.body.email]);
-
-    request = request[0];
-    if (request.request_code != req.body.code || request.email != req.body.email) {
+    const passwordChangeRequest = new PasswordChangeRequest();
+    await passwordChangeRequest.loadByUserEmail(req.body.email);
+    if (request.request_code != req.body.code) {
       return res.status(400).send({ message: 'Dados inválidos' });;
     }
 
-    let dataRequisicao = new Date(request.requestDate);
+    let dataRequisicao = new Date(passwordChangeRequest.requestDate);
     let dataExpiracao = new Date(dataRequisicao.setDate(dataRequisicao.getDate() + 1));
-    if (request.used == 1 || dataExpiracao < Date.now() || isNaN(dataRequisicao)) {
+    if (passwordChangeRequest.used || dataExpiracao < Date.now() || isNaN(dataRequisicao)) {
       return res.status(409).send({ message: 'Solicitação já expirada' });
     }
 
@@ -278,7 +268,7 @@ exports.confirmPassChange = asyncHandler(async (req, res, next) => {
       req.body.email
     ])
     await db.query('CALL finishPasswordChangeRequest(?)', [
-      request.requestId
+      passwordChangeRequest.requestId
     ])
     res.status(200).send({ message: 'Senha alterada com sucesso' })
     sendMail(req.body.email,
