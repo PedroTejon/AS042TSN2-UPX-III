@@ -1,0 +1,153 @@
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+    --navblue: #0E6BBE;
+    --navnotactive: #929495;
+    --alltitle: #043057;
+    --buttons: #389ED7;
+    --paragraph: #20202B;
+    --inputfield: #DEEBF5;
+    --placeholders: #353c41;
+    --inputtextcolor: #124971;
+}
+
+.unselectable {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+/*Default*/
+* {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    overflow: hidden;
+    color: var(--paragraph);
+}
+
+h2{
+    color: var(--alltitle);
+    margin-top: 5%;
+    margin-bottom: 2%;
+    cursor: default;
+}
+
+main p{
+    margin-bottom: 10%;
+    cursor: default;
+}
+
+.account-btn{
+    background-color: var(--buttons);
+    color: #FFFFFF;
+    border-radius: 64px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.body-layout{
+    display: flex;
+}
+
+aside{
+    width: 25%;
+   
+}
+
+main{
+    width: 25%;
+    margin-right: 10%;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+
+main form{
+    display: flex;
+    flex-direction: column;
+}
+
+aside img{
+    height: 100vh;
+    
+    filter: hue-rotate(10deg) brightness(65%) grayscale(9%);
+}
+
+input{
+    background-color: var(--inputfield);
+    color: var(--inputtextcolor);
+    border-radius: 8px;
+    caret-color: #075aa3;
+}
+
+input::placeholder{
+    color: var(--placeholders);
+    font-size: 111%;
+}
+
+/*Login*/
+#login-form input{
+    padding: 3%;
+    margin-top: 2%;
+    margin-bottom: 6%;
+}
+
+#login-form a{
+    text-align: center;
+    color: var(--alltitle);
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 1.5%;
+}
+
+#login-form label{
+    cursor: default;
+    font-weight: bold;
+    color: var(--alltitle);
+}
+
+.buttons-main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#gotoSignup{
+    background-color: #047ef0 ;
+}
+
+#gotoSignup:hover{
+    transition: all ease 0.5s;
+    background-color: #01478a;
+}
+
+.buttons-main button {
+   
+    padding: 2.5%;
+    font-size: 95%;
+    width: 100%;
+    margin-top: 6%;
+}
+
+.buttons-main button:hover {
+    transition: all ease 0.5s;
+    background-color: #1271ca;
+}
+
+.logo-img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8%;
+}

@@ -108,15 +108,7 @@ input::placeholder {
     word-break: break-all;
 }
 
-button {
-    background-color: var(--buttons);
-    border-radius: 64px;
-    font-weight: bold;
-    color: #FFFFFF;
-    padding: 1%;
-    font-size: 95%;
-    cursor: pointer;
-}
+
 
 
 button {
