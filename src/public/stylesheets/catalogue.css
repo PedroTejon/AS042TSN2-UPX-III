@@ -1,4 +1,178 @@
 #productSearch{
     background-color: var(--inputfield);
     color: var(--inputtextcolor);
+    border-radius: 8px;
+    padding: 0.85%;
+    font-size: 90%;
+    margin-top: 1.5%;
+    margin-bottom: 1%;
+    width: 94%;
+}
+
+button{
+    background-color: var(--buttons);
+    font-weight: bold;
+    color: #FFFFFF;
+    cursor: pointer;
+    border-radius: 64px;
+}
+
+button:hover {
+    transition: all ease 0.5s;
+    background-color: #1271ca;
+}
+
+.catalogue-info button {
+    border-radius: 8px;
+    padding: 0.85%;
+    width: 5.18%;
+    font-size: 90%;
+    margin-left: 0.5%;
+    cursor: pointer;
+
+}
+
+.filters-sec{
+    margin-top: 1.5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.right-btn button{
+    font-size: 90%;
+    border-radius: 8px;
+    padding: 4%;
+    width: 8rem;
+    margin-left: 5%;
+}
+
+.right-btn{
+
+    display: flex;
+    flex-direction: row;
+}
+
+#favoriteBtn{
+    background-color: transparent;
+    color: var(--buttons);
+    border: 2px solid var(--buttons);
+    padding: 4%;
+    width: 8rem;
+    height: 2.5rem;
+}
+
+#favoriteBtn:hover{
+    border: 2px solid #4ab8f8;
+    color: #4ab8f8;
+}
+
+.catalogue-view{
+    margin-top: 4%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: initial;
+    margin-left: 0.8%;
+}
+
+.catalogue-item{
+    margin-bottom: 3%;
+    margin-right: 1.5%;
+    margin-left: 0.5%;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 4px 4px 8px 8px #2c2c2c09;
+    width: 18%;
+    padding: 2%;
+}
+
+.item-div{
+    margin-top: -3%;
+    margin-left: -4%;
+}
+
+.item-img-div{
+    height: 12rem;
+    width: 105%;
+    overflow: hidden;
+    border-radius: 8px;
+   
+}
+
+h3{
+    font-size: 150%;
+    color: #6D6E6E;
+    margin-top: 0.4%;
+    margin-bottom: 4%;
+}
+
+.item-img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.flex-name-save{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8%;
+}
+
+.flex-name-save i{
+    color: #D20808;
+    font-size: 160%;
+    margin-top: 1%;
+    cursor: pointer;
+}
+
+.saved{
+    opacity: 1;
+}
+
+.saved:hover{
+    transition: all ease 0.5s ;
+    color: #9c0a0a;
+}
+
+.unsaved{
+    opacity: 0.4;
+}
+
+.unsaved:hover{
+    transition: all ease 0.5s ;
+    color: #fa5757;
+    opacity: 0.9;
+}
+
+.evaluated{
+    opacity: 1;
+}
+
+.not-evaluated{
+    opacity: 0.46;
+}
+
+.item-name-wrap{
+    overflow-wrap: break-word;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 60%;
+    color: #929495;
+    font-size: 111%;
+}
+
+.item-evaluation i{
+    color: #FDAF18;
+    margin-right: 1%;
+    font-size: 130%;
+    cursor: default;
+}
+
+.button-for-items {
+    padding: 3%;
+    font-size: 90%;
+    width: 100%;
+    margin-top: 5%;
 }

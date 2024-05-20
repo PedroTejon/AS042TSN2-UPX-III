@@ -172,6 +172,7 @@ article p {
     color: var(--paragraph);
     text-align: justify;
     line-height: 160%;
+    cursor: default;
 }
 
 h2 {
