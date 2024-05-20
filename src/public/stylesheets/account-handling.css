@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,700;0,800;1,100;1,200;1,300;1,700;1,800&display=swap');
+
 html {
     scroll-behavior: smooth;
 }
@@ -44,7 +46,7 @@ h2{
 }
 
 main p{
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     cursor: default;
 }
 
@@ -137,7 +139,7 @@ input::placeholder{
     padding: 2.5%;
     font-size: 95%;
     width: 100%;
-    margin-top: 6%;
+    margin-top: 4%;
 }
 
 .buttons-main button:hover {
