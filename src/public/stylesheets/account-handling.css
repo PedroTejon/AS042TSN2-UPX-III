@@ -154,3 +154,98 @@ input::placeholder{
     margin-bottom: 8%;
 }
 
+/*password recover*/
+
+.go-back{
+    color: var(--alltitle);
+    margin-left:2%;
+    margin-top: 2%;
+    cursor: pointer;
+    width: 25%;
+}
+
+.go-back i{
+    margin-right: 1%;
+}
+
+.password-main{
+    margin-left: -15%;
+    margin-top: 5%;
+    width: 35%;
+}
+
+#passwordRecover label{
+    font-weight: bold;
+    color: var(--alltitle);
+}
+
+#passwordRecover input, button{
+    padding: 2%;
+
+}
+
+#passwordRecover  button{
+    margin-top: 4%;
+    font-size: 95%;
+}
+
+#passwordRecover  input{
+    margin-top: 1%;
+}
+
+.img-pass{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
+}
+
+#passwordRecover p{
+    text-align: center;
+}
+
+/*emailcode*/
+
+.send-again{
+    margin-top: 3%;
+}
+
+.send-again b{
+    color: var(--navblue);
+    cursor: pointer;
+}
+
+.send-again b:hover{
+    transition: all ease 0.5s;
+    color: #1a87ee;
+}
+
+.title-pass{
+    text-align: center;
+    font-size: 125%;
+}
+
+.emailpassword-main{
+    margin-top: 10%;
+}
+
+.description{
+    margin-bottom: 8%;
+}
+
+/*allset*/
+
+.allset{
+    text-align: center;
+}
+
+.allset button{
+    padding: 2%;
+    font-size: 95%;
+    width: 100%;
+    margin-top: 3%;
+}
+
+.allset-main{
+    width: 35%;
+}
