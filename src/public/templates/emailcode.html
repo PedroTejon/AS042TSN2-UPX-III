@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../stylesheets/account-handling.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
     <script src="https://kit.fontawesome.com/fb813e9d63.js" crossorigin="anonymous"></script>
-
+    <script src="../DOM/emailcode.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <section class="body-layout">
@@ -20,11 +20,11 @@
             <div class="title-pass">
                 <h2>Verificação</h2>
             </div>
-            <form id="passwordRecover">
+            <form id="passwordRecover" onsubmit="codeConfirmation(event)">
                 <p class="description">Insira o código de verificação que enviamos para o seu e-mail.</p>
                 <label for="mailcode">Código de verificação</label>
                 <input type="text" name="mailcode" id="mailcode" placeholder="Código de verificação">
-                <p class="send-again">Não recebeu o código? <b>Reenviar código</b></p>
+                <p class="send-again">Não recebeu o código? <b style="cursor: pointer;" onclick="window.location.href = '/passwordrecover'">Reenviar código</b></p>
                 <button type="submit" class="account-btn" id="sentCode">Próximo</button>
             </form>
         </main>

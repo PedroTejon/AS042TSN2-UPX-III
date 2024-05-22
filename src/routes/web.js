@@ -29,4 +29,17 @@ router.get('/signup', function (req, res, next) {
   res.sendFile('signup.html', { root: './src/public/templates' });
 });
 
+router.get('/passwordrecover', function (req, res, next) {
+  res.sendFile('passwordrecover.html', { root: './src/public/templates' });
+});
+
+router.get('/emailcode', function (req, res, next) {
+  res.sendFile('emailcode.html', { root: './src/public/templates' });
+});
+
+router.get('/newpassword', function (req, res, next) {
+  res.sendFile('newpassword.html', { root: './src/public/templates' });
+});
+
+
 module.exports = router;

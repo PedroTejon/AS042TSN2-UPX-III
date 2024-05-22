@@ -23,12 +23,9 @@ exports.UserValidator = {
     body('email').isEmail(),
   ],
   confirmPassChangeValidator: [
-    body('email').isEmail(),
-    body('requestCode').isInt(),
     body('password').isLength({ min: 8, max: 64 })
   ],
-  confirmCodeValidator: [
-    body('email').isEmail(),
+  confirmCodeValidator: [    
     body('requestCode').isInt()
   ],
   saveProductValidator: [

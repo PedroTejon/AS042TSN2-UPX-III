@@ -217,6 +217,10 @@ exports.requestPassChange = asyncHandler(async (req, res, next) => {
       'Redefinição de Senha - Renovável Efetiva',
       `Aqui está seu código para redefinição de senha:\n${code}`);
 
+    res.cookie('emailPasswordRecovery', req.body.email, {
+      maxAge: Date.now() + 60 * 60 * 1000,
+    });
+
     res.status(201).send({ message: 'Solicitação de troca de senha feita com sucesso.' });
   } catch (err) {
     next(err);
@@ -233,13 +237,17 @@ exports.confirmCode = asyncHandler(async (req, res, next) => {
     FROM PasswordChangeRequests INNER JOIN Users ON PasswordChangeRequests.userId = Users.userId 
     WHERE Users.email = ? 
     ORDER BY requestDate DESC LIMIT 1`,
-      [req.body.email]);
+      [req.cookies.emailPasswordRecovery]);
     if (request.length == 0) {
       return res.status(400).send({ message: 'Código incorreto' });
     }
 
     request = request[0];
-    if (request.request_code == req.body.code && request.email == req.body.email) {
+    if (request.requestCode == req.body.requestCode && request.email == req.cookies.emailPasswordRecovery) {
+      res.cookie('passwordChangeCode', request.requestCode, {
+        maxAge: Date.now() + 60 * 60 * 1000,
+      });
+
       res.status(200).send({ message: 'Código correto' })
     }
     else {
@@ -260,10 +268,10 @@ exports.confirmPassChange = asyncHandler(async (req, res, next) => {
     FROM PasswordChangeRequests INNER JOIN Users ON PasswordChangeRequests.userId = Users.userId 
     WHERE Users.email = ? 
     ORDER BY requestDate DESC LIMIT 1`,
-      [req.body.email]);
+      [req.cookies.emailPasswordRecovery]);
 
     request = request[0];
-    if (request.request_code != req.body.code || request.email != req.body.email) {
+    if (request.requestCode != req.cookies.passwordChangeCode || request.email != req.cookies.emailPasswordRecovery) {
       return res.status(400).send({ message: 'Dados inválidos' });;
     }
 
@@ -275,13 +283,13 @@ exports.confirmPassChange = asyncHandler(async (req, res, next) => {
 
     await db.query('UPDATE Users SET passwordHash = ? WHERE email = ?', [
       await bcrypt.hash(req.body.password, 10),
-      req.body.email
+      req.cookies.emailPasswordRecovery
     ])
     await db.query('CALL finishPasswordChangeRequest(?)', [
       request.requestId
     ])
     res.status(200).send({ message: 'Senha alterada com sucesso' })
-    sendMail(req.body.email,
+    sendMail(req.cookies.emailPasswordRecovery,
       'Senha Redefinida - Renovável Efetiva',
       'Sua senha foi redefinida com sucesso.');
   } catch (err) {
