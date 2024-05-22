@@ -31,6 +31,7 @@ async function loadProducts() {
                     ${'<i class="fa-solid fa-star evaluated"></i>'.repeat(Math.floor(productRating))}
                     ${'<i class="fa-solid fa-star-half-stroke evaluated"></i>'.repeat(productRating % 1 > 0)}
                     ${'<i class="fa-solid fa-star not-evaluated"></i>'.repeat((5 - Math.ceil(productRating)))}
+                    <span style="color: #929495">${product.rating} (${product.ratingAmount})</span>
                 </div>
                 <div class="item-button">
                     <button class="button-for-items" onclick="window.location.href='/product?id=${product.productId}'">Ver detalhes</button>
@@ -47,7 +48,23 @@ function setSearchQuery(event) {
     if (searchValue != '') {
         params.set('searchQuery', searchValue);
     }
+    if (page > 1) {
+        params.set('page', 1);
+    }
+
     window.location.href = `catalogue${params.size > 0 ? '?' : ''}${params.toString()}`;
+}
+
+function nextPage() {
+    params.set('page', page + 1);
+    window.location.href = `catalogue${params.size > 0 ? '?' : ''}${params.toString()}`;
+}
+
+function previousPage() {
+    if (page > 1) {
+        params.set('page', page - 1);
+        window.location.href = `catalogue${params.size > 0 ? '?' : ''}${params.toString()}`;
+    }
 }
 
 loadProducts();
