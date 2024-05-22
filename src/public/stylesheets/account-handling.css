@@ -174,22 +174,24 @@ input::placeholder{
     width: 35%;
 }
 
-#passwordRecover label{
+
+
+#passwordRecover label, #newPass label{
     font-weight: bold;
     color: var(--alltitle);
 }
 
-#passwordRecover input, button{
+#passwordRecover input, button, #newPass input, button{
     padding: 2%;
 
 }
 
-#passwordRecover  button{
+#passwordRecover  button, #newPass button{
     margin-top: 4%;
     font-size: 95%;
 }
 
-#passwordRecover  input{
+#passwordRecover  input, #newPass input{
     margin-top: 1%;
 }
 
@@ -248,4 +250,124 @@ input::placeholder{
 
 .allset-main{
     width: 35%;
+}
+
+/*newpassword*/
+
+.newpassword-main{
+    margin-left: -15%;
+    margin-top: 5%;
+    width: 35%;
+}
+
+#newPass ul{
+    margin-top: -2%;
+    margin-bottom: 3%;
+    margin-left: 4%;
+}
+
+#newPass label{
+    margin-top: 3%;
+}
+
+.bar-container{
+    border: 1px solid #c8d3dd;
+    border-radius: 64px;
+    height: 5%;
+    font-size: 5%;
+    margin-top: 2%;
+}
+
+.low{
+    background-color: #e01818;
+    width: 12%;
+    border-radius: 64px;
+}
+
+.medium{
+    background-color: #e08918;
+    width: 50%;
+    border-radius: 64px;
+}
+
+.high{
+    background-color: #2db338;
+    width: 100%;
+    border-radius: 64px;
+}
+
+.passlow{
+    color: #e01818;
+}
+
+.passmedium{
+    color: #e08918;
+}
+
+.passhigh{
+    color: #2db338;
+}
+
+/*Signup*/
+
+#signup-form input{
+    padding: 1.5%;
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+
+#signup-form select{
+    padding: 1.5%;
+    margin-top: 2%;
+    margin-bottom: 1%;
+    background-color: var(--inputfield);
+    color: var(--inputtextcolor);
+    border-radius: 8px;
+    caret-color: #075aa3;
+}
+
+
+#signup-form button{
+    margin-top: 3%;
+}
+
+#signup-form a{
+    text-align: center;
+    color: var(--alltitle);
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 1.5%;
+}
+
+#signup-form label{
+    margin-bottom: -1.5%;
+    cursor: default;
+    font-weight: bold;
+    color: var(--alltitle);
+}
+
+#signupMain{
+    width: 45%;
+    
+}
+
+
+#signupMain h2{
+    margin-bottom: 0.5%;
+    margin-top: 2% ;
+}
+
+#signupMain p{
+    margin-bottom: 1%;
+    
+}
+
+#signupMain .logo-img{
+    margin-bottom: 0.2%;
+
+}
+
+
+#signupMain section {
+    margin-top: -5%;
 }

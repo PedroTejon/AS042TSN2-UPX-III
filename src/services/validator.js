@@ -55,11 +55,11 @@ exports.UserValidator = {
 
 exports.ProductValidator = {
   getDetailsValidator: [
-    param('id').exists().isInt({ min: 1 })
+    query('id').exists().isInt({ min: 1 })
       .withMessage('Parâmetro \'id\' não é um número inteiro inteiro ou maior do que 0')
   ],
   getPageValidator: [
-    param('page').exists().isInt({ min: 1 })
+    query('page').optional().isInt({ min: 1 })
       .withMessage('Parâmetro \'page\' não é um número inteiro inteiro ou maior do que 0'),
     query('sortedBy').optional().toLowerCase()
       .isIn(['avaliacao', 'qntd_avaliacoes', 'preco', 'id_anuncio', 'titulo']),

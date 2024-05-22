@@ -10,7 +10,7 @@ exports.getDetails = asyncHandler(async (req, res, next) => {
     return res.status(400).send({ error: validation.array() })
 
   const product = new Product();
-  await product.load('productId', req.params['id']);
+  await product.load('productId', req.query['id']);
   return res.send({
     productId: product.productId,
     title: product.title,
@@ -29,8 +29,8 @@ exports.getPage = asyncHandler(async (req, res, next) => {
   if (!validation.isEmpty())
     return res.status(400).send({ error: validation.array() })
 
-  const page = parseInt(req.params['page']) * 50;
-  let orderBy = 'ORDER BY productId DESC';
+  const page = parseInt(req.query['page'] ?? 0) * 50;
+  let orderBy = 'ORDER BY Products.productId DESC';
   if ('sortedBy' in req.query) {
     orderBy = `ORDER BY ${req.query['sortedBy']} ${'sortOrder' in req.query ? req.query['sortOrder'] : 'DESC'}`;
   }
@@ -39,23 +39,30 @@ exports.getPage = asyncHandler(async (req, res, next) => {
   await user.load('userId', req.cookies.userId);
   let showHidden = 'AND hidden = 0';
   if (req.cookies.userId && user.administrator == 1) {
-    showHidden = 'AND hiddem IN (0, 1)'
+    showHidden = 'AND hidden IN (0, 1)'
+  }
+
+  let savedBy = '';
+  let fields = '*'
+  if (user.userId != undefined) {
+    savedBy = 'LEFT JOIN SavedProducts ON Products.productId = SavedProducts.productId AND SavedProducts.userId = ' + user.userId
+    fields = 'Products.*, SavedProducts.productId IS NOT NULL AS saved'
   }
 
   let filter = ''
   if ('filter' in req.query) {
     const filterObject = JSON.parse(req.query.filter);
-    if (filterObject.categories.length) {
+    if (filterObject.categories != undefined && filterObject.categories.length) {
       filter += 'AND ('
       for (let i = 0; i < filterObject.categories.length; i++) {
-        filter += `categoryId = ${filterObject.categories[i]} ${i != filterObject.categories.length - 1 ? 'OR' : ')'}`
+        filter += `categoryId = ${filterObject.categories[i]}${i != filterObject.categories.length - 1 ? 'OR' : ') '}`
       }
     }
 
-    if (filterObject.platforms.length) {
+    if (filterObject.platforms != undefined && filterObject.platforms.length) {
       filter += 'AND ('
       for (let i = 0; i < filterObject.platforms.length; i++) {
-        filter += `platformId = ${filterObject.platforms[i]} ${i != filterObject.platforms.length - 1 ? 'OR' : ')'}`
+        filter += `platformId = ${filterObject.platforms[i]} ${i != filterObject.platforms.length - 1 ? 'OR' : ') '}`
       }
     }
 
@@ -76,9 +83,9 @@ exports.getPage = asyncHandler(async (req, res, next) => {
     }
   }
 
-  const query = `SELECT * FROM Product
+  const query = `SELECT ${fields} FROM Products ${savedBy}
     WHERE 
-    title LIKE ?
+    LOWER(title) LIKE LOWER(?)
     ${showHidden}
     ${filter}
     ${orderBy} LIMIT ${page}, 50`;

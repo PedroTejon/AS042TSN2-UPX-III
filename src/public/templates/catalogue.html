@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,28 +10,32 @@
     <link rel="stylesheet" href="../stylesheets/style.css">
     <link rel="stylesheet" href="../stylesheets/catalogue.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
+    <script src="../DOM/auth.js" defer></script>
 </head>
+
 <body>
     <header class="header-default">
         <div class="logo-div">
-            <img src="../assets/common/logo.png" class="unselectable" draggable="false"  alt="Logotipo do Renovável Efetiva">
+            <img src="../assets/common/logo.png" class="unselectable" draggable="false"
+                alt="Logotipo do Renovável Efetiva">
         </div>
         <nav class="nav-default">
             <ul>
-                <li ><a class="notactive unselectable" draggable="false" id="mainpage" href="../templates/index.html">Inicial</a></li>
-                <li><a class="active unselectable"  draggable="false" id="catalogue" href="../templates/catalogue.html">Catálogo</a></li>
-                <li><a class="notactive unselectable"  draggable="false" id="faq" href="../templates/FAQ.html">FAQ</a></li>
-                <li><a class="notactive unselectable" draggable="false" id="about" href="../templates/about.html">Sobre</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="mainpage" href="/">Inicial</a></li>
+                <li><a class="active unselectable" draggable="false" id="catalogue" href="/catalogue">Catálogo</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="faq" href="/FAQ">FAQ</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="about" href="/about">Sobre</a></li>
             </ul>
         </nav>
         <section id="conteudo"></section>
         <div class="profile-info">
             <div class="pfp-div">
-                <img src="../assets/common/pfp-icon.png" alt="Foto de perfil padrão" class="unselectable" draggable="false" >
+                <img src="../assets/common/pfp-icon.png" alt="Foto de perfil padrão" class="unselectable"
+                    draggable="false">
             </div>
-            <div class="userinfo-div unselectable"  draggable="false">
+            <div class="userinfo-div unselectable" draggable="false">
                 <p id="username">Primeiro e ultimo</p>
-                <a id="see-profile"  draggable="false" href="../templates/profile.html">Ver meu perfil</a>
+                <a id="see-profile" draggable="false" href="/profile">Ver meu perfil</a>
 
             </div>
         </div>
@@ -39,11 +44,13 @@
     <article>
         <section class="catalogue-info">
             <h2>Catálogo de produtos</h2>
-            <p>Navegue pelo catálogo com os menores preços possíveis. Todos os produtos em catálogo foram retirados de outras plataformas especializadas em venda, ao acessar os detalhes de um produto e decidir seguir em frente com o anúncio, você será encaminhado para a página original do anúncio escolhido.</p>
+            <p>Navegue pelo catálogo com os menores preços possíveis. Todos os produtos em catálogo foram retirados de
+                outras plataformas especializadas em venda, ao acessar os detalhes de um produto e decidir seguir em
+                frente com o anúncio, você será encaminhado para a página original do anúncio escolhido.</p>
             <form>
                 <input id="productSearch" name="productSearch" placeholder="Procure por um produto">
-                <button><i class="fa-solid fa-magnifying-glass"></i></button>
-                
+                <button onclick="setSearchQuery(event)"><i class="fa-solid fa-magnifying-glass"></i></button>
+
             </form>
         </section>
         <section class="filters-sec">
@@ -51,266 +58,15 @@
                 <button id="favoriteBtn">Favoritos</button>
             </div>
             <div class="right-btn">
-                <button id="orderBtn">Ordenar <i class="fa-solid fa-arrow-up-wide-short"></i></button>
-                <button id="filterBtn">Filtros <i class="fa-solid fa-filter"></i></button>
+                <button id="orderBtn">Ordenar<i class="fa-solid fa-arrow-up-wide-short"></i></button>
+                <button id="filterBtn">Filtros<i class="fa-solid fa-filter"></i></button>
             </div>
         </section>
 
         <section class="catalogue-view">
 
-            <!--As estrelas de avaliação com classe evaluated tem opacidade 100% enquanto as not-evaluated tem opacidade 46%-->
-                <!--Os corações de favorito com classe saved tem opacidade 100% enquanto os unsaved tem opacidade 40%-->
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart saved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart saved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart saved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart saved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart saved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart unsaved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart saved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart saved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="catalogue-item">
-                <div class="item-div">
-                    <div class="item-img-div">
-                        <img class="item-img" src="https://metalsol.com.br/wp-content/uploads/2022/10/Como-Funciona-um-Painel-Solar-Fotovoltaico.png">
-                    </div>
-                    <div class="flex-name-save">
-                        <div class="item-name-wrap">
-                            <span class="item-name">Placa solar com muita especificação</span>
-                        </div>
-                        <i class="fa-solid fa-heart unsaved"></i>
-                    </div>
-                    <div class="item-price">
-                        <h3>RS120,00</h3>
-                    </div>
-                    <div class="item-evaluation">
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star evaluated"></i>
-                        <i class="fa-solid fa-star not-evaluated"></i>
-                    </div>
-                    <div class="item-button">
-                        <button class="button-for-items">Ver detalhes</button>
-                    </div>
-                </div>
-            </div>
-
         </section>
-
-        
     </article>
-    
-
 
     <footer class="footer-default">
         <div class="footerlogo-div">
@@ -319,10 +75,10 @@
         <div class="link-footer unselectable" draggable="false">
             <p>Links do site</p>
             <ul>
-                <li><a id="footer-main" draggable="false" href="../templates/index.html">Inicial</a></li>
-                <li><a id="footer-catalogue"  draggable="false" href="../templates/catalogue.html">Catálogo</a></li>
-                <li><a id="footer-faq" draggable="false" href="../templates/FAQ.html">FAQ</a></li>
-                <li><a id="footer-about" draggable="false" href="../templates/about.html">Sobre</a></li>
+                <li><a id="footer-main" draggable="false" href="/">Inicial</a></li>
+                <li><a id="footer-catalogue" draggable="false" href="/catalogue">Catálogo</a></li>
+                <li><a id="footer-faq" draggable="false" href="/FAQ">FAQ</a></li>
+                <li><a id="footer-about" draggable="false" href="/about">Sobre</a></li>
             </ul>
         </div>
         <div class="contact-footer">
@@ -334,21 +90,31 @@
         <div class="data-footer unselectable">
             <p>Fonte de dados</p>
             <ul>
-                <li><a id="footer-energia" draggable="false" href="https://www.energiatotal.com.br/">EnergiaTotal</a></li>
+                <li><a id="footer-energia" draggable="false" href="https://www.energiatotal.com.br/">EnergiaTotal</a>
+                </li>
                 <li><a id="footer-leroy" draggable="false" href="https://www.leroymerlin.com.br/">Leroy Merlin</a></li>
-                <li><a id="footer-magalu" draggable="false"  href="https://www.magazineluiza.com.br/">Magazine Luiza</a></li>
-                <li><a id="footer-mercadolivre" draggable="false"  href="https://www.mercadolivre.com.br/">Mercado Livre</a></li>
-                <li><a id="footer-minhacasa" draggable="false" href="https://www.minhacasasolar.com.br/">Minha Casa Solar</a></li>
+                <li><a id="footer-magalu" draggable="false" href="https://www.magazineluiza.com.br/">Magazine Luiza</a>
+                </li>
+                <li><a id="footer-mercadolivre" draggable="false" href="https://www.mercadolivre.com.br/">Mercado
+                        Livre</a></li>
+                <li><a id="footer-minhacasa" draggable="false" href="https://www.minhacasasolar.com.br/">Minha Casa
+                        Solar</a></li>
                 <li><a id="footer-neosolar" draggable="false" href="https://www.neosolar.com.br/">Neosolar</a></li>
             </ul>
         </div>
         <div class="dataset-footer unselectable" draggable="false">
             <p>Dataset</p>
             <ul>
-                <li><a id="footer-kaggle" draggable="false" href="https://www.kaggle.com/datasets/belayethossainds/renewable-energy-world-wide-19652022">Kaggle</a></li>
+                <li><a id="footer-kaggle" draggable="false"
+                        href="https://www.kaggle.com/datasets/belayethossainds/renewable-energy-world-wide-19652022">Kaggle</a>
+                </li>
             </ul>
         </div>
     </footer>
+
+    <script src="../DOM/catalogue.js"></script>
 </body>
+
 </html>
+
 </html>

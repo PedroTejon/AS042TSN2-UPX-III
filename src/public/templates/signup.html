@@ -6,9 +6,47 @@
     <title>Cadastro - Renovável Efetiva</title>
     <link rel="icon" href="../assets/common/site-ico.svg">
     <link rel="stylesheet" href="../stylesheets/account-handling.css">
+    <link rel="stylesheet" href="../stylesheets/transition.css">
     <script src="https://kit.fontawesome.com/fb813e9d63.js" crossorigin="anonymous"></script>
+    <script src="../DOM/signup.js"></script>
 </head>
 <body>
-    
+    <section class="body-layout">
+        <main id="signupMain">
+          <section>
+                <div class="logo-img">
+                    <img class="unselectable" draggable="false" src="../assets/common/logo.png" alt="Logo do Renovável Efetiva">
+                </div>
+                <h2>Cadastre-se para utilizar o Renovável Efetiva</h2>
+                <p>Preencha o formulário para criar sua conta e encontre produtos de qualidade por baixos preços.</p>
+                <form id="signup-form" onsubmit="signup()">
+                    <label for="username">Nome de usuário</label>
+                    <input type="password" name="username" id="username" placeholder="Informe seu nome">
+
+                    <label for="usermail">E-mail de acesso</label>
+                    <input type="email" name="usermail" id="usermail" placeholder="Informe um e-mail para acesso">
+                    
+                    <label for="userpass">Senha de acesso</label>
+                    <input type="password" name="userpass" id="userpass" placeholder="Crie uma senha para acesso">
+                    
+                    <label for="userbday">Aniversário</label>
+                    <input type="date" name="userbday" id="userbday">
+
+                    <label for="userbday">Gênero</label>
+                    <select>
+                        <option value="F">Feminino</option>
+                        <option value="M">Masculino</option>
+                        <option value="N">Prefiro não informar</option>
+                    </select>
+
+                    <button type="submit" class="account-btn" id="signupBtn">Criar conta</button>
+
+                </form>
+            </section>
+        </main>
+        <aside>
+            <img src="../assets/account-handling/solar.jpg" alt="Geradores de energia eólica">
+        </aside>
+    </section>
 </body>
 </html>

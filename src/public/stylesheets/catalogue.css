@@ -17,6 +17,17 @@ button{
     border-radius: 64px;
 }
 
+.origin-store{
+    width: 3rem;
+    height: 3rem;
+    
+}
+
+.origin-store img{
+    height: 100%;
+    width: 100%;
+}
+
 button:hover {
     transition: all ease 0.5s;
     background-color: #1271ca;
@@ -83,6 +94,7 @@ button:hover {
     border-radius: 8px;
     box-shadow: 4px 4px 8px 8px #2c2c2c09;
     width: 18%;
+   
     padding: 2%;
 }
 

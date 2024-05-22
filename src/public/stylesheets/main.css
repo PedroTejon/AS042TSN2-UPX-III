@@ -146,9 +146,22 @@ ol li b{
     color: var(--alltitle);
 }
 
+button {
+    background-color: var(--buttons);
+    border-radius: 64px;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding: 1%;
+    font-size: 95%;
+    cursor: pointer;
+    margin-top: 2%;
+    width: 100%;
+}
 
-
-
+button:hover {
+    transition: all ease 0.5s;
+    background-color: #1271ca;
+}
 
 /*Animations*/
 @keyframes fade {
