@@ -26,32 +26,5 @@ if (getCookie('userId')) {
       <a id="see-profile" draggable="false" href="/profile">Ver meu perfil</a>
   </div>`
     }
-    // if (data.error) {
-    //   console.log(data.error);
-    // } else {
-    //   let user = data.user;
-    //   let name = document.getElementById('name');
-    //   let email = document.getElementById('email');
-    //   let phone = document.getElementById('phone');
-    //   let cpf = document.getElementById('cpf');
-    //   let birthdate = document.getElementById('birthdate');
-    //   let address = document.getElementById('address');
-    //   let city = document.getElementById('city');
-    //   let state = document.getElementById('state');
-    //   let country = document.getElementById('country');
-    //   let zip = document.getElementById('zip');
-    //   let products = document.getElementById('products');
-    //   name.value = user.name;
-    //   email.value = user.email;
-    //   phone.value = user.phone;
-    //   cpf.value = user.cpf;
-    //   birthdate.value = user.birthdate;
-    //   address.value = user.address;
-    //   city.value = user.city;
-    //   state.value = user.state;
-    //   country.value = user.country;
-    //   zip.value = user.zip;
-    //   products.value = user.products;
-    // }
   })
 }
