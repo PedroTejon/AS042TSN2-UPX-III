@@ -188,3 +188,34 @@ h3{
     width: 100%;
     margin-top: 5%;
 }
+
+.pages-btn{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pg{
+    background-color: var(--buttons);
+    padding: 1%;
+    color:#FFFFFF;
+    font-weight: bolder;
+    cursor: pointer;
+    width: 4%;
+    text-align: center;
+}
+
+
+
+#next{
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-left: 1px solid #F6F6F6;
+}
+
+#previous{
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-right: 1px solid #F6F6F6;
+}
