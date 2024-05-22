@@ -12,7 +12,7 @@ async function query(sql, params) {
   const [results] = await pool.query(sql, params).catch((e) => {
     throw e;
   });
-AN
+
   return results;
 }
 
