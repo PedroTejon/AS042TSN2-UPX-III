@@ -37,14 +37,12 @@ async function loadProducts() {
             </div>
         </div>`
         }
-        console.log(products)
     });
 }
 
 function setSearchQuery(event) {
     event.preventDefault();
     const searchValue = document.getElementById('productSearch').value;
-    debugger;
     if (searchValue != '') {
         params.set('searchQuery', searchValue);
     }
