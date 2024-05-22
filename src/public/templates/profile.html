@@ -8,6 +8,7 @@
     <link rel="icon" href="../assets/common/site-ico.svg">
     <script src="https://kit.fontawesome.com/fb813e9d63.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../stylesheets/style.css">
+    <link rel="stylesheet" href="../stylesheets/profile.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
     <script src="../DOM/auth.js" defer></script>
 </head>
@@ -26,11 +27,32 @@
         </nav>
         <section id="conteudo"></section>
         <div class="profile-info">
-            <button onclick="window.location.href = '/login'">Entrar</button>
+            <div class="pfp-div">
+                <img src="../assets/common/pfp-icon.png" alt="Foto de perfil padrão" class="unselectable" draggable="false" >
+            </div>
+            <div class="userinfo-div unselectable" draggable="false">
+                <p id="username">Primeiro e ultimo</p>
+                <a id="see-profile" draggable="false" href="../templates/profile.html">Ver meu perfil</a>
+            </div>
         </div>
     </header>
 
+    <article>
+        <aside>
+            <div>
+                <img src="../assets/common/pfp-icon.svg" alt="Foto de perfil padrão">
+            </div>
+        </aside>
+        <main>
+            <h2>Informações de Nomeusuario Ultimosobrenomesetiver:</h2>
+            <p>Data de nascimento: 11/11/1111</p>
+            <p>Gênero: Feminino</p>
+            <p>E-mail: usuarioemail@yahoo.com</p>
 
+            <button id="editProfile"><i class="fa-solid fa-pen-to-square"></i>Editar informações</button>
+            <button id="leaveBtn"><i class="fa-solid fa-door-open"></i>Encerrar sessão</button>
+        </main>
+    </article>
 
 
     <footer class="footer-default">
