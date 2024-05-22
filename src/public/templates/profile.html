@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../stylesheets/profile.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
     <script src="../DOM/auth.js" defer></script>
+    <script src="../DOM/profile.js" defer></script>
 </head>
 <body>
     <header class="header-default">
@@ -44,13 +45,13 @@
             </div>
         </aside>
         <main>
-            <h2>Informações de Nomeusuario Ultimosobrenomesetiver:</h2>
-            <p>Data de nascimento: 11/11/1111</p>
-            <p>Gênero: Feminino</p>
-            <p>E-mail: usuarioemail@yahoo.com</p>
+            <h2>Informações de <span id="username-profile"></span>:</h2>
+            <p>Data de nascimento: <span id="birthdate-profile"></span></p>
+            <p>Gênero: <span id="gender-profile"></span></p>
+            <p>E-mail: <span id="email-profile"></span></p>
 
             <button id="editProfile"><i class="fa-solid fa-pen-to-square"></i>Editar informações</button>
-            <button id="leaveBtn"><i class="fa-solid fa-door-open"></i>Encerrar sessão</button>
+            <button id="leaveBtn" onclick="logout()"><i class="fa-solid fa-door-open"></i>Encerrar sessão</button>
         </main>
     </article>
 
