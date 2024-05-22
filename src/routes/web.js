@@ -41,5 +41,8 @@ router.get('/newpassword', function (req, res, next) {
   res.sendFile('newpassword.html', { root: './src/public/templates' });
 });
 
+router.get('/product', function (req, res, next) {
+  res.sendFile('product.html', { root: './src/public/templates' });
+});
 
 module.exports = router;

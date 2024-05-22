@@ -7,7 +7,7 @@ function signup(event) {
     const birthDate = document.getElementById('userbday').value;
     const gender = document.getElementById('usergender').value;
 
-    debugger
+    
 
     fetch('/api/users/register', {
         method: 'POST',

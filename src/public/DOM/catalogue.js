@@ -4,6 +4,7 @@ const filter = JSON.parse(params.get('filter')) ?? {};
 const searchQuery = params.get('searchQuery') ?? '';
 
 async function loadProducts() {
+    
     await fetch(`api/products/catalogue${params.size > 0 ? '?' + params.toString() : ''}`).then(response => response.json()).then(products => {
         const productContainer = document.querySelector('.catalogue-view');
         for (let product of products) {            
@@ -32,7 +33,7 @@ async function loadProducts() {
                     ${'<i class="fa-solid fa-star not-evaluated"></i>'.repeat((5 - Math.ceil(productRating)))}
                 </div>
                 <div class="item-button">
-                    <button class="button-for-items">Ver detalhes</button>
+                    <button class="button-for-items" onclick="window.location.href='/product?id=${product.productId}'">Ver detalhes</button>
                 </div>
             </div>
         </div>`

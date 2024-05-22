@@ -14,7 +14,7 @@ function codeConfirmation(event) {
     }
     ).then(response => response.json()).then(data => {
         console.log(data)
-        debugger
+        
         if (data.message == 'Código correto') {
             window.location.href = '/newpassword'
         }
