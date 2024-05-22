@@ -1,0 +1,44 @@
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    background-color: var(--buttons);
+    border-radius: 64px;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding: 1%;
+    font-size: 95%;
+    cursor: pointer;
+    margin-top: 2%;
+    width: 100%;
+    text-align: center;
+    margin-top: 3%;
+}
+
+button:hover {
+    transition: all ease 0.5s;
+    background-color: #1271ca;
+}
+
+input, select{
+    background-color: var(--inputfield);
+    color: var(--inputtextcolor);
+    border-radius: 8px;
+    caret-color: #075aa3;
+    padding: 0.5%;
+    margin-bottom: 0.25%;
+}
+
+input::placeholder{
+    color: var(--placeholders);
+    font-size: 111%;
+    font-weight: normal;
+}
+
+label{
+    color: var(--alltitle);
+    font-weight: bold;
+    margin-top: 2%;
+}
