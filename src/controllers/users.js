@@ -110,7 +110,7 @@ exports.authorize = asyncHandler(async (req, res, next) => {
 exports.getDetails = asyncHandler(async (req, res, next) => {
   const user = new User();
   await user.load('userId', req.cookies.userId);
-  return res.send({ email: user.email, name: user.name, birthDate: user.birthDate, gender: user.gender });
+  return res.send({ email: user.email, name: user.name, birthDate: user.birthDate, gender: user.gender, isAdmin: user.administrator });
 });
 
 exports.saveProduct = asyncHandler(async (req, res, next) => {
