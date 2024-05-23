@@ -13,10 +13,12 @@ function getCookie(cname) {
     }
     return "";
 }
-  
+
+let authenticated = false;
 if (getCookie('userId')) {
   fetch('/api/users/').then(response => response.json()).then(data => {
     if (data.email) {
+      authenticated = true;
       const profileContainer = document.querySelector('.profile-info');
       profileContainer.innerHTML = `<div class="pfp-div">
       <img src="../assets/common/pfp-icon.png" alt="Foto de perfil padrão" class="unselectable" draggable="false" >
