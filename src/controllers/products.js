@@ -21,6 +21,7 @@ exports.getDetails = asyncHandler(async (req, res, next) => {
     image: product.image,
     categoryId: product.categoryId,
     platformId: product.platformId,
+    url: product.url
   });
 });
 
