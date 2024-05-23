@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../stylesheets/style.css">
     <link rel="stylesheet" href="../stylesheets/editprofile.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
+    <script src="../DOM/auth.js"></script>
+    <script src="../DOM/editprofile.js" defer></script>
 </head>
 <body>
     <header class="header-default">
@@ -18,10 +20,10 @@
         </div>
         <nav class="nav-default">
             <ul>
-                <li ><a class="notactive unselectable" draggable="false" id="mainpage" href="../templates/index.html">Inicial</a></li>
-                <li><a class="notactive unselectable" draggable="false" id="catalogue" href="../templates/catalogue.html">Catálogo</a></li>
-                <li><a class="notactive unselectable" draggable="false" id="faq" href="../templates/FAQ.html">FAQ</a></li>
-                <li><a class="notactive unselectable" draggable="false" id="about" href="../templates/about.html">Sobre</a></li>
+                <li ><a class="notactive unselectable" draggable="false" id="mainpage" href="/">Inicial</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="catalogue" href="/catalogue">Catálogo</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="faq" href="/FAQ">FAQ</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="about" href="/about">Sobre</a></li>
             </ul>
         </nav>
         <section id="conteudo"></section>
@@ -39,21 +41,21 @@
     <article>
         <h2>Editar perfil</h2>
         <p>Edite informações básicas sobre o seu perfil conforme preferência</p>
-        <form id="profileForm">
+        <form id="profileForm" onsubmit="editUserDetails(event)">
             <label for="username">Nome de usuário</label>
-            <input type="text" placeholder="Informe o novo nome de usuário" id="username" name="username">
+            <input type="text" placeholder="Informe o novo nome de usuário" id="username-form" name="username-form">
 
             <label for="userbday">Aniversário</label>
-            <input type="date" name="userbday" id="userbday">
+            <input type="date" name="userbday-form" id="userbday-form">
 
-            <label for="gender">Gênero</label>
-            <select id="genderSelect">
+            <label for="gender-select">Gênero</label>
+            <select id="gender-select-form">
                 <option value="F">Feminino</option>
                 <option value="M">Masculino</option>
                 <option value="N">Prefiro não informar</option>
             </select>
 
-            <button>Salvar informações</button>
+            <button type="submit">Salvar informações</button>
         </form>
     </article>
 
@@ -65,10 +67,10 @@
         <div class="link-footer unselectable" draggable="false">
             <p>Links do site</p>
             <ul>
-                <li><a id="footer-main" draggable="false" href="../templates/index.html">Inicial</a></li>
-                <li><a id="footer-catalogue"  draggable="false" href="../templates/catalogue.html">Catálogo</a></li>
-                <li><a id="footer-faq" draggable="false" href="../templates/FAQ.html">FAQ</a></li>
-                <li><a id="footer-about" draggable="false" href="../templates/about.html">Sobre</a></li>
+                <li><a id="footer-main" draggable="false" href="/">Inicial</a></li>
+                <li><a id="footer-catalogue"  draggable="false" href="/catalogue">Catálogo</a></li>
+                <li><a id="footer-faq" draggable="false" href="/FAQ">FAQ</a></li>
+                <li><a id="footer-about" draggable="false" href="/about">Sobre</a></li>
             </ul>
         </div>
         <div class="contact-footer">

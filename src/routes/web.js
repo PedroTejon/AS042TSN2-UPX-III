@@ -21,6 +21,10 @@ router.get('/profile', function (req, res, next) {
   res.sendFile('profile.html', { root: './src/public/templates' });
 });
 
+router.get('/editprofile', function (req, res, next) {
+  res.sendFile('editprofile.html', { root: './src/public/templates' });
+});
+
 router.get('/login', function (req, res, next) {
   res.sendFile('login.html', { root: './src/public/templates' });
 });

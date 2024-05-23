@@ -3,8 +3,8 @@ const page = parseInt(params.get('page')) || 1;
 const filter = JSON.parse(params.get('filter')) ?? {};
 const searchQuery = params.get('searchQuery') ?? '';
 
-async function loadProducts() {
-    await fetch(`api/products/catalogue${params.size > 0 ? '?' + params.toString() : ''}`).then(response => response.json()).then(products => {
+function loadProducts() {
+    fetch(`api/products/catalogue${params.size > 0 ? '?' + params.toString() : ''}`).then(response => response.json()).then(products => {
         const productContainer = document.querySelector('.catalogue-view');
         for (let product of products) {
             let productRating = parseFloat(product.rating);
