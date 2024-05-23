@@ -146,6 +146,7 @@ ol li b{
     color: var(--alltitle);
 }
 
+/*botao*/
 button {
     background-color: var(--buttons);
     border-radius: 64px;
@@ -163,6 +164,7 @@ button:hover {
     background-color: #1271ca;
 }
 
+/*botao*/
 #main-page-article{
     margin-top: -5%;
 }
