@@ -8,6 +8,7 @@
     <link rel="icon" href="../assets/common/site-ico.svg">
     <script src="https://kit.fontawesome.com/fb813e9d63.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../stylesheets/style.css">
+    <link rel="stylesheet" href="../stylesheets/product.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
     <script src="../DOM/auth.js" defer></script>
 </head>
@@ -33,16 +34,27 @@
     <article>
         <section class="body-layout">
             <div class="left-side">
-                <div class="breadcrumb">
-                    <span>Catálogo > Produto</span>
-                </div>
-                <div>
-                    <img class="unselectable" draggable="false" src="https://acdn.mitiendanube.com/stores/122/350/products/wideapplicationcanbeusedathome_a-ad106caafd97e10a6c17077645343748-1024-1024.jpg" alt="Imagem de produto">
+                <div class="img-div">
+                    <img id="productImage" class="unselectable" draggable="false" src="https://acdn.mitiendanube.com/stores/122/350/products/wideapplicationcanbeusedathome_a-ad106caafd97e10a6c17077645343748-1024-1024.jpg" alt="Imagem de produto">
                 </div>
             </div>
             <div class="right-side">
-                <h2>Produto</h2>
-                <span></span>
+                <h2 id="productName">Produto</h2>
+                <span id="extractionName"><b>Origem de anúncio:</b>Mercado Livre</span>
+
+                <h1 id="productPrice">R$150,25</h1>
+
+                <h2>Descrição e ficha técnica:</h2>
+                <p id="productDescription">Desperte para um amanhã mais brilhante com nossos painéis solares de telhado de última geração. Transforme seu lar em uma fonte inesgotável de energia limpa e renovável. Com nossa tecnologia avançada, você não apenas reduzirá sua pegada de carbono, mas também sua conta de luz.
+                    Benefícios:
+                    Economia Financeira Sustentável: Diga adeus aos aumentos de tarifas de energia. Com nossos painéis solares, você estará no controle dos seus gastos energéticos.
+                    Consciência Ambiental: Faça sua parte na luta contra as mudanças climáticas, adotando uma solução energética que preserva o meio ambiente para as gerações futuras.
+                    Independência Energética: Liberte-se das flutuações do mercado de energia. Com os painéis solares, você estará menos vulnerável a cortes de energia e interrupções.</p>
+                <div class="buttons-div">
+                    <button class="common" id="productLink">Visitar anúncio<i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                    <button class="return" id="catalogueReturn" onclick="window.location.href='/catalogue'"><i class="fa-solid fa-chevron-left"></i>Voltar para o catálogo</button>
+    
+                </div>
             </div>
         </section>
     </article>
