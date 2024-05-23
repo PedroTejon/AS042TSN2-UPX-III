@@ -119,3 +119,24 @@
 #slider-container:hover .slider {
     animation-play-state: paused;
 }
+
+.profile-info button{
+    width: 100%;
+    padding: 1%;
+}
+
+button {
+    background-color: var(--buttons);
+    border-radius: 64px;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding: 1%;
+    font-size: 95%;
+    cursor: pointer;
+    margin-top: 2%;
+}
+
+button:hover {
+    transition: all ease 0.5s;
+    background-color: #1271ca;
+}

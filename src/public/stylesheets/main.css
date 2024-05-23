@@ -163,6 +163,10 @@ button:hover {
     background-color: #1271ca;
 }
 
+#main-page-article{
+    margin-top: -5%;
+}
+
 /*Animations*/
 @keyframes fade {
     from {
