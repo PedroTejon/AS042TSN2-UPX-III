@@ -7,6 +7,28 @@ function loadProducts() {
     fetch(`api/products/catalogue${params.size > 0 ? '?' + params.toString() : ''}`).then(response => response.json()).then(products => {
         const productContainer = document.querySelector('.catalogue-view');
         for (let product of products) {
+            let origem;
+            switch (product.platformId) {
+                case 1:
+                    origem = 'et.svg';
+                    break;
+                case 2:
+                    origem = 'lm.svg';
+                    break;
+                case 3:
+                    origem = 'mg.svg';
+                    break;
+                case 4:
+                    origem = 'ml.svg';
+                    break;
+                case 5:
+                    origem = 'et.svg';
+                    break;
+                case 6:
+                    origem = 'ns.svg';
+                    break;
+            }
+    
             let productRating = parseFloat(product.rating);
             productContainer.innerHTML += `
         <div class="catalogue-item">
@@ -23,7 +45,7 @@ function loadProducts() {
                         : `<i id="save-button-${product.productId}" onclick="saveProduct(${product.productId})" class="unselectable fa-solid fa-heart ${product.saved ? 'saved' : 'unsaved'}"></i>`}
                 </div>
                 <div class="origin-store">
-                    <img class="unselectable" draggable="false" src="../assets/catalogue-page/et.svg">
+                    <img class="unselectable" draggable="false" src="../assets/catalogue-page/${origem}">
                 </div>
                 <div class="item-price">
                     <h3>R$${product.price}</h3>
