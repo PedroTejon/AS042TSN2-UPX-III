@@ -181,9 +181,17 @@ h3{
 
 .item-evaluation i{
     color: #FDAF18;
-    margin-right: 1%;
+   
     font-size: 130%;
     cursor: default;
+}
+
+.fa-star-half-stroke{
+    margin-left: -2%;
+}
+
+.item-evaluation span{
+    font-size: 85%;
 }
 
 .button-for-items {
