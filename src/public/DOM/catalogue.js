@@ -4,10 +4,9 @@ const filter = JSON.parse(params.get('filter')) ?? {};
 const searchQuery = params.get('searchQuery') ?? '';
 
 async function loadProducts() {
-    
     await fetch(`api/products/catalogue${params.size > 0 ? '?' + params.toString() : ''}`).then(response => response.json()).then(products => {
         const productContainer = document.querySelector('.catalogue-view');
-        for (let product of products) {            
+        for (let product of products) {
             let productRating = parseFloat(product.rating);
             productContainer.innerHTML += `
         <div class="catalogue-item">
@@ -19,7 +18,9 @@ async function loadProducts() {
                     <div class="item-name-wrap">
                         <span class="item-name">${product.title}</span>
                     </div>
-                    <i class="unselectable fa-solid fa-heart ${product.saved ? 'saved' : 'unsaved'}"></i>
+                    ${isAdmin 
+                        ? `<i id="hide-button-${product.productId}" onclick="hideProduct(${product.productId})" class="unselectable fa-solid ${product.hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>` 
+                        : `<i id="save-button-${product.productId}" onclick="saveProduct(${product.productId})" class="unselectable fa-solid fa-heart ${product.saved ? 'saved' : 'unsaved'}"></i>`}
                 </div>
                 <div class="origin-store">
                     <img class="unselectable" draggable="false" src="../assets/catalogue-page/et.svg">
@@ -64,6 +65,56 @@ function previousPage() {
     if (page > 1) {
         params.set('page', page - 1);
         window.location.href = `catalogue${params.size > 0 ? '?' : ''}${params.toString()}`;
+    }
+}
+
+function saveProduct(productId) {
+    if (authenticated) {
+        const saveElement = document.getElementById('save-button-' + productId);
+        if (saveElement.classList.contains('unsaved')) {
+            fetch('api/users/saveProduct/' + productId, {
+                method: 'POST'
+            }).then(response => response.json()).then(data => {
+                if (data.message == 'Anúncio salvo com sucesso.') {
+                    saveElement.classList.remove('unsaved');
+                }
+            });
+        }
+        else {
+            fetch('api/users/unsaveProduct/' + productId, {
+                method: 'POST'
+            }).then(response => response.json()).then(data => {
+                if (data.message == 'Anúncio retirado da lista de anúncios salvos com sucesso.') {
+                    saveElement.classList.add('unsaved');
+                }
+            });
+        }
+    }
+}
+
+function hideProduct(productId) {
+    if (authenticated) {
+        const saveElement = document.getElementById('hide-button-' + productId);
+        if (saveElement.classList.contains('fa-eye-slash')) {
+            fetch('api/users/hideProduct/' + productId, {
+                method: 'POST'
+            }).then(response => response.json()).then(data => {
+                if (data.message == 'Anúncio oculto com sucesso.') {
+                    saveElement.classList.remove('fa-eye-slash');
+                    saveElement.classList.add('fa-eye');
+                }
+            });
+        }
+        else {
+            fetch('api/users/unsaveProduct/' + productId, {
+                method: 'POST'
+            }).then(response => response.json()).then(data => {
+                if (data.message == 'Anúncio retirado da lista de anúncios ocultos com sucesso.') {
+                    saveElement.classList.remove('fa-eye');
+                    saveElement.classList.add('fa-eye-slash');
+                }
+            });
+        }
     }
 }
 
