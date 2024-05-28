@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../stylesheets/catalogue.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
     <script src="../DOM/auth.js"></script>
+    
 </head>
 
 <body>
@@ -50,7 +51,6 @@
                 <button id="favoriteBtn">Favoritos</button>
             </div>
             <div class="right-btn">
-                <button id="orderBtn">Ordenar<i class="fa-solid fa-arrow-up-wide-short"></i></button>
                 <button id="filterBtn">Filtros<i class="fa-solid fa-filter"></i></button>
             </div>
         </section>
@@ -62,7 +62,144 @@
             <a class="pg" id="previous" onclick="previousPage()"><i class="fa-solid fa-chevron-left"></i></a>
             <a class="pg" id="next" onclick="nextPage()"><i class="fa-solid fa-chevron-right "></i></a>
         </div>
+       
     </article>
+    <article id="alerts">
+        <div class="alert alert-warning" id="notFoundSearch" role="alert">
+            Nenhuma correspondência para a pesquisa. <i class="fa-solid fa-xmark"></i>
+        </div>
+    </article>
+
+    <section id="filter">
+        <h2>Filtre produtos do catálogo</h2>
+        <p>Selecione todos os filtros desejados para visualizar produtos correspondentes.</p>
+        <form id="filterItems">
+            <details id="first">
+                <summary>Filtrar por preço:</summary>
+                <div class="checkbox">
+                    <input type="checkbox" id="minPrice" name="minPrice" value="precoMin">
+                    <label for="minPrice">Preço mínimo</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="maxPrice" name="maxPrice" value="precoMax">
+                    <label for="maxPrice">Preço máximo</label>
+                </div>
+            </details>
+        
+            <details id="second">
+                <summary>Filtrar por avaliação:</summary>
+                <div class="checkbox">
+                    <input type="checkbox" id="minVal" name="minVal" value="minimo">
+                    <label for="minVal">Avaliação mínima</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="maxVal" name="maxVal" value="maxVal">
+                    <label for="maxVal">Avaliação máxima</label>
+                </div>
+            </details>
+
+            <details id="third">
+                <summary>Filtrar por plataforma:</summary>
+
+                <div class="checkbox">
+                    <input type="checkbox" id="magalu" name="magalu" value="magaluPlatform">
+                    <label for="magalu">Magazine Luiza</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="leroy" name="leroy" value="leroyPlatform">
+                    <label for="leroy">Leroy Merlin</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="mercado" name="mercado" value="mercadoPlatform">
+                    <label for="mercado">Mercado Livre</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="energia" name="energia" value="energiaPlatform">
+                    <label for="energia">EnergiaTotal</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="casa" name="casa" value="casaPlatform">
+                    <label for="casa">Minha Casa Solar</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="neo" name="neo" value="neoPlatform">
+                    <label for="neo">Neosolar</label>
+                </div>
+            </details>
+
+            <details id="third">
+                <summary>Filtrar por categoria:</summary>
+                <div class="flex-side">
+                    <div class="sided">
+                        <div class="checkbox"> 
+                            <input type="checkbox" id="painelSolar" name="painelSolar" value="1">
+                            <label for="painelSolar">Painéis Solares</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="estrutura" name="estrutura" value="2">
+                            <label for="estrutura">Estruturação</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="controlador" name="controlador" value="3">
+                            <label for="controlador">Controladores de carga</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="inversor" name="inversor" value="4">
+                            <label for="inversor">Inversores solares</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="ferramenta" name="ferramenta" value="5">
+                            <label for="ferramenta">Ferramentas</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="bateria" name="bateria" value="6">
+                            <label for="bateria">Baterias</label>
+                        </div class="checkbox">
+                        <div>
+                            <input type="checkbox" id="kit" name="kit" value="7">
+                            <label for="kit">Kits solares</label>
+                        </div>
+                    </div>
+                    <div class="sided">
+                        <div class="checkbox">
+                            <input type="checkbox" id="cabo" name="cabo" value="8">
+                            <label for="cabo">Cabos</label>
+                        </div >
+                        <div class="checkbox">
+                            <input type="checkbox" id="disjuntor" name="disjuntor" value="9">
+                            <label for="disjuntor">Disjuntores</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="protecao" name="protecao" value="10">
+                            <label for="protecao">Proteção de rede</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="iluminacao" name="iluminacao" value="11">
+                            <label for="iluminacao">Iluminação</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="aquecimento" name="aquecimento" value="12">
+                            <label for="aquecimento">Aquecimento</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="carro" name="carro" value="13">
+                            <label for="carro">Carro elétrico</label>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="bombeamento" name="bombeamento" value="14">
+                            <label for="bombeamento">Bombeamento solar</label>
+                        </div class="checkbox">
+                        <div>
+                            <input type="checkbox" id="outros" name="outros" value="15">
+                            <label for="outros">Outros</label>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            <button type="submit" id="filterBtn">Aplicar filtro</button>
+        </form>
+    </section>
+    
 
     <footer class="footer-default">
         <div class="footerlogo-div">
@@ -106,6 +243,7 @@
                 </li>
             </ul>
         </div>
+        
     </footer>
 
     <script src="../DOM/catalogue.js" defer></script>

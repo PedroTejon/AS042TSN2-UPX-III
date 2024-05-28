@@ -80,8 +80,8 @@ main form{
 }
 
 aside img{
-    height: 100vh;
-    
+    height: 150vh;
+    overflow-y: hidden;
     filter: hue-rotate(10deg) brightness(65%) grayscale(9%);
 }
 
@@ -270,43 +270,8 @@ input::placeholder{
     margin-top: 3%;
 }
 
-.bar-container{
-    border: 1px solid #c8d3dd;
-    border-radius: 64px;
-    height: 5%;
-    font-size: 5%;
-    margin-top: 2%;
-}
 
-.low{
-    background-color: #e01818;
-    width: 12%;
-    border-radius: 64px;
-}
 
-.medium{
-    background-color: #e08918;
-    width: 50%;
-    border-radius: 64px;
-}
-
-.high{
-    background-color: #2db338;
-    width: 100%;
-    border-radius: 64px;
-}
-
-.passlow{
-    color: #e01818;
-}
-
-.passmedium{
-    color: #e08918;
-}
-
-.passhigh{
-    color: #2db338;
-}
 
 /*Signup*/
 
@@ -355,6 +320,8 @@ input::placeholder{
 #signupMain h2{
     margin-bottom: 0.5%;
     margin-top: 2% ;
+    color: var(--alltitle);
+    cursor: default;
 }
 
 #signupMain p{
@@ -370,4 +337,17 @@ input::placeholder{
 
 #signupMain section {
     margin-top: -5%;
+}
+
+.alert{
+    position: relative;
+    z-index: 10000;
+    bottom: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.alert i{
+    cursor: pointer;
 }

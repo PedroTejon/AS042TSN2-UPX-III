@@ -237,3 +237,98 @@ h3{
     width: 100%;
     padding: 1%;
 }
+
+.alert{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border:1px solid #41b0f0;
+    border-radius: 8px;
+    padding: 1%;
+    background-color: #c3eeff;
+    color: #022d66;
+    position: fixed;
+    bottom: 0;
+    width: 90%;
+    margin-bottom: 2%;
+    z-index: 10000;
+}
+
+.alert i{
+    cursor: pointer;
+}
+
+#filter{
+    background-color: #c5e0f0;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    position: fixed;
+    z-index: 10000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2%;
+    border-radius: 8px;
+    box-shadow: 4px 4px 8px 8px #2c2c2c1f;
+}
+
+#filter summary{
+    color:#022d66;
+    font-weight: bold;
+    
+}
+
+#filter button{
+   width: 100%;
+    padding: 1%;
+    margin-top: 2%;
+}
+
+#filter details div{
+    display: flex;
+
+}
+
+#filter details {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1%;
+}
+
+#filter label {
+    margin-bottom: 1%;
+    font-weight: normal;
+}
+
+.flex-side{
+    display: flex;
+    
+}
+
+.sided{
+    display: flex;
+    flex-direction: column;
+    margin-right: 5%;
+    width: 50%;
+}
+
+#third{
+    display: flex;
+    flex-direction: column;
+}
+
+#filter p{
+    color: var(--paragraph);
+    margin-bottom: 2%;
+}
+
+.checkbox{
+    display: flex;
+    align-items: center;
+
+}
+.checkbox label{
+    margin-left: 1%;
+    
+}
