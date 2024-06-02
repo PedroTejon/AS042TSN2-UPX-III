@@ -190,7 +190,9 @@ h2 {
     cursor: default;
 }
 
-
+#hamburger{
+    display: none;
+}
 
 /*Media query para smartphone*/
 @media(max-width: 320px) {
@@ -233,5 +235,51 @@ h2 {
 
     .footer-default li {
         margin-bottom: 2%;
+    }
+
+    h2{
+        font-size: 115%;
+        text-align: center;
+        margin-top: 4%;
+        margin-bottom: 2%;
+    }
+
+    p{
+        font-size: 90%;
+    }
+
+    .header-default{
+       
+    }
+
+    #hamburger{
+        display: block;
+        color: #0E6BBE;
+        position: absolute;
+        margin-left: 85%;
+        margin-top: 5%;
+        cursor: pointer;
+        font-size: 185%;
+    }
+
+    #hamburger:hover{
+        transition: all 0.5s ease;
+        color: #579edb;
+    }
+
+    .logo-div{
+        margin-top: 4%;
+        height: 4rem;
+        width: 16rem;
+    }
+
+    .logo-div img{
+        height: 85%;
+        width: 55%;
+        
+    }
+   
+    .nav-default, .profile-info{
+        display: none;
     }
 }

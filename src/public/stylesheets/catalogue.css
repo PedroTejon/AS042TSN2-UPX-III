@@ -332,3 +332,84 @@ h3{
     margin-left: 1%;
     
 }
+
+@media(max-width: 320px) {
+    #filter, .alert{
+        display: none;
+    }
+
+    #next, #previous{
+        width: 15%;
+        padding: 2%;
+        border-radius: 4px;
+    }
+
+    .catalogue-item{
+        width: 45%;
+        height: 10%;
+        margin-right: 2%;
+        margin-bottom: 8%;
+    }
+
+    .catalogue-view{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .origin-store{
+        width: 2rem;
+        height: 2rem;
+        
+    }
+
+    .item-price{
+        font-size: 85%;
+        margin-bottom: -10%;
+    }
+
+    .item-name{
+        font-size: 75%;
+    }
+
+    .item-img-div{
+        width: 100%;
+        height: 4rem;
+        
+    }
+
+   .item-div{
+    margin: 5%;
+   }
+
+    .item-evaluation i{
+        margin-top: -3%;
+        font-size: 100%;
+    }
+
+    .item-button{
+        font-size: 80%;
+    }
+
+    #productSearch{
+        width: 75%;
+        padding: 2%;
+    }
+
+    form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5%;
+        margin-bottom: 8%;
+    }
+
+    .filters-sec{
+        margin-bottom: 8%;
+    }
+
+    #searchButton{
+        width: 15%;
+        padding: 2%;
+    }
+}
