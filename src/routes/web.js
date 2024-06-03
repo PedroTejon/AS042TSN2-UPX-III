@@ -33,6 +33,10 @@ router.get('/signup', function (req, res, next) {
   res.sendFile('signup.html', { root: './src/public/templates' });
 });
 
+router.get('/allset', function (req, res, next) {
+  res.sendFile('allset.html', { root: './src/public/templates' });
+});
+
 router.get('/passwordrecover', function (req, res, next) {
   res.sendFile('passwordrecover.html', { root: './src/public/templates' });
 });

@@ -44,3 +44,20 @@ main{
 #leaveBtn{
     background-color: #195d9c;
 }
+
+@media(max-width: 320px) {
+    body{
+        overflow-x: hidden;
+    }
+
+    article{
+        display: flex;
+        flex-direction: column;
+    }
+
+    main button{
+        margin-top: 5%;
+        margin-bottom: 2%;
+        font-size: 85%;
+    }
+}

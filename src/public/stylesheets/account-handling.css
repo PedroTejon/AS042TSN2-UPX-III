@@ -351,3 +351,14 @@ input::placeholder{
 .alert i{
     cursor: pointer;
 }
+
+
+@media(max-width: 320px) {
+    body{
+        overflow-x: hidden;
+    }
+
+    aside{
+        display: none;
+    }
+}

@@ -83,3 +83,42 @@ button:hover {
     transition: all ease 0.5s;
     background-color: #104c6d;
 }
+
+@media(max-width: 320px) {
+    body{
+        overflow-x: hidden;
+    }
+
+   .body-layout{
+        margin-right: 5%;
+        display: flex;
+        flex-direction: column;
+   }
+
+    .img-div{
+        height: 8rem;
+        width: 18rem;
+    }
+
+    .img-div img{
+        object-fit: cover;
+    }
+
+    #extractionName{
+        font-size:90%;
+        text-align: center;
+    }
+
+    #productDescription{
+        font-size: 95%;
+    }
+
+    #productPrice{
+        font-size: 205%;
+        text-align: center;
+    }
+
+    .buttons-div{
+        font-size: 85%;
+    }
+}

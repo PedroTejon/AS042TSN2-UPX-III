@@ -132,6 +132,9 @@ button:hover {
     padding: 1%;
 }
 
+
+
+
 @media(max-width: 320px) {
 
     body{
@@ -141,11 +144,52 @@ button:hover {
     summary{
         font-size: 85%;
         padding: 3%;
+
+    }
+
+    details{
+        margin-top: 5%;
     }
 
     ul li, ol li, cite{
         font-size: 80%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 
+    details p{
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    form{
+        margin-top: 3%;
+    }
+
+    form input{
+        border-radius: 4px;
+        font-size: 90%;
+    }
+
+    form input::placeholder, form textarea::placeholder{
+        font-size: 90%;
+
+    }
+
+    form textarea{
+        border-radius: 4px;
+        font-size: 90%;
+        margin-bottom: 5%;
+    }
+
+    form label{
+        margin-top: 5%;
+        font-size: 90%;
+        margin-bottom: 2%;
+    }
+
+    form button{
+        margin-bottom: 5%;
+    }
     
 }
