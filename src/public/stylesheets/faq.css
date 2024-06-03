@@ -131,3 +131,21 @@ button:hover {
     width: 100%;
     padding: 1%;
 }
+
+@media(max-width: 320px) {
+
+    body{
+        overflow-x: hidden;
+    }
+
+    summary{
+        font-size: 85%;
+        padding: 3%;
+    }
+
+    ul li, ol li, cite{
+        font-size: 80%;
+    }
+
+    
+}

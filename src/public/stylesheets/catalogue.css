@@ -333,9 +333,52 @@ h3{
     
 }
 
+#leaveFilter{
+    background-color: #105da5;
+}
+
+#leaveFilter:hover{
+    transition: all 0.5s ease;
+    background-color: #0a4a86;
+}
+
 @media(max-width: 320px) {
-    #filter, .alert{
+    body{
+        overflow-x: hidden;
+    }
+    /*#filter, .alert{
         display: none;
+    }*/
+
+    #filter{
+        width: 85%;
+        margin-left: -2.5%;
+    }
+
+    #filter summary{
+        font-size: 85%;
+    }
+
+    #filter form{
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: flex-start;
+    }
+
+    #filter form input, #filter form label{
+        font-size: 75%;
+    }
+
+    #filter details{
+        margin-left: 2%;
+    }
+
+    .alert{
+        font-size: 85%;
+        padding: 3%;
+        margin-left: -2%;
+        bottom: 5%;
     }
 
     #next, #previous{
