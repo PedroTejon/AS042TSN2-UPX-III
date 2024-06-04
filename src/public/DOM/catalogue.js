@@ -28,7 +28,7 @@ function loadProducts() {
                     origem = 'ns.svg';
                     break;
             }
-    
+
             let productRating = parseFloat(product.rating);
             productContainer.innerHTML += `
         <div class="catalogue-item">
@@ -40,9 +40,9 @@ function loadProducts() {
                     <div class="item-name-wrap">
                         <span class="item-name">${product.title}</span>
                     </div>
-                    ${isAdmin 
-                        ? `<i id="hide-button-${product.productId}" onclick="hideProduct(${product.productId})" class="unselectable fa-solid ${product.hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>` 
-                        : `<i id="save-button-${product.productId}" onclick="saveProduct(${product.productId})" class="unselectable fa-solid fa-heart ${product.saved ? 'saved' : 'unsaved'}"></i>`}
+                    ${isAdmin
+                    ? `<i id="hide-button-${product.productId}" onclick="hideProduct(${product.productId})" class="unselectable fa-solid ${product.hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>`
+                    : `<i id="save-button-${product.productId}" onclick="saveProduct(${product.productId})" class="unselectable fa-solid fa-heart ${product.saved ? 'saved' : 'unsaved'}"></i>`}
                 </div>
                 <div class="origin-store">
                     <img class="unselectable" draggable="false" src="../assets/catalogue-page/${origem}">
@@ -62,7 +62,40 @@ function loadProducts() {
             </div>
         </div>`
         }
+
+        if (products.length == 0) {
+            document.getElementById('notFoundSearch').style.display = 'flex';
+        }
     });
+
+    document.getElementById('productSearch').value = searchQuery;
+
+    if (filter.hasOwnProperty('platforms')) {
+        document.getElementById('energia').checked = filter.platforms.includes(1);
+        document.getElementById('leroy').checked = filter.platforms.includes(2);
+        document.getElementById('magalu').checked = filter.platforms.includes(3);
+        document.getElementById('mercado').checked = filter.platforms.includes(4);
+        document.getElementById('casa').checked = filter.platforms.includes(5);
+        document.getElementById('neo').checked = filter.platforms.includes(6);
+    }
+    
+    if (filter.hasOwnProperty('categories')) {
+        document.getElementById('painelSolar').checked = filter.categories.includes(1);
+        document.getElementById('estrutura').checked = filter.categories.includes(2);
+        document.getElementById('controlador').checked = filter.categories.includes(3);
+        document.getElementById('inversor').checked = filter.categories.includes(4);
+        document.getElementById('ferramenta').checked = filter.categories.includes(5);
+        document.getElementById('bateria').checked = filter.categories.includes(6);
+        document.getElementById('kit').checked = filter.categories.includes(7);
+        document.getElementById('cabo').checked = filter.categories.includes(8);
+        document.getElementById('disjuntor').checked = filter.categories.includes(9);
+        document.getElementById('protecao').checked = filter.categories.includes(10);
+        document.getElementById('iluminacao').checked = filter.categories.includes(11);
+        document.getElementById('aquecimento').checked = filter.categories.includes(12);
+        document.getElementById('carro').checked = filter.categories.includes(13);
+        document.getElementById('outros').checked = filter.categories.includes(14);
+        document.getElementById('bombeamento').checked = filter.categories.includes(15);
+    }
 }
 
 function setSearchQuery(event) {
@@ -71,11 +104,57 @@ function setSearchQuery(event) {
     if (searchValue != '') {
         params.set('searchQuery', searchValue);
     }
+    else if (searchValue == '' && params.has('searchQuery')) {
+        params.delete('searchQuery');
+    }
     if (page > 1) {
         params.set('page', 1);
     }
 
     window.location.href = `catalogue${params.size > 0 ? '?' : ''}${params.toString()}`;
+}
+
+function setFilters(event) {
+    debugger
+    event.preventDefault();
+    if (!filter.hasOwnProperty('platforms')) {
+        filter.platforms = [];
+    }
+    const platforms = ['energia', 'leroy', 'magalu', 'mercado', 'casa', 'neo'];
+    for (let platform of platforms) {
+        if (document.getElementById(platform).checked) {
+            filter.platforms.push(platforms.indexOf(platform) + 1);
+        }
+        else if (!document.getElementById(platform).checked && filter.platforms.includes(platforms.indexOf(platform) + 1)) {
+            filter.platforms = filter.platforms.filter(function(item) {
+                return item !== (platforms.indexOf(platform) + 1)
+            })            
+        }
+    }
+
+    if (!filter.hasOwnProperty('categories')) {
+        filter.categories = [];
+    }
+    const categories = ['painelSolar', 'estrutura', 'controlador', 'inversor', 'ferramenta', 'bateria', 'kit', 'cabo', 'disjuntor', 'protecao', 'iluminacao', 'aquecimento', 'carro', 'outros', 'bombeamento'];
+    for (let category of categories) {
+        if (document.getElementById(category).checked) {
+            filter.categories.push(categories.indexOf(category) + 1);
+        }
+        else if (!document.getElementById(category).checked && filter.categories.includes(categories.indexOf(category) + 1)) {
+            filter.categories = filter.categories.filter(function(item) {
+                return item !== (categories.indexOf(category) + 1)
+            })            
+        }
+    }
+
+    params.set('filter', JSON.stringify(filter));
+}
+
+function toggleFilters(event) {
+    event.preventDefault();
+
+    const filterContainer = document.getElementById('filter');
+    filterContainer.style.display = filterContainer.style.display == 'none' || !filterContainer.style.display ? 'flex' : 'none';
 }
 
 function nextPage() {
@@ -138,6 +217,12 @@ function hideProduct(productId) {
             });
         }
     }
+}
+
+function gotoSaved(event) {
+    event.preventDefault();
+    params.set('filter', JSON.stringify({ savedSection: filter.savedSection ? false : true}));
+    window.location.href = `catalogue${params.size > 0 ? '?' : ''}${params.toString()}`;
 }
 
 loadProducts();

@@ -1,4 +1,4 @@
-#productSearch{
+#productSearch {
     background-color: var(--inputfield);
     color: var(--inputtextcolor);
     border-radius: 8px;
@@ -9,11 +9,11 @@
     width: 90%;
 }
 
-#searchButton{
+#searchButton {
     width: 9%;
 }
 
-button{
+button {
     background-color: var(--buttons);
     font-weight: bold;
     color: #FFFFFF;
@@ -21,13 +21,13 @@ button{
     border-radius: 64px;
 }
 
-.origin-store{
+.origin-store {
     width: 3rem;
     height: 3rem;
-    
+
 }
 
-.origin-store img{
+.origin-store img {
     height: 100%;
     width: 100%;
 }
@@ -47,13 +47,13 @@ button:hover {
 
 }
 
-.filters-sec{
+.filters-sec {
     margin-top: 1.5%;
     display: flex;
     justify-content: space-between;
 }
 
-.right-btn button{
+.right-btn button {
     font-size: 90%;
     border-radius: 8px;
     padding: 4%;
@@ -61,13 +61,13 @@ button:hover {
     margin-left: 5%;
 }
 
-.right-btn{
+.right-btn {
 
     display: flex;
     flex-direction: row;
 }
 
-#favoriteBtn{
+#favoriteBtn {
     background-color: transparent;
     color: var(--buttons);
     border: 2px solid var(--buttons);
@@ -75,13 +75,12 @@ button:hover {
     width: 8rem;
     height: 2.5rem;
 }
-
-#favoriteBtn:hover{
+#favoriteBtn:hover {
     border: 2px solid #4ab8f8;
     color: #4ab8f8;
 }
 
-.catalogue-view{
+.catalogue-view {
     margin-top: 4%;
     display: flex;
     flex-wrap: wrap;
@@ -90,7 +89,7 @@ button:hover {
     margin-left: 0.8%;
 }
 
-.catalogue-item{
+.catalogue-item {
     margin-bottom: 3%;
     margin-right: 1.5%;
     margin-left: 0.5%;
@@ -98,78 +97,78 @@ button:hover {
     border-radius: 8px;
     box-shadow: 4px 4px 8px 8px #2c2c2c09;
     width: 18%;
-   
+
     padding: 2%;
 }
 
-.item-div{
+.item-div {
     margin-top: -3%;
     margin-left: -4%;
 }
 
-.item-img-div{
+.item-img-div {
     height: 12rem;
     width: 105%;
     overflow: hidden;
     border-radius: 8px;
-   
+
 }
 
-h3{
+h3 {
     font-size: 150%;
     color: #6D6E6E;
     margin-top: 0.4%;
     margin-bottom: 4%;
 }
 
-.item-img{
+.item-img {
     height: 100%;
     width: 100%;
     object-fit: cover;
 }
 
-.flex-name-save{
+.flex-name-save {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 8%;
 }
 
-.flex-name-save i{
+.flex-name-save i {
     color: #D20808;
     font-size: 160%;
     margin-top: 1%;
     cursor: pointer;
 }
 
-.saved{
+.saved {
     opacity: 1;
 }
 
-.saved:hover{
-    transition: all ease 0.5s ;
+.saved:hover {
+    transition: all ease 0.5s;
     color: #9c0a0a;
 }
 
-.unsaved{
+.unsaved {
     opacity: 0.4;
 }
 
-.unsaved:hover{
-    transition: all ease 0.5s ;
+.unsaved:hover {
+    transition: all ease 0.5s;
     color: #fa5757;
     opacity: 0.9;
 }
 
-.evaluated{
+.evaluated {
     opacity: 1;
 }
 
-.not-evaluated{
+.not-evaluated {
     opacity: 0.46;
 }
 
-.item-name-wrap{
+.item-name-wrap {
     overflow-wrap: break-word;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -179,18 +178,18 @@ h3{
     font-size: 111%;
 }
 
-.item-evaluation i{
+.item-evaluation i {
     color: #FDAF18;
-   
+
     font-size: 130%;
     cursor: default;
 }
 
-.fa-star-half-stroke{
+.fa-star-half-stroke {
     margin-left: -2%;
 }
 
-.item-evaluation span{
+.item-evaluation span {
     font-size: 85%;
 }
 
@@ -201,17 +200,17 @@ h3{
     margin-top: 5%;
 }
 
-.pages-btn{
+.pages-btn {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.pg{
+.pg {
     background-color: var(--buttons);
     padding: 1%;
-    color:#FFFFFF;
+    color: #FFFFFF;
     font-weight: bolder;
     cursor: pointer;
     width: 4%;
@@ -220,29 +219,30 @@ h3{
 
 
 
-#next{
+#next {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border-left: 1px solid #F6F6F6;
 }
 
-#previous{
+#previous {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     border-right: 1px solid #F6F6F6;
 }
+
 /*botao*/
 
-.profile-info button{
+.profile-info button {
     width: 100%;
     padding: 1%;
 }
 
-.alert{
-    display: flex;
+.alert {
+    display: none;
     justify-content: space-between;
     align-items: center;
-    border:1px solid #41b0f0;
+    border: 1px solid #41b0f0;
     border-radius: 8px;
     padding: 1%;
     background-color: #c3eeff;
@@ -254,13 +254,13 @@ h3{
     z-index: 10000;
 }
 
-.alert i{
+.alert i {
     cursor: pointer;
 }
 
-#filter{
+#filter {
     background-color: #c5e0f0;
-    display: flex;
+    display: none;
     flex-direction: column;
     width: 50%;
     position: fixed;
@@ -273,19 +273,19 @@ h3{
     box-shadow: 4px 4px 8px 8px #2c2c2c1f;
 }
 
-#filter summary{
-    color:#022d66;
+#filter summary {
+    color: #022d66;
     font-weight: bold;
-    
+
 }
 
-#filter button{
-   width: 100%;
+#filter button {
+    width: 100%;
     padding: 1%;
     margin-top: 2%;
 }
 
-#filter details div{
+#filter details div {
     display: flex;
 
 }
@@ -301,145 +301,149 @@ h3{
     font-weight: normal;
 }
 
-.flex-side{
+.flex-side {
     display: flex;
-    
+
 }
 
-.sided{
+.sided {
     display: flex;
     flex-direction: column;
     margin-right: 5%;
     width: 50%;
 }
 
-#third{
+#third {
     display: flex;
     flex-direction: column;
 }
 
-#filter p{
+#filter p {
     color: var(--paragraph);
     margin-bottom: 2%;
 }
 
-.checkbox{
+.checkbox {
     display: flex;
     align-items: center;
 
 }
-.checkbox label{
+
+.checkbox label {
     margin-left: 1%;
-    
+
 }
 
-#leaveFilter{
+#leaveFilter {
     background-color: #105da5;
 }
 
-#leaveFilter:hover{
+#leaveFilter:hover {
     transition: all 0.5s ease;
     background-color: #0a4a86;
 }
 
 @media(max-width: 320px) {
-    body{
+    body {
         overflow-x: hidden;
     }
+
     /*#filter, .alert{
         display: none;
     }*/
 
-    #filter{
+    #filter {
         width: 85%;
         margin-left: -2.5%;
     }
 
-    #filter summary{
+    #filter summary {
         font-size: 85%;
     }
 
-    #filter form{
+    #filter form {
         display: flex;
         flex-direction: column;
         justify-content: left;
         align-items: flex-start;
     }
 
-    #filter form input, #filter form label{
+    #filter form input,
+    #filter form label {
         font-size: 75%;
     }
 
-    #filter details{
+    #filter details {
         margin-left: 2%;
     }
 
-    .alert{
+    .alert {
         font-size: 85%;
         padding: 3%;
         margin-left: -2%;
         bottom: 5%;
     }
 
-    #next, #previous{
+    #next,
+    #previous {
         width: 15%;
         padding: 2%;
         border-radius: 4px;
     }
 
-    .catalogue-item{
+    .catalogue-item {
         width: 45%;
         height: 10%;
         margin-right: 2%;
         margin-bottom: 8%;
     }
 
-    .catalogue-view{
+    .catalogue-view {
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    .origin-store{
+    .origin-store {
         width: 2rem;
         height: 2rem;
-        
+
     }
 
-    .item-price{
+    .item-price {
         font-size: 85%;
         margin-bottom: -10%;
     }
 
-    .item-name{
+    .item-name {
         font-size: 75%;
     }
 
-    .item-img-div{
+    .item-img-div {
         width: 100%;
         height: 4rem;
-        
+
     }
 
-   .item-div{
-    margin: 5%;
-   }
+    .item-div {
+        margin: 5%;
+    }
 
-    .item-evaluation i{
+    .item-evaluation i {
         margin-top: -3%;
         font-size: 100%;
     }
 
-    .item-button{
+    .item-button {
         font-size: 80%;
     }
 
-    #productSearch{
+    #productSearch {
         width: 75%;
         padding: 2%;
     }
 
-    form{
+    form {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -447,11 +451,11 @@ h3{
         margin-bottom: 8%;
     }
 
-    .filters-sec{
+    .filters-sec {
         margin-bottom: 8%;
     }
 
-    #searchButton{
+    #searchButton {
         width: 15%;
         padding: 2%;
     }

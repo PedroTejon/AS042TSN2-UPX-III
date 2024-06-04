@@ -51,10 +51,10 @@
         </section>
         <section class="filters-sec">
             <div class="left-btn">
-                <button id="favoriteBtn">Favoritos</button>
+                <button id="favoriteBtn" onclick="gotoSaved(event)">Favoritos</button>
             </div>
             <div class="right-btn">
-                <button id="filterBtn">Filtros<i class="fa-solid fa-filter"></i></button>
+                <button id="filterBtn" onclick="toggleFilters(event)">Filtros<i class="fa-solid fa-filter"></i></button>
             </div>
         </section>
 
@@ -76,7 +76,7 @@
     <section id="filter">
         <h2>Filtre produtos do catálogo</h2>
         <p>Selecione todos os filtros desejados para visualizar produtos correspondentes.</p>
-        <form id="filterItems">
+        <form id="filterItems" onsubmit="setFilters(event)">
             <details id="first">
                 <summary>Filtrar por preço:</summary>
                 <div class="checkbox">
@@ -199,8 +199,8 @@
                     </div>
                 </div>
             </details>
-            <button type="submit" id="filterBtn">Aplicar filtro</button>
-            <button type="submit" id="leaveFilter">Fechar filtragem</button>
+            <button type="submit">Aplicar filtro</button>
+            <button onclick="toggleFilters(event)">Fechar filtragem</button>
         </form>
     </section>
     

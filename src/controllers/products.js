@@ -56,14 +56,14 @@ exports.getPage = asyncHandler(async (req, res, next) => {
     if (filterObject.categories != undefined && filterObject.categories.length) {
       filter += 'AND ('
       for (let i = 0; i < filterObject.categories.length; i++) {
-        filter += `categoryId = ${filterObject.categories[i]}${i != filterObject.categories.length - 1 ? 'OR' : ') '}`
+        filter += `categoryId = ${filterObject.categories[i]} ${i != filterObject.categories.length - 1 ? 'OR ' : ') '}`
       }
     }
 
     if (filterObject.platforms != undefined && filterObject.platforms.length) {
       filter += 'AND ('
       for (let i = 0; i < filterObject.platforms.length; i++) {
-        filter += `platformId = ${filterObject.platforms[i]} ${i != filterObject.platforms.length - 1 ? 'OR' : ') '}`
+        filter += `platformId = ${filterObject.platforms[i]} ${i != filterObject.platforms.length - 1 ? 'OR ' : ') '}`
       }
     }
 
@@ -81,6 +81,10 @@ exports.getPage = asyncHandler(async (req, res, next) => {
 
     if (filterObject.maxPrice) {
       filter += 'AND price <= ' + filterObject.maxPrice
+    }
+
+    if (filterObject.savedSection) {
+      savedBy = 'INNER JOIN SavedProducts ON Products.productId = SavedProducts.productId AND SavedProducts.userId = ' + user.userId
     }
   }
 
