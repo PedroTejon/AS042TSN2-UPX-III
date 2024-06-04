@@ -45,7 +45,7 @@ main{
     background-color: #195d9c;
 }
 
-@media(max-width: 320px) {
+@media(max-width: 480px) {
     body{
         overflow-x: hidden;
     }

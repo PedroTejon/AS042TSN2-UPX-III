@@ -359,12 +359,235 @@ button {
 }
 
 
-@media(max-width: 320px) {
+#passrecgoback a{
+    text-decoration: none;
+    color: var(--alltitle);
+}
+
+#signupMain h2, #login-main h2, #emailcodeMain h2, .allset-main h2, .title-pass h2{
+    color: var(--alltitle);
+    font-weight: bold;
+}
+
+@media(max-width: 480px) {
     body {
         overflow-x: hidden;
     }
 
-    aside {
+    aside, #emailcodeAside {
         display: none;
+    }
+
+    /*login page*/
+    #login-main{
+        width: 100%;
+        margin: 5%;
+        margin-top: 10%;
+    }
+
+    
+    h2,p{
+        text-align: center;
+    }
+
+    h2{
+        font-size: 115%;
+    }
+
+    p, ul li{
+        font-size: 90%;
+    }
+
+    #login-main input,  #signupMain input,  #signupMain select, #emailcodeMain input, #passwordRecover input, .newpassword-main input{
+        font-size: 90%;
+        padding: 3%;
+    }
+
+    #login-main input::placeholder,  #signupMain input::placeholder,  #signupMain select, #emailcodeMain input::placeholder, #passwordRecover input::placeholder, .newpassword-main input::placeholder{
+        font-size: 90%;
+
+    }
+
+    #login-main button,  #signupMain button{
+        font-size: 85%;
+    
+    }
+
+    /*signup-page*/
+    #signupMain{
+        width: 100%;
+        margin: 5%;
+        margin-top: 10%;
+    }
+
+    .logo-img{
+        display: none
+    }
+
+    #signupMain form, #signupMain button{
+        margin-top: 5%;
+    }
+
+    #signupMain label{
+        
+        margin-top: 2%;
+    }
+
+    /*email code page*/
+
+    #emailcodeMain{
+        width: 100%;
+        margin: 5%;
+        margin-top: 25%;
+    }
+
+    #emailgoback, #passrecgoback{
+        width: 55%;
+        position: absolute;
+        margin: 5%;
+        
+    }
+    
+    /*allset page*/
+    
+    .allset-main{
+        width: 100%;
+        margin: 5%;
+        margin-top: 35%;
+    }
+
+    .allset-main button{
+        font-size: 85%;
+    }
+
+    .img-pass-div{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .img-pass{
+        width: 15rem;
+        height: 15rem;
+ 
+
+    }
+
+    .img-pass img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /*password recover page*/
+    .password-main{
+        width: 100%;
+        margin: 5%;
+        margin-top: 25%;
+    }
+
+    #passwordRecover input{
+        margin-top: 2%;
+        margin-bottom: 5%;
+    }
+
+    /*new password page*/
+
+    .newpassword-main{
+        width: 100%;
+        margin: 5%;
+        margin-top: 35%;
+    }
+
+    .newpassword-main label{
+        margin-top: 5%;
+    }
+
+    .newpassword-main button{
+        font-size: 85%;
+    }
+}
+
+@media(max-width: 769px){
+    body{
+        overflow-x: hidden;
+    }
+
+    #emailcodeMain{
+        width: 100%;
+        margin-top: 25%;
+        margin-left: 0.2%;
+    }
+
+    aside, #emailcodeAside{
+        display: none;
+    }
+
+    p{
+        font-size: 105%;
+    }
+
+    input{
+        font-size: 95%;
+    }
+
+    input::placeholder{
+        font-size: 95%;
+    }
+
+    #login-main{
+        width: 100%;
+
+    }
+
+    #login-main img, #signupMain img{
+       display: none;
+
+    }
+
+    #login-main input{
+        padding: 2%;
+ 
+    }
+
+    #signupMain{
+        width: 100%;
+    }
+
+    #signupMain p{
+        margin-bottom: 3%;
+    }
+
+    #signupMain label{
+       margin-top: 2%;
+    }
+
+    .newpassword-main{
+        width: 100%;
+        
+    }
+
+    .password-main{
+        width: 100%;
+        margin: 5%;
+    }
+
+    #emailcodeMain{
+        width: 100%;
+        margin: 5%;
+        margin-top: 15%;
+    }
+
+    #emailgoback, #passrecgoback{
+        width: 55%;
+        position: absolute;
+        margin: 5%;
+        
+    }
+
+    .allset-main{
+        width: 100%;
+    
     }
 }

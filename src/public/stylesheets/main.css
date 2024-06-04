@@ -198,7 +198,7 @@ button:hover {
 }
 
 /*Media query para smartphone*/
-@media(max-width: 320px) {
+@media(max-width: 480px) {
 
     body {
         overflow-x: hidden;
@@ -220,7 +220,7 @@ button:hover {
 
     .prev, .next{
         padding: 2.5%;
-        top: 65%;
+        top: 57%;
         width: 12%;
         text-align: center;
     }
@@ -232,6 +232,8 @@ button:hover {
     #main-page-article button{
         font-size: 85%;
         padding: 3%;
+
+        margin-top: 35%;
     }
     
     iframe{

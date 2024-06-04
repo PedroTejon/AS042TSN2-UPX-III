@@ -84,7 +84,7 @@ button:hover {
     background-color: #104c6d;
 }
 
-@media(max-width: 320px) {
+@media(max-width: 480px) {
     body{
         overflow-x: hidden;
     }
@@ -96,8 +96,9 @@ button:hover {
    }
 
     .img-div{
-        height: 8rem;
-        width: 18rem;
+        height: 20rem;
+        width: 45rem;
+        margin-left: -25%;
     }
 
     .img-div img{

@@ -343,7 +343,7 @@ h3 {
     background-color: #0a4a86;
 }
 
-@media(max-width: 320px) {
+@media(max-width: 480px) {
     body {
         overflow-x: hidden;
     }

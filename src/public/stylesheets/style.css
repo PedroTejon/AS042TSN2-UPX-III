@@ -52,8 +52,15 @@ body {
     width: 100%;
 }
 
+.footerlogo-div{
+    width: 15rem;
+    height: 15rem;
+}
+
 .footer-default img {
     pointer-events: none;
+    object-fit: cover;
+    width: 100%;
 }
 
 .footer-default p {
@@ -195,7 +202,7 @@ h2 {
 }
 
 /*Media query para smartphone*/
-@media(max-width: 320px) {
+@media(max-width: 480px) {
 
     body {
         overflow-x: hidden;
@@ -256,7 +263,7 @@ h2 {
         display: block;
         color: #0E6BBE;
         position: absolute;
-        margin-left: 85%;
+        margin-left: 86%;
         margin-top: 5%;
         cursor: pointer;
         font-size: 185%;
@@ -281,5 +288,51 @@ h2 {
    
     .nav-default, .profile-info{
         display: none;
+    }
+}
+
+@media(max-width: 769px){
+    body{
+        overflow-x: hidden;
+    }
+
+    .footerlogo-div {
+        display: none;
+    }
+
+    .nav-default ul li{
+        margin-right: -5%;
+        font-size: 95%;
+    }
+
+    
+
+    .nav-default {
+        margin-left: -25%;
+        
+    }
+
+    .logo-div{
+        margin-left: -5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo-div img{
+        width: 55%;
+    }
+
+    .profile-info{
+        margin-left: -20%;
+        font-size: 95%;
+    }
+
+    #username{
+        overflow-wrap: break-word;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 60%;
     }
 }
