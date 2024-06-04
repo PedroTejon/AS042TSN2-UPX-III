@@ -44,7 +44,7 @@ label{
 }
 
 .alert{
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     border:1px solid #41b0f0;

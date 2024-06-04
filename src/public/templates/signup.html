@@ -23,33 +23,32 @@
                 <p>Preencha o formulário para criar sua conta e encontre produtos de qualidade por baixos preços.</p>
                 <form id="signup-form" onsubmit="signup(event)">
                     <label for="username">Nome de usuário</label>
-                    <input type="text" name="username" id="username" placeholder="Informe seu nome">
+                    <input type="text" name="username" id="username" placeholder="Informe seu nome" required>
 
                     <label for="usermail">E-mail de acesso</label>
-                    <input type="email" name="usermail" id="usermail" placeholder="Informe um e-mail para acesso">
+                    <input type="email" name="usermail" id="usermail" placeholder="Informe um e-mail para acesso required">
                     
                     <label for="userpass">Senha de acesso</label>
-                    <input type="password" name="userpass" id="userpass" placeholder="Crie uma senha para acesso">
+                    <input type="password" name="userpass" id="userpass" placeholder="Crie uma senha para acesso" required>
                     
                     <label for="userbday">Aniversário</label>
-                    <input type="date" name="userbday" id="userbday">
+                    <input type="date" name="userbday" id="userbday" required>
 
                     <label for="usergender">Gênero</label>
-                    <select id="usergender" name="usergender">
+                    <select id="usergender" name="usergender" required>
                         <option value="F">Feminino</option>
                         <option value="M">Masculino</option>
                         <option value="N">Prefiro não informar</option>
                     </select>
 
                     <button type="submit" class="account-btn" id="signupBtn">Criar conta</button>
-
                 </form>
             </section>
             <div class="alert alert-warning" id="notFilledForm" role="alert">
-                Preencha todos os campos corretamente. <i class="fa-solid fa-xmark"></i>
+                Preencha todos os campos corretamente. <i class="fa-solid fa-xmark" onclick="document.getElementById('notFilledForm').style.display = 'none'"></i>
             </div>
             <div class="alert alert-danger" id="alreadyInUse" role="alert">
-                Esse e-mail já está em uso. <i class="fa-solid fa-xmark"></i>
+                Esse e-mail já está em uso. <i class="fa-solid fa-xmark"  onclick="document.getElementById('alreadyInUse').style.display = 'none'"></i>
             </div>
         </main>
         <aside>

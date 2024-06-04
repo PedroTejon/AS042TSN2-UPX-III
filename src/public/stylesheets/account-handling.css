@@ -33,24 +33,24 @@ html {
     font-family: "Poppins", sans-serif;
 }
 
-body{
+body {
     overflow: hidden;
     color: var(--paragraph);
 }
 
-h2{
+h2 {
     color: var(--alltitle);
     margin-top: 5%;
     margin-bottom: 2%;
     cursor: default;
 }
 
-main p{
+main p {
     margin-bottom: 5%;
     cursor: default;
 }
 
-.account-btn{
+.account-btn {
     background-color: var(--buttons);
     color: #FFFFFF;
     border-radius: 64px;
@@ -58,53 +58,53 @@ main p{
     font-weight: bold;
 }
 
-.body-layout{
+.body-layout {
     display: flex;
 }
 
-aside{
+aside {
     width: 25%;
-   
+
 }
 
-main{
+main {
     width: 25%;
     margin-right: 10%;
     margin-left: 15%;
     margin-top: 5%;
 }
 
-main form{
+main form {
     display: flex;
     flex-direction: column;
 }
 
-aside img{
+aside img {
     height: 150vh;
     overflow-y: hidden;
     filter: hue-rotate(10deg) brightness(65%) grayscale(9%);
 }
 
-input{
+input {
     background-color: var(--inputfield);
     color: var(--inputtextcolor);
     border-radius: 8px;
     caret-color: #075aa3;
 }
 
-input::placeholder{
+input::placeholder {
     color: var(--placeholders);
     font-size: 111%;
 }
 
 /*Login*/
-#login-form input{
+#login-form input {
     padding: 3%;
     margin-top: 2%;
     margin-bottom: 6%;
 }
 
-#login-form a{
+#login-form a {
     text-align: center;
     color: var(--alltitle);
     cursor: pointer;
@@ -112,30 +112,30 @@ input::placeholder{
     margin-bottom: 1.5%;
 }
 
-#login-form label{
+#login-form label {
     cursor: default;
     font-weight: bold;
     color: var(--alltitle);
 }
 
-.buttons-main{
+.buttons-main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-#gotoSignup{
-    background-color: #047ef0 ;
+#gotoSignup {
+    background-color: #047ef0;
 }
 
-#gotoSignup:hover{
+#gotoSignup:hover {
     transition: all ease 0.5s;
     background-color: #01478a;
 }
 
 .buttons-main button {
-   
+
     padding: 2.5%;
     font-size: 95%;
     width: 100%;
@@ -147,7 +147,7 @@ input::placeholder{
     background-color: #1271ca;
 }
 
-.logo-img{
+.logo-img {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,19 +156,19 @@ input::placeholder{
 
 /*password recover*/
 
-.go-back{
+.go-back {
     color: var(--alltitle);
-    margin-left:2%;
+    margin-left: 2%;
     margin-top: 2%;
     cursor: pointer;
     width: 25%;
 }
 
-.go-back i{
+.go-back i {
     margin-right: 1%;
 }
 
-.password-main{
+.password-main {
     margin-left: -15%;
     margin-top: 5%;
     width: 35%;
@@ -176,97 +176,103 @@ input::placeholder{
 
 
 
-#passwordRecover label, #newPass label{
+#passwordRecover label,
+#newPass label {
     font-weight: bold;
     color: var(--alltitle);
 }
 
-#passwordRecover input, button, #newPass input, button{
+#passwordRecover input,
+button,
+#newPass input,
+button {
     padding: 2%;
 
 }
 
-#passwordRecover  button, #newPass button{
+#passwordRecover button,
+#newPass button {
     margin-top: 4%;
     font-size: 95%;
 }
 
-#passwordRecover  input, #newPass input{
+#passwordRecover input,
+#newPass input {
     margin-top: 1%;
 }
 
-.img-pass{
+.img-pass {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 5%;
 }
 
-#passwordRecover p{
+#passwordRecover p {
     text-align: center;
 }
 
 /*emailcode*/
 
-.send-again{
+.send-again {
     margin-top: 3%;
 }
 
-.send-again b{
+.send-again b {
     color: var(--navblue);
     cursor: pointer;
 }
 
-.send-again b:hover{
+.send-again b:hover {
     transition: all ease 0.5s;
     color: #1a87ee;
 }
 
-.title-pass{
+.title-pass {
     text-align: center;
     font-size: 125%;
 }
 
-.emailpassword-main{
+.emailpassword-main {
     margin-top: 10%;
 }
 
-.description{
+.description {
     margin-bottom: 8%;
 }
 
 /*allset*/
 
-.allset{
+.allset {
     text-align: center;
 }
 
-.allset button{
+.allset button {
     padding: 2%;
     font-size: 95%;
     width: 100%;
     margin-top: 3%;
 }
 
-.allset-main{
+.allset-main {
     width: 35%;
 }
 
 /*newpassword*/
 
-.newpassword-main{
+.newpassword-main {
     /* margin-left: -15%; */
     margin-top: 5%;
     width: 35%;
 }
 
-#newPass ul{
+#newPass ul {
     margin-top: -2%;
     margin-bottom: 3%;
     margin-left: 4%;
 }
 
-#newPass label{
+#newPass label {
     margin-top: 3%;
 }
 
@@ -275,13 +281,13 @@ input::placeholder{
 
 /*Signup*/
 
-#signup-form input{
+#signup-form input {
     padding: 1.5%;
     margin-top: 2%;
     margin-bottom: 1%;
 }
 
-#signup-form select{
+#signup-form select {
     padding: 1.5%;
     margin-top: 2%;
     margin-bottom: 1%;
@@ -292,11 +298,11 @@ input::placeholder{
 }
 
 
-#signup-form button{
+#signup-form button {
     margin-top: 3%;
 }
 
-#signup-form a{
+#signup-form a {
     text-align: center;
     color: var(--alltitle);
     cursor: pointer;
@@ -304,32 +310,32 @@ input::placeholder{
     margin-bottom: 1.5%;
 }
 
-#signup-form label{
+#signup-form label {
     margin-bottom: -1.5%;
     cursor: default;
     font-weight: bold;
     color: var(--alltitle);
 }
 
-#signupMain{
+#signupMain {
     width: 45%;
-    
+
 }
 
 
-#signupMain h2{
+#signupMain h2 {
     margin-bottom: 0.5%;
-    margin-top: 2% ;
+    margin-top: 2%;
     color: var(--alltitle);
     cursor: default;
 }
 
-#signupMain p{
+#signupMain p {
     margin-bottom: 1%;
-    
+
 }
 
-#signupMain .logo-img{
+#signupMain .logo-img {
     margin-bottom: 0.2%;
 
 }
@@ -339,26 +345,26 @@ input::placeholder{
     margin-top: -5%;
 }
 
-.alert{
+.alert {
     position: relative;
     z-index: 10000;
     bottom: 5%;
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
 }
 
-.alert i{
+.alert i {
     cursor: pointer;
 }
 
 
 @media(max-width: 320px) {
-    body{
+    body {
         overflow-x: hidden;
     }
 
-    aside{
+    aside {
         display: none;
     }
 }

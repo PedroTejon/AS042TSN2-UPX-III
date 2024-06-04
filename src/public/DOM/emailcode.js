@@ -17,6 +17,8 @@ function codeConfirmation(event) {
         
         if (data.message == 'Código correto') {
             window.location.href = '/newpassword'
+        } else {
+            document.getElementById('invalidCode').style.display = 'flex';
         }
     })
 }

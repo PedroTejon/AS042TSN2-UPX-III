@@ -7,8 +7,6 @@ function signup(event) {
     const birthDate = document.getElementById('userbday').value;
     const gender = document.getElementById('usergender').value;
 
-    
-
     fetch('/api/users/register', {
         method: 'POST',
         body: JSON.stringify({
@@ -25,6 +23,8 @@ function signup(event) {
     ).then(response => response.json()).then(data => {
         if (data.message == 'Usuário criado com sucesso!') {
             window.location.href = '/login'
+        } else {
+            document.getElementById('alreadyInUse').style.display = 'flex';
         }
     })
 }

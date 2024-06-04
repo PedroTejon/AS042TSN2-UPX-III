@@ -15,6 +15,8 @@ function passwordRecovery(event) {
     ).then(response => response.json()).then(data => {
         if (data.message == 'Solicitação de troca de senha feita com sucesso.') {
             window.location.href = '/emailcode'
+        } else {
+            document.getElementById('invalidEmail').style.display = 'flex';
         }
     })
 }

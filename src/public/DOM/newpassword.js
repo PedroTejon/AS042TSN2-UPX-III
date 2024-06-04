@@ -4,8 +4,7 @@ function confirmPasswordChange(event) {
     const password = document.getElementById('newPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
-    if (password == confirmPassword) {
-        
+    if (password == confirmPassword && password != '' && password.match('[*@-$&!%#]+') && password.match('[A-Z]+') && password.match('[a-z]+') && password.length >= 8) {
         fetch('/api/users/confirmPassChange', {
             method: 'POST',
             body: JSON.stringify({
@@ -20,5 +19,7 @@ function confirmPasswordChange(event) {
                 window.location.href = '/login'
             }
         })
+    } else {
+        document.getElementById('fillCorrectly').style.display = 'flex';
     }
 }

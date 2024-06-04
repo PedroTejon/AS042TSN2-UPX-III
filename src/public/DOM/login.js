@@ -17,6 +17,8 @@ function login(event) {
     ).then(response => response.json()).then(data => {
         if (data.message == 'Usuário logado com sucesso!') {
             window.location.href = '/'
+        } else {
+            document.getElementById('incorrectInfo').style.display = 'flex';
         }
     })
 }

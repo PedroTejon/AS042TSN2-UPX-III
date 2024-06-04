@@ -28,6 +28,10 @@
                 <p class="send-again">Não recebeu o código? <b style="cursor: pointer;" onclick="window.location.href = '/passwordrecover'">Reenviar código</b></p>
                 <button type="submit" class="account-btn" id="sentCode">Próximo</button>
             </form>
+            
+            <div class="alert alert-warning" role="alert" id="invalidCode">
+                Código incorreto. <i class="fa-solid fa-xmark"  onclick="document.getElementById('invalidCode').style.display = 'none'"></i>
+            </div>
         </main>
         <aside>
             <img src="../assets/account-handling/hidreletrica.jpg" alt="usina hidrelétrica">
