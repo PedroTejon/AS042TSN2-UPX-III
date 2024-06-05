@@ -78,7 +78,7 @@ function loadProducts() {
         document.getElementById('casa').checked = filter.platforms.includes(5);
         document.getElementById('neo').checked = filter.platforms.includes(6);
     }
-    
+
     if (filter.hasOwnProperty('categories')) {
         document.getElementById('painelSolar').checked = filter.categories.includes(1);
         document.getElementById('estrutura').checked = filter.categories.includes(2);
@@ -95,6 +95,28 @@ function loadProducts() {
         document.getElementById('carro').checked = filter.categories.includes(13);
         document.getElementById('outros').checked = filter.categories.includes(14);
         document.getElementById('bombeamento').checked = filter.categories.includes(15);
+    }
+
+    if (filter.hasOwnProperty('minPrice')) {
+        document.getElementById('minPriceChk').checked = true;
+        document.getElementById('minPrice').disabled = false;
+        document.getElementById('minPrice').value = filter.minPrice;
+    }
+    if (filter.hasOwnProperty('maxPrice')) {
+        document.getElementById('maxPriceChk').checked = true;
+        document.getElementById('maxPrice').disabled = false;
+        document.getElementById('maxPrice').value = filter.maxPrice;
+    }
+
+    if (filter.hasOwnProperty('minRating')) {
+        document.getElementById('minRatingChk').checked = true;
+        document.getElementById('minRating').disabled = false;
+        document.getElementById('minRating').value = filter.minRating;
+    }
+    if (filter.hasOwnProperty('maxRating')) {
+        document.getElementById('maxRatingChk').checked = true;
+        document.getElementById('maxRating').disabled = false;
+        document.getElementById('maxRating').value = filter.maxRating;
     }
 }
 
@@ -115,7 +137,6 @@ function setSearchQuery(event) {
 }
 
 function setFilters(event) {
-    debugger
     event.preventDefault();
     if (!filter.hasOwnProperty('platforms')) {
         filter.platforms = [];
@@ -126,9 +147,9 @@ function setFilters(event) {
             filter.platforms.push(platforms.indexOf(platform) + 1);
         }
         else if (!document.getElementById(platform).checked && filter.platforms.includes(platforms.indexOf(platform) + 1)) {
-            filter.platforms = filter.platforms.filter(function(item) {
+            filter.platforms = filter.platforms.filter(function (item) {
                 return item !== (platforms.indexOf(platform) + 1)
-            })            
+            })
         }
     }
 
@@ -141,10 +162,32 @@ function setFilters(event) {
             filter.categories.push(categories.indexOf(category) + 1);
         }
         else if (!document.getElementById(category).checked && filter.categories.includes(categories.indexOf(category) + 1)) {
-            filter.categories = filter.categories.filter(function(item) {
+            filter.categories = filter.categories.filter(function (item) {
                 return item !== (categories.indexOf(category) + 1)
-            })            
+            })
         }
+    }
+
+    if (document.getElementById('minPriceChk').checked) {
+        filter.minPrice = document.getElementById('minPrice').value;
+    } else if (filter.hasOwnProperty('minPrice')){
+        delete filter.minPrice;
+    }
+    if (document.getElementById('maxPriceChk').checked) {
+        filter.maxPrice = document.getElementById('maxPrice').value;
+    } else if (filter.hasOwnProperty('maxPrice')){
+        delete filter.maxPrice;
+    }
+
+    if (document.getElementById('minRatingChk').checked) {
+        filter.minRating = document.getElementById('minRating').value;
+    } else if (filter.hasOwnProperty('minRating')){
+        delete filter.minRating;
+    }
+    if (document.getElementById('maxRatingChk').checked) {
+        filter.maxRating = document.getElementById('maxRating').value;
+    } else if (filter.hasOwnProperty('maxRating')){
+        delete filter.maxRating;
     }
 
     params.set('filter', JSON.stringify(filter));
@@ -221,8 +264,16 @@ function hideProduct(productId) {
 
 function gotoSaved(event) {
     event.preventDefault();
-    params.set('filter', JSON.stringify({ savedSection: filter.savedSection ? false : true}));
+    params.set('filter', JSON.stringify({ savedSection: filter.savedSection ? false : true }));
     window.location.href = `catalogue${params.size > 0 ? '?' : ''}${params.toString()}`;
+}
+
+function toggleField(event, field) {
+    event.preventDefault();
+
+    const check = document.getElementById(field + 'Chk');
+    const fieldElement = document.getElementById(field);
+    fieldElement.disabled = !check.checked;
 }
 
 loadProducts();

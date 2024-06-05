@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../stylesheets/catalogue.css">
     <link rel="stylesheet" href="../stylesheets/transition.css">
     <script src="../DOM/auth.js"></script>
-    
+
 </head>
 
 <body>
@@ -45,7 +45,8 @@
                 frente com o anúncio, você será encaminhado para a página original do anúncio escolhido.</p>
             <form>
                 <input id="productSearch" name="productSearch" placeholder="Procure por um produto">
-                <button onclick="setSearchQuery(event)" id="searchButton"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button onclick="setSearchQuery(event)" id="searchButton"><i
+                        class="fa-solid fa-magnifying-glass"></i></button>
 
             </form>
         </section>
@@ -65,7 +66,7 @@
             <a class="pg" id="previous" onclick="previousPage()"><i class="fa-solid fa-chevron-left"></i></a>
             <a class="pg" id="next" onclick="nextPage()"><i class="fa-solid fa-chevron-right "></i></a>
         </div>
-       
+
     </article>
     <article id="alerts">
         <div class="alert alert-warning" id="notFoundSearch" role="alert">
@@ -79,25 +80,41 @@
         <form id="filterItems" onsubmit="setFilters(event)">
             <details id="first">
                 <summary>Filtrar por preço:</summary>
-                <div class="checkbox">
-                    <input type="checkbox" id="minPrice" name="minPrice" value="precoMin">
-                    <label for="minPrice">Preço mínimo</label>
+                <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; flex-direction: row;">
+                        <input type="checkbox" id="minPriceChk" name="minPriceChk" value="minimo"
+                            onchange="toggleField(event, 'minPrice')">
+                        <label for="minPriceChk">Preço mínimo</label>
+                    </div>
+                    <input type="number" id="minPrice" name="minPrice" value="0" disabled>
                 </div>
-                <div class="checkbox">
-                    <input type="checkbox" id="maxPrice" name="maxPrice" value="precoMax">
-                    <label for="maxPrice">Preço máximo</label>
+                <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; flex-direction: row;">
+                        <input type="checkbox" id="maxPriceChk" name="maxPriceChk" value="maximo"
+                            onchange="toggleField(event, 'maxRating')">
+                        <label for="maxPriceChk">Preço máximo</label>
+                    </div>
+                    <input type="number" id="maxPriceChk" name="maxPriceChk" value="0" disabled>
                 </div>
             </details>
-        
+
             <details id="second">
                 <summary>Filtrar por avaliação:</summary>
-                <div class="checkbox">
-                    <input type="checkbox" id="minVal" name="minVal" value="minimo">
-                    <label for="minVal">Avaliação mínima</label>
+                <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; flex-direction: row;">
+                        <input type="checkbox" id="minRatingChk" name="minRatingChk" value="minimo"
+                            onchange="toggleField(event, 'minRating')">
+                        <label for="minRatingChk">Avaliação mínima</label>
+                    </div>
+                    <input type="number" min="0" max="5" step="0.01" id="minRating" name="minRating" value="0" disabled>
                 </div>
-                <div class="checkbox">
-                    <input type="checkbox" id="maxVal" name="maxVal" value="maxVal">
-                    <label for="maxVal">Avaliação máxima</label>
+                <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; flex-direction: row;">
+                        <input type="checkbox" id="maxRatingChk" name="maxRatingChk" value="maximo"
+                            onchange="toggleField(event, 'maxRating')">
+                        <label for="maxRatingChk">Avaliação máxima</label>
+                    </div>
+                    <input type="number" min="0" max="5" step="0.01" id="maxRating" name="maxRating" value="5" disabled>
                 </div>
             </details>
 
@@ -134,7 +151,7 @@
                 <summary>Filtrar por categoria:</summary>
                 <div class="flex-side">
                     <div class="sided">
-                        <div class="checkbox"> 
+                        <div class="checkbox">
                             <input type="checkbox" id="painelSolar" name="painelSolar" value="1">
                             <label for="painelSolar">Painéis Solares</label>
                         </div>
@@ -167,7 +184,7 @@
                         <div class="checkbox">
                             <input type="checkbox" id="cabo" name="cabo" value="8">
                             <label for="cabo">Cabos</label>
-                        </div >
+                        </div>
                         <div class="checkbox">
                             <input type="checkbox" id="disjuntor" name="disjuntor" value="9">
                             <label for="disjuntor">Disjuntores</label>
@@ -203,7 +220,7 @@
             <button onclick="toggleFilters(event)">Fechar filtragem</button>
         </form>
     </section>
-    
+
 
     <footer class="footer-default">
         <div class="footerlogo-div">
@@ -247,7 +264,7 @@
                 </li>
             </ul>
         </div>
-        
+
     </footer>
 
     <script src="../DOM/catalogue.js" defer></script>
