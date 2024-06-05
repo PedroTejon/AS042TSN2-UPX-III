@@ -22,6 +22,8 @@ if (getCookie('userId')) {
       authenticated = true;
       isAdmin = Boolean(data.isAdmin);
       const profileContainer = document.querySelector('.profile-info');
+      const profileMobile = document.querySelector('#profile-cont');
+      profileMobile.innerHTML = `<a class="notactive unselectable" draggable="false" id="aboutmobile" href="/profile">Ver perfil</a>`
       profileContainer.innerHTML = `<div class="pfp-div">
       <img src="../assets/common/pfp-icon.png" alt="Foto de perfil padrão" class="unselectable" draggable="false" >
   </div>

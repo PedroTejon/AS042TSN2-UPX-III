@@ -460,3 +460,48 @@ h3 {
         padding: 2%;
     }
 }
+
+@media(max-width: 769px) {
+    
+
+    .catalogue-item {
+        width: 45%;
+        height: 10%;
+        margin-right: 2%;
+        margin-bottom: 8%;
+    }
+
+    .origin-store {
+        margin-left: 5%;
+
+    }
+
+    .item-price {
+        margin-left: 5%;
+    }
+
+    .item-name {
+        margin-left: 6%;
+    }
+
+    .item-evaluation  {
+        margin-left: 5%;
+    }
+
+   
+
+    #productSearch {
+
+        width: 75%;
+
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 3%;
+    }
+
+   
+}

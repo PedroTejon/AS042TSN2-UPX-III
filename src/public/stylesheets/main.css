@@ -101,7 +101,7 @@
     margin-top: 30%;
     height: 245%;
     transform: translatey(0px);
-    animation: float 6s ease-in-out infinite;
+    animation: float 2s ease-in-out infinite;
 }
 
 #text-info {
@@ -169,6 +169,7 @@ button:hover {
     margin-top: -5%;
 }
 
+
 /*Animations*/
 @keyframes fade {
     from {
@@ -196,6 +197,8 @@ button:hover {
         transform: translatey(0px);
     }
 }
+
+
 
 /*Media query para smartphone*/
 @media(max-width: 480px) {

@@ -85,21 +85,21 @@
         <form id="filterItems" onsubmit="setFilters(event)">
             <details id="first">
                 <summary>Filtrar por preço:</summary>
-                <div style="display: flex; flex-direction: column;">
-                    <div style="display: flex; flex-direction: row;">
-                        <input type="checkbox" id="minPriceChk" name="minPriceChk" value="minimo"
+                <div style="display: flex; flex-direction: column;" >
+                    <div style="display: flex; flex-direction: row;" >
+                        <input style="margin-right: 2%;" type="checkbox" id="minPriceChk" name="minPriceChk" value="minimo"
                             onchange="toggleField(event, 'minPrice')">
                         <label for="minPriceChk">Preço mínimo</label>
                     </div>
-                    <input type="number" id="minPrice" name="minPrice" value="0" disabled>
+                    <input style="width: 25%; border-radius: 4px; padding:1%; text-align: center;" type="number" id="minPrice" name="minPrice" value="0" disabled>
                 </div>
                 <div style="display: flex; flex-direction: column;">
                     <div style="display: flex; flex-direction: row;">
-                        <input type="checkbox" id="maxPriceChk" name="maxPriceChk" value="maximo"
+                        <input style="margin-right: 2%;" type="checkbox" id="maxPriceChk" name="maxPriceChk" value="maximo"
                             onchange="toggleField(event, 'maxRating')">
                         <label for="maxPriceChk">Preço máximo</label>
                     </div>
-                    <input type="number" id="maxPriceChk" name="maxPriceChk" value="0" disabled>
+                    <input style="width: 25%; border-radius: 4px; padding:1%; text-align: center;" type="number" id="maxPriceChk" name="maxPriceChk" value="0" disabled>
                 </div>
             </details>
 
@@ -107,19 +107,19 @@
                 <summary>Filtrar por avaliação:</summary>
                 <div style="display: flex; flex-direction: column;">
                     <div style="display: flex; flex-direction: row;">
-                        <input type="checkbox" id="minRatingChk" name="minRatingChk" value="minimo"
+                        <input style="margin-right: 2%;" type="checkbox" id="minRatingChk" name="minRatingChk" value="minimo"
                             onchange="toggleField(event, 'minRating')">
                         <label for="minRatingChk">Avaliação mínima</label>
                     </div>
-                    <input type="number" min="0" max="5" step="0.01" id="minRating" name="minRating" value="0" disabled>
+                    <input style="width: 25%; border-radius: 4px; padding:1%; text-align: center;"  type="number" min="0" max="5" step="0.01" id="minRating" name="minRating" value="0" disabled>
                 </div>
                 <div style="display: flex; flex-direction: column;">
                     <div style="display: flex; flex-direction: row;">
-                        <input type="checkbox" id="maxRatingChk" name="maxRatingChk" value="maximo"
+                        <input style="margin-right: 2%;" type="checkbox" id="maxRatingChk" name="maxRatingChk" value="maximo"
                             onchange="toggleField(event, 'maxRating')">
                         <label for="maxRatingChk">Avaliação máxima</label>
                     </div>
-                    <input type="number" min="0" max="5" step="0.01" id="maxRating" name="maxRating" value="5" disabled>
+                    <input style="width: 25%; border-radius: 4px; padding:1%; text-align: center;" type="number" min="0" max="5" step="0.01" id="maxRating" name="maxRating" value="5" disabled>
                 </div>
             </details>
 

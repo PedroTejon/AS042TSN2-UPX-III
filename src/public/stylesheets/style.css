@@ -201,6 +201,10 @@ h2 {
     display: none;
 }
 
+.nav-mobile{
+    visibility: hidden;
+}
+
 /*Media query para smartphone*/
 @media(max-width: 480px) {
 
@@ -255,9 +259,6 @@ h2 {
         font-size: 90%;
     }
 
-    .header-default{
-       
-    }
 
     #hamburger{
         display: block;
@@ -288,6 +289,29 @@ h2 {
    
     .nav-default, .profile-info{
         display: none;
+    }
+
+    .nav-mobile{
+        visibility: hidden;
+        position: absolute;
+        width: 100%;
+        height: 25%;
+        margin-top: 18.4%;
+        background-color: #F6F6F6;
+        box-shadow: 0 15px 20px 0 #8d949910;
+    }
+
+    .nav-mobile ul{
+        text-align: center;
+    }
+
+    .nav-mobile ul li{
+        list-style: none;
+        margin-bottom: 1%;
+    }
+
+    .nav-mobile ul a{
+        text-decoration: none;
     }
 }
 
@@ -335,4 +359,54 @@ h2 {
         overflow: hidden;
         width: 60%;
     }
+}
+
+.revealing-image {
+    view-timeline-name: --revealing-image;
+    view-timeline-axis: block;
+
+    animation: linear reveal both;
+    animation-timeline: --revealing-image;
+    animation-range: entry 25% cover 50%;
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+        clip-path: inset(45% 20% 45% 20%);
+    }
+    to {
+        opacity: 1;
+        clip-path: inset(0% 0% 0% 0%);
+    }
+}
+
+@keyframes grow-progress {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+#progress {
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 1em;
+    transform-origin: 0 50%;
+    background: red;
+}
+
+html {
+    scroll-timeline: --page-scroll block;
+}
+
+#progress {
+    animation: grow-progress auto linear;
+    animation-timeline: --page-scroll;
 }

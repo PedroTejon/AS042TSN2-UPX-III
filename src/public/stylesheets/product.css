@@ -123,3 +123,6 @@ button:hover {
         font-size: 85%;
     }
 }
+
+@media(max-width: 769px) {
+}

@@ -25,11 +25,21 @@
                 <li><a class="notactive unselectable" draggable="false" id="about" href="/about">Sobre</a></li>
             </ul>
         </nav>
+        <nav class="nav-mobile">
+            <ul>
+                <li ><a class="active unselectable"  draggable="false" id="mainpagemobile" href="/">Inicial</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="cataloguemobile" href="/catalogue">Catálogo</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="faqmobile" href="/FAQ">FAQ</a></li>
+                <li><a class="notactive unselectable" draggable="false" id="aboutmobile" href="/about">Sobre</a></li>
+                <li id="profile-cont"><a class="notactive unselectable" draggable="false" id="aboutmobile" href="/login">Entrar</a></li>
+
+            </ul>
+        </nav>
         <section id="conteudo"></section>
         <div class="profile-info">
             <button onclick="window.location.href = '/login'">Entrar</button>
         </div>
-        <div id="hamburger">
+        <div id="hamburger" onclick="openNav()">
             <i class="fa-solid fa-bars"></i>
         </div>
     </header>
@@ -99,9 +109,9 @@
             
             </article>
             <article>
-                <div id="video-info">
+                <div id="video-info" >
                     <h2>Veja esse vídeo informativo sobre PCH's</h2>
-                    <iframe src="https://www.youtube.com/embed/u2oBNLHxSqA?si=gpmQYqw2sUkBs68s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe class="revealing-image" src="https://www.youtube.com/embed/u2oBNLHxSqA?si=gpmQYqw2sUkBs68s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
             </article>
         </section>
@@ -151,6 +161,7 @@
         <script src="../DOM/index.js">
             
         </script>
+        <script src="../DOM/navbarmobile.js"></script>
     </footer>
 </body>
 </html>
