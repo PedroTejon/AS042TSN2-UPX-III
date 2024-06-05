@@ -248,3 +248,9 @@ button:hover {
         margin-bottom: 5%;
     }
 }
+
+@media(max-width: 769px) {
+    #icon-info{
+       display: none;
+    }
+}
