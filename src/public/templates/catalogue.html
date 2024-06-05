@@ -70,7 +70,12 @@
     </article>
     <article id="alerts">
         <div class="alert alert-warning" id="notFoundSearch" role="alert">
-            Nenhuma correspondência para a pesquisa. <i class="fa-solid fa-xmark"></i>
+            Nenhuma correspondência para a pesquisa. <i class="fa-solid fa-xmark" onclick="document.getElementById('notFoundSearch').style.display = 'none'"></i>
+        </div>
+    </article>
+    <article id="alerts">
+        <div class="alert alert-warning" id="loginRequired" role="alert">
+            Seção indisponível para usuários não logados. <i class="fa-solid fa-xmark"  onclick="document.getElementById('loginRequired').style.display = 'none'"></i>
         </div>
     </article>
 

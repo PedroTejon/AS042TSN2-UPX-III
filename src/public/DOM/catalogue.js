@@ -5,32 +5,33 @@ const searchQuery = params.get('searchQuery') ?? '';
 
 function loadProducts() {
     fetch(`api/products/catalogue${params.size > 0 ? '?' + params.toString() : ''}`).then(response => response.json()).then(products => {
-        const productContainer = document.querySelector('.catalogue-view');
-        for (let product of products) {
-            let origem;
-            switch (product.platformId) {
-                case 1:
-                    origem = 'et.svg';
-                    break;
-                case 2:
-                    origem = 'lm.svg';
-                    break;
-                case 3:
-                    origem = 'mg.svg';
-                    break;
-                case 4:
-                    origem = 'ml.svg';
-                    break;
-                case 5:
-                    origem = 'et.svg';
-                    break;
-                case 6:
-                    origem = 'ns.svg';
-                    break;
-            }
+        if (!products.hasOwnProperty('error')) {
+            const productContainer = document.querySelector('.catalogue-view');
+            for (let product of products) {
+                let origem;
+                switch (product.platformId) {
+                    case 1:
+                        origem = 'et.svg';
+                        break;
+                    case 2:
+                        origem = 'lm.svg';
+                        break;
+                    case 3:
+                        origem = 'mg.svg';
+                        break;
+                    case 4:
+                        origem = 'ml.svg';
+                        break;
+                    case 5:
+                        origem = 'et.svg';
+                        break;
+                    case 6:
+                        origem = 'ns.svg';
+                        break;
+                }
 
-            let productRating = parseFloat(product.rating);
-            productContainer.innerHTML += `
+                let productRating = parseFloat(product.rating);
+                productContainer.innerHTML += `
         <div class="catalogue-item">
             <div class="item-div">
                 <div class="item-img-div">
@@ -41,8 +42,8 @@ function loadProducts() {
                         <span class="item-name">${product.title}</span>
                     </div>
                     ${isAdmin
-                    ? `<i id="hide-button-${product.productId}" onclick="hideProduct(${product.productId})" class="unselectable fa-solid ${product.hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>`
-                    : `<i id="save-button-${product.productId}" onclick="saveProduct(${product.productId})" class="unselectable fa-solid fa-heart ${product.saved ? 'saved' : 'unsaved'}"></i>`}
+                        ? `<i id="hide-button-${product.productId}" onclick="hideProduct(${product.productId})" class="unselectable fa-solid ${product.hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>`
+                        : `<i id="save-button-${product.productId}" onclick="saveProduct(${product.productId})" class="unselectable fa-solid fa-heart ${product.saved ? 'saved' : 'unsaved'}"></i>`}
                 </div>
                 <div class="origin-store">
                     <img class="unselectable" draggable="false" src="../assets/catalogue-page/${origem}">
@@ -61,10 +62,13 @@ function loadProducts() {
                 </div>
             </div>
         </div>`
-        }
+            }
 
-        if (products.length == 0) {
-            document.getElementById('notFoundSearch').style.display = 'flex';
+            if (products.length == 0) {
+                document.getElementById('notFoundSearch').style.display = 'flex';
+            }
+        } else {
+            document.getElementById('loginRequired').style.display = 'flex';
         }
     });
 
@@ -170,23 +174,23 @@ function setFilters(event) {
 
     if (document.getElementById('minPriceChk').checked) {
         filter.minPrice = document.getElementById('minPrice').value;
-    } else if (filter.hasOwnProperty('minPrice')){
+    } else if (filter.hasOwnProperty('minPrice')) {
         delete filter.minPrice;
     }
     if (document.getElementById('maxPriceChk').checked) {
         filter.maxPrice = document.getElementById('maxPrice').value;
-    } else if (filter.hasOwnProperty('maxPrice')){
+    } else if (filter.hasOwnProperty('maxPrice')) {
         delete filter.maxPrice;
     }
 
     if (document.getElementById('minRatingChk').checked) {
         filter.minRating = document.getElementById('minRating').value;
-    } else if (filter.hasOwnProperty('minRating')){
+    } else if (filter.hasOwnProperty('minRating')) {
         delete filter.minRating;
     }
     if (document.getElementById('maxRatingChk').checked) {
         filter.maxRating = document.getElementById('maxRating').value;
-    } else if (filter.hasOwnProperty('maxRating')){
+    } else if (filter.hasOwnProperty('maxRating')) {
         delete filter.maxRating;
     }
 
