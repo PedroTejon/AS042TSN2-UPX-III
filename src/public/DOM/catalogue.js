@@ -23,7 +23,7 @@ function loadProducts() {
                         origem = 'ml.svg';
                         break;
                     case 5:
-                        origem = 'et.svg';
+                        origem = 'ms.svg';
                         break;
                     case 6:
                         origem = 'ns.svg';

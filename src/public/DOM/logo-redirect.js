@@ -3,6 +3,7 @@ const magaluLogo = document.querySelectorAll('.magalu-logo');
 const energiatotalLogo = document.querySelectorAll('.energiatotal-logo');
 const leroyLogo = document.querySelectorAll('.leroy-logo');
 const mercadoLogo = document.querySelectorAll('.mercado-logo');
+const msLogo = document.querySelectorAll('.ms-logo');
 
 neosolarLogo.forEach(el => el.addEventListener('click', event => {
     window.location.href="https://www.neosolar.com.br/";
@@ -22,5 +23,9 @@ leroyLogo.forEach(el => el.addEventListener('click', event => {
 
 energiatotalLogo.forEach(el => el.addEventListener('click', event => {
     window.location.href="https://www.energiatotal.com.br/";
+}));
+
+msLogo.forEach(el => el.addEventListener('click', event => {
+    window.location.href="https://www.minhacasasolar.com.br/";
 }));
 

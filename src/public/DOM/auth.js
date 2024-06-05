@@ -17,8 +17,10 @@ function getCookie(cname) {
 let authenticated = false;
 let isAdmin = false;
 if (getCookie('userId')) {
+
   fetch('/api/users/').then(response => response.json()).then(data => {
     if (data.email) {      
+      
       authenticated = true;
       isAdmin = Boolean(data.isAdmin);
       const profileContainer = document.querySelector('.profile-info');
